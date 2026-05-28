@@ -190,31 +190,38 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
   <div class="nav-item active" data-view="dashboard" onclick="setView('dashboard',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
     Inicio
+    <span class="nav-badge" id="badge-dashboard">9</span>
   </div>
   <div class="nav-item" data-view="cobros" onclick="setView('cobros',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M8 13h3"/></svg>
     Cobros con cobertura
+    <span class="nav-badge" id="badge-cobros">4</span>
   </div>
   <div class="nav-item" data-view="liberaciones" onclick="setView('liberaciones',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
     Liberaciones 100%
+    <span class="nav-badge" id="badge-lib">2</span>
   </div>
   <div class="nav-item" data-view="nrs" onclick="setView('nrs',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
     Notas de remision
+    <span class="nav-badge warn" id="badge-nr">3</span>
   </div>
   <div class="nav-item" data-view="ventas" onclick="setView('ventas',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.63L23 6H6"/></svg>
     Ventas manuales
+    <span class="nav-badge warn" id="badge-vm">1</span>
   </div>
   <div class="nav-item" data-view="anulaciones" onclick="setView('anulaciones',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 00-4-4H4"/></svg>
     Anulaciones
+    <span class="nav-badge warn" id="badge-anul">2</span>
   </div>
   <div class="nav-section">Seguimiento</div>
   <div class="nav-item" data-view="requerimientos" onclick="setView('requerimientos',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    Reportes
+    Requerimientos
+    <span class="nav-badge ok" id="badge-req" style="display:none">0</span>
   </div>
   <div class="sidebar-footer">
     auditor1 &middot; turno manana
@@ -255,7 +262,6 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
     </div>
   </div>
 </div>
-
 
 <!-- COBROS -->
 <div id="v-cobros" class="view">
@@ -311,7 +317,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
               <div class="field"><div class="field-label">Estado de auditoria</div><div class="field-value" id="cp-auditoria">-</div></div>
             </div>
             <div class="panel-actions">
-              <button class="btn btn-danger" onclick="generarReq('cobros')">Generar reporte al cajero</button>
+              <button class="btn btn-danger" onclick="generarReq('cobros')">Generar requerimiento al cajero</button>
               <div class="panel-note" id="cp-note" style="display:none"></div>
             </div>
           </div>
@@ -368,7 +374,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
               <div class="field"><div class="field-label">Estado de auditoria</div><div class="field-value" id="lp-estado">-</div></div>
             </div>
             <div class="panel-actions">
-              <button class="btn btn-danger" onclick="generarReq('liberacion')">Generar reporte</button>
+              <button class="btn btn-danger" onclick="generarReq('liberacion')">Generar requerimiento</button>
             </div>
           </div>
         </div>
@@ -427,7 +433,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
               <div id="np-timeline" class="timeline"></div>
             </div>
             <div class="panel-actions">
-              <button class="btn btn-danger" onclick="generarReq('nr')">Generar reporte</button>
+              <button class="btn btn-danger" onclick="generarReq('nr')">Generar requerimiento</button>
             </div>
           </div>
         </div>
@@ -491,7 +497,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
               </div>
             </div>
             <div class="panel-actions">
-              <button class="btn btn-danger" onclick="generarReq('venta')">Generar reporte</button>
+              <button class="btn btn-danger" onclick="generarReq('venta')">Generar requerimiento</button>
             </div>
           </div>
         </div>
@@ -546,7 +552,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
               <div id="ap-timeline" class="timeline"></div>
             </div>
             <div class="panel-actions">
-              <button class="btn btn-danger" onclick="generarReq('anulacion')">Generar reporte</button>
+              <button class="btn btn-danger" onclick="generarReq('anulacion')">Generar requerimiento</button>
             </div>
           </div>
         </div>
@@ -559,7 +565,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
 <div id="v-requerimientos" class="view">
   <div class="topbar">
     <div>
-      <div class="page-title">Reportes generados</div>
+      <div class="page-title">Requerimientos generados</div>
       <div class="page-q">Solicitudes formales enviadas al cajero o gestor para que expliquen un evento</div>
     </div>
     <div class="topbar-right">
@@ -570,7 +576,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
     <div class="table-box">
       <table>
         <thead><tr><th>ID req.</th><th>Evento</th><th>Tipo</th><th>Destinatario</th><th>Motivo</th><th>Generado</th><th>Estado</th><th></th></tr></thead>
-        <tbody id="req-tbody"><tr class="empty-row"><td colspan="8">No hay requerimientos. Abre un evento sospechoso y usa "Generar reportes".</td></tr></tbody>
+        <tbody id="req-tbody"><tr class="empty-row"><td colspan="8">No hay requerimientos. Abre un evento sospechoso y usa "Generar requerimiento".</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -584,7 +590,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
 <div class="modal-overlay" id="req-modal" onclick="cerrarModalReq(event)">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-header">
-      <div class="modal-title">Generar reporte al cajero</div>
+      <div class="modal-title">Generar requerimiento al cajero</div>
       <div class="modal-subtitle" id="req-modal-sub">Evento seleccionado: —</div>
     </div>
     <div class="modal-body">
@@ -903,7 +909,7 @@ function openAnul(id) {
 
 function renderReqs() {
   var tbody = document.getElementById('req-tbody');
-  if (!reqs.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No hay requerimientos. Abre un evento sospechoso y usa Generar reportes.</td></tr>'; return; }
+  if (!reqs.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No hay requerimientos. Abre un evento sospechoso y usa Generar requerimiento.</td></tr>'; return; }
   tbody.innerHTML = reqs.map(function(r){
     return '<tr><td class="td-mono">'+r.id+'</td><td class="td-mono">'+r.evento+'</td><td><span class="chip chip-muted">'+r.tipo+'</span></td><td class="td-muted" style="font-size:11px">'+r.destinatario+'</td><td class="td-muted" style="font-size:11px">'+r.motivo+'</td><td class="td-mono" style="font-size:11px">'+r.fecha+'</td><td><span class="chip chip-warn">'+r.estado+'</span></td><td><button class="btn btn-ghost" onclick="exportarPDF(\''+r.id+'\')">PDF</button></td></tr>';
   }).join('');
