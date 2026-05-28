@@ -220,7 +220,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
   <div class="nav-section">Seguimiento</div>
   <div class="nav-item" data-view="requerimientos" onclick="setView('requerimientos',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    Requerimientos
+    Reportes
     <span class="nav-badge ok" id="badge-req" style="display:none">0</span>
   </div>
   <div class="sidebar-footer">
@@ -317,7 +317,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
               <div class="field"><div class="field-label">Estado de auditoria</div><div class="field-value" id="cp-auditoria">-</div></div>
             </div>
             <div class="panel-actions">
-              <button class="btn btn-danger" onclick="generarReq('cobros')">Generar requerimiento al cajero</button>
+              <button class="btn btn-danger" onclick="generarReq('cobros')">Generar reporte al cajero</button>
               <div class="panel-note" id="cp-note" style="display:none"></div>
             </div>
           </div>
@@ -565,7 +565,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
 <div id="v-requerimientos" class="view">
   <div class="topbar">
     <div>
-      <div class="page-title">Requerimientos generados</div>
+      <div class="page-title">Reportes generados</div>
       <div class="page-q">Solicitudes formales enviadas al cajero o gestor para que expliquen un evento</div>
     </div>
     <div class="topbar-right">
@@ -590,7 +590,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
 <div class="modal-overlay" id="req-modal" onclick="cerrarModalReq(event)">
   <div class="modal-box" onclick="event.stopPropagation()">
     <div class="modal-header">
-      <div class="modal-title">Generar requerimiento al cajero</div>
+      <div class="modal-title">Generar reporte al cajero</div>
       <div class="modal-subtitle" id="req-modal-sub">Evento seleccionado: —</div>
     </div>
     <div class="modal-body">
