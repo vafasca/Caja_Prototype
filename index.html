@@ -190,38 +190,31 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
   <div class="nav-item active" data-view="dashboard" onclick="setView('dashboard',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
     Inicio
-    <span class="nav-badge" id="badge-dashboard">9</span>
   </div>
   <div class="nav-item" data-view="cobros" onclick="setView('cobros',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M8 13h3"/></svg>
     Cobros con cobertura
-    <span class="nav-badge" id="badge-cobros">4</span>
   </div>
   <div class="nav-item" data-view="liberaciones" onclick="setView('liberaciones',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
     Liberaciones 100%
-    <span class="nav-badge" id="badge-lib">2</span>
   </div>
   <div class="nav-item" data-view="nrs" onclick="setView('nrs',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
     Notas de remision
-    <span class="nav-badge warn" id="badge-nr">3</span>
   </div>
   <div class="nav-item" data-view="ventas" onclick="setView('ventas',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.63L23 6H6"/></svg>
     Ventas manuales
-    <span class="nav-badge warn" id="badge-vm">1</span>
   </div>
   <div class="nav-item" data-view="anulaciones" onclick="setView('anulaciones',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 00-4-4H4"/></svg>
     Anulaciones
-    <span class="nav-badge warn" id="badge-anul">2</span>
   </div>
   <div class="nav-section">Seguimiento</div>
   <div class="nav-item" data-view="requerimientos" onclick="setView('requerimientos',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
     Requerimientos
-    <span class="nav-badge ok" id="badge-req" style="display:none">0</span>
   </div>
   <div class="sidebar-footer">
     auditor1 &middot; turno manana
@@ -248,18 +241,6 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
   </div>
   <div class="content">
     <div id="dash-alertas"></div>
-    <div class="stats-toggle" id="stats-toggle" onclick="toggleStats()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      Estadisticas del periodo
-    </div>
-    <div class="stats-grid" id="stats-grid">
-      <div class="stat-card"><div class="stat-num" id="st-cobros">5</div><div class="stat-label">Cobros totales</div></div>
-      <div class="stat-card"><div class="stat-num" id="st-lib">3</div><div class="stat-label">Liberaciones totales</div></div>
-      <div class="stat-card"><div class="stat-num" id="st-nr">3</div><div class="stat-label">NRs totales</div></div>
-      <div class="stat-card"><div class="stat-num" id="st-vm">2</div><div class="stat-label">Ventas manuales</div></div>
-      <div class="stat-card"><div class="stat-num" id="st-anul">2</div><div class="stat-label">Anulaciones</div></div>
-      <div class="stat-card"><div class="stat-num" id="st-reqs">0</div><div class="stat-label">Requerimientos</div></div>
-    </div>
   </div>
 </div>
 
