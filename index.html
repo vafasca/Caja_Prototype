@@ -100,6 +100,26 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-si
 .filters select:focus,.filters input:focus{border-color:var(--text3);color:var(--text)}
 .filters input[type=search]{max-width:200px}
 .filter-count{font-size:11px;color:var(--text3);margin-left:auto;font-family:var(--font-mono)}
+.range-filter{position:relative;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.range-field{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text2);padding:6px 10px;min-width:128px;cursor:pointer;text-align:left;font-family:var(--font-sans)}
+.range-field:hover,.range-field.active{border-color:var(--border2);color:var(--text)}
+.range-field span{display:block;font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.range-field strong{font-size:12px;font-family:var(--font-mono);font-weight:500;color:inherit}
+.range-popover{position:absolute;top:42px;left:0;width:280px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);box-shadow:0 16px 38px rgba(0,0,0,.32);padding:12px;z-index:20;display:none}
+.range-filter.open .range-popover{display:block}
+.range-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.range-month{font-size:13px;font-weight:600;color:var(--text)}
+.range-nav{width:26px;height:26px;border:1px solid var(--border);border-radius:var(--radius);background:transparent;color:var(--text2);cursor:pointer}
+.range-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.range-dow{font-size:10px;color:var(--text3);text-align:center;padding:4px 0}
+.range-day{height:30px;border:0;border-radius:0;background:transparent;color:var(--text2);font-family:var(--font-mono);font-size:12px;cursor:pointer}
+.range-day:hover{background:var(--surface2);color:var(--text)}
+.range-day.muted{color:var(--text3);opacity:.45}
+.range-day.in-range{background:#1f2a44;color:#c8d7ff}
+.range-day.selected{background:#2563eb;color:#fff;border-radius:50%;font-weight:600}
+.range-times{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+.range-times label{font-size:9px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
+.range-times input{width:100%;margin-top:4px;font-size:12px;font-family:var(--font-mono);padding:6px 8px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface2);color:var(--text)}
 .table-box{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
 table{width:100%;border-collapse:collapse}
 thead th{padding:10px 12px;text-align:left;font-size:11px;font-weight:500;color:var(--text2);background:var(--surface);border-bottom:1px solid var(--border);letter-spacing:.05em;text-transform:uppercase}
@@ -235,19 +255,17 @@ td{padding:11px 12px;font-size:13px;color:var(--text);vertical-align:middle}
 <div id="v-dashboard" class="view active">
   <div class="topbar">
     <div>
+      <div class="page-title">Inicio</div>
+      <div class="page-q">Hay algo que revisar ahora?</div>
     </div>
   </div>
   <div class="dash-filter">
     <span class="dash-filter-label">Periodo</span>
-    <input type="date" id="dash-desde" value="2026-05-25">
-    <span class="dash-filter-sep">hasta</span>
-    <input type="date" id="dash-hasta" value="2026-05-31">
-    <button class="btn btn-primary" onclick="aplicarFiltro()">Aplicar</button>
+    <div class="range-filter" data-range="dashboard" data-render="renderDashboard" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
     <span class="dash-periodo" id="dash-periodo-label"></span>
   </div>
   <div class="content">
     <div id="dash-alertas"></div>
-<!-- aqui -->
   </div>
 </div>
 
@@ -269,9 +287,7 @@ td{padding:11px 12px;font-size:13px;color:var(--text);vertical-align:middle}
             <option value="all">Todos los cobros</option>
             <option value="just">Justificados</option>
           </select>
-          <input type="date" id="cobros-desde" value="2026-05-01" onchange="renderCobros()">
-          <input type="time" id="cobros-hora-desde" value="00:00" onchange="renderCobros()">
-          <input type="time" id="cobros-hora-hasta" value="23:59" onchange="renderCobros()">
+          <div class="range-filter" data-range="cobros" data-render="renderCobros" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
           <input type="search" id="cobros-search" placeholder="Buscar ID o cajero..." oninput="renderCobros()">
           <span class="filter-count" id="cobros-count"></span>
         </div>
@@ -332,9 +348,8 @@ td{padding:11px 12px;font-size:13px;color:var(--text);vertical-align:middle}
             <option value="all">Todas</option>
             <option value="just">Con respaldo</option>
           </select>
-          <input type="date" id="lib-desde" value="2026-05-01" onchange="renderLib()">
-          <input type="time" id="lib-hora-desde" value="00:00" onchange="renderLib()">
-          <input type="time" id="lib-hora-hasta" value="23:59" onchange="renderLib()">
+          <div class="range-filter" data-range="lib" data-render="renderLib" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
+          <input type="search" id="lib-search" placeholder="Buscar ID o gestor..." oninput="renderLib()">
           <span class="filter-count" id="lib-count"></span>
         </div>
         <div class="table-box">
@@ -391,9 +406,8 @@ td{padding:11px 12px;font-size:13px;color:var(--text);vertical-align:middle}
             <option value="all">Todas</option>
             <option value="ok">Integras</option>
           </select>
-          <input type="date" id="nr-desde" value="2026-05-01" onchange="renderNRs()">
-          <input type="time" id="nr-hora-desde" value="00:00" onchange="renderNRs()">
-          <input type="time" id="nr-hora-hasta" value="23:59" onchange="renderNRs()">
+          <div class="range-filter" data-range="nr" data-render="renderNRs" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
+          <input type="search" id="nr-search" placeholder="Buscar NR o usuario..." oninput="renderNRs()">
           <span class="filter-count" id="nr-count"></span>
         </div>
         <div class="table-box">
@@ -459,9 +473,8 @@ td{padding:11px 12px;font-size:13px;color:var(--text);vertical-align:middle}
             <option value="all">Todas</option>
             <option value="ok">Integras</option>
           </select>
-          <input type="date" id="vm-desde" value="2026-05-01" onchange="renderVentas()">
-          <input type="time" id="vm-hora-desde" value="00:00" onchange="renderVentas()">
-          <input type="time" id="vm-hora-hasta" value="23:59" onchange="renderVentas()">
+          <div class="range-filter" data-range="vm" data-render="renderVentas" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
+          <input type="search" id="vm-search" placeholder="Buscar ID o cajero..." oninput="renderVentas()">
           <span class="filter-count" id="vm-count"></span>
         </div>
         <div class="table-box">
@@ -521,9 +534,8 @@ td{padding:11px 12px;font-size:13px;color:var(--text);vertical-align:middle}
             <option value="all">Todas</option>
             <option value="ok">Normales</option>
           </select>
-          <input type="date" id="anul-desde" value="2026-05-01" onchange="renderAnulaciones()">
-          <input type="time" id="anul-hora-desde" value="00:00" onchange="renderAnulaciones()">
-          <input type="time" id="anul-hora-hasta" value="23:59" onchange="renderAnulaciones()">
+          <div class="range-filter" data-range="anul" data-render="renderAnulaciones" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
+          <input type="search" id="anul-search" placeholder="Buscar ID o usuario..." oninput="renderAnulaciones()">
           <span class="filter-count" id="anul-count"></span>
         </div>
         <div class="table-box">
@@ -577,8 +589,8 @@ td{padding:11px 12px;font-size:13px;color:var(--text);vertical-align:middle}
   <div class="content">
     <div class="table-box">
       <table>
-        <thead><tr><th>ID req.</th><th>Fecha / hora</th><th>Destinatario</th><th>Evento</th><th>Estado</th><th>Acciones</th></tr></thead>
-        <tbody id="req-tbody"><tr class="empty-row"><td colspan="6">No hay requerimientos. Abre un evento sospechoso y usa "Generar requerimiento".</td></tr></tbody>
+        <thead><tr><th>ID req.</th><th>Fecha / hora</th><th>Auditor</th><th>Destinatario</th><th>Evento</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody id="req-tbody"><tr class="empty-row"><td colspan="7">No hay requerimientos. Abre un evento sospechoso y usa "Generar requerimiento".</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -644,12 +656,15 @@ var reqs = [];
 var reqCounter = 1;
 var currentEvent = { type: null, id: null };
 var statsVisible = false;
+var AUDITOR = { id:'USR-AUD-01', nombre:'auditor1' };
+var rangeState = {};
 
 function setView(name, navEl) {
   document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
   document.getElementById('v-' + name).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
   if (navEl) navEl.classList.add('active');
+  if (name === 'dashboard') renderDashboard();
   if (name === 'cobros') renderCobros();
   if (name === 'liberaciones') renderLib();
   if (name === 'nrs') renderNRs();
@@ -661,38 +676,43 @@ function setView(name, navEl) {
 function aplicarFiltro() { renderDashboard(); }
 
 function renderDashboard() {
-  var cobrosSin = DATA.cobros.filter(function(c){ return c.estadoAuditoria === 'nojust'; });
-  var cobrosPend = DATA.cobros.filter(function(c){ return c.estadoAuditoria === 'pend'; });
-  var libSin = DATA.liberaciones.filter(function(l){ return l.estado === 'nojust'; });
-  var libPend = DATA.liberaciones.filter(function(l){ return l.estado === 'pend'; });
-  var nrsMod = DATA.nrs.filter(function(n){ return n.integridad === 'bad'; });
-  var vmMod = DATA.ventas.filter(function(v){ return v.integridad === 'bad'; });
-  var anulSosp = DATA.anulaciones.filter(function(a){ return a.alerta; });
+  var cobrosSin = DATA.cobros.filter(function(c){ return c.estadoAuditoria === 'nojust' && matchRange(c.fechaISO, 'dashboard'); });
+  var cobrosPend = DATA.cobros.filter(function(c){ return c.estadoAuditoria === 'pend' && matchRange(c.fechaISO, 'dashboard'); });
+  var libSin = DATA.liberaciones.filter(function(l){ return l.estado === 'nojust' && matchRange(l.fechaISO, 'dashboard'); });
+  var libPend = DATA.liberaciones.filter(function(l){ return l.estado === 'pend' && matchRange(l.fechaISO, 'dashboard'); });
+  var nrsMod = DATA.nrs.filter(function(n){ return n.integridad === 'bad' && matchRange(n.cierreISO, 'dashboard'); });
+  var vmMod = DATA.ventas.filter(function(v){ return v.integridad === 'bad' && matchRange(v.cobradoISO, 'dashboard'); });
+  var anulSosp = DATA.anulaciones.filter(function(a){ return a.alerta && matchRange(a.fechaISO, 'dashboard'); });
   var total = cobrosSin.length + libSin.length + nrsMod.length + vmMod.length + anulSosp.length;
   document.getElementById('badge-dashboard').textContent = total;
   var container = document.getElementById('dash-alertas');
-  if (total === 0) {
+  var reincidentes = repeatSummary();
+  if (total === 0 && !reincidentes.length) {
     container.innerHTML = '<div class="clean-state"><div class="clean-icon">ok</div><div class="clean-title">Sin problemas detectados</div><div class="clean-sub">No se encontraron eventos sospechosos en el periodo seleccionado</div></div>';
     return;
   }
   var badgeLabel = {cob:'cobertura',lib:'liberacion',nr:'NR',vm:'venta',anul:'anulacion'};
   function makeCard(item) {
-    return '<div class="alert-card ' + item.nivel + '" onclick="' + item.action + '"><span class="alert-badge badge-' + item.tipo + '">' + badgeLabel[item.tipo] + '</span><div><div class="alert-main">' + item.main + '</div><div class="alert-meta">' + item.meta + '</div></div><div class="alert-arrow">&#8250;</div></div>';
+    return '<div class="alert-card ' + item.nivel + '" onclick="' + item.action + '"><span class="alert-badge badge-' + item.tipo + '">' + badgeLabel[item.tipo] + '</span><div><div class="alert-main">' + item.main + item.repeat + item.req + '</div><div class="alert-meta">' + item.meta + '</div></div><div class="alert-arrow">&#8250;</div></div>';
+  }
+  function makeRepeatCard(r) {
+    return '<div class="alert-card warn" onclick="setView(\'requerimientos\',document.querySelector(\'[data-view=requerimientos]\'))"><span class="alert-badge badge-vm">usuario</span><div><div class="alert-main">'+r.name+'<span class="chip chip-muted chip-mini">'+r.count+' reportes</span></div><div class="alert-meta">Aparece en requerimientos generados por auditoria</div></div><div class="alert-arrow">&#8250;</div></div>';
   }
   var criticos = [];
-  cobrosSin.forEach(function(c){ criticos.push({tipo:'cob',nivel:'danger',main:'Cobro '+c.id+' - cobertura '+c.cobertura+' sin justificacion',meta:'Cajero: '+c.cajero+' - '+fmtDateTime(c.fechaISO),action:"setView('cobros',document.querySelector('[data-view=cobros]'));setTimeout(function(){openCobro('"+c.id+"');},80)"}); });
-  libSin.forEach(function(l){ criticos.push({tipo:'lib',nivel:'danger',main:'Liberacion '+l.id+' - 100% sin autoridad mencionada',meta:'Gestor: '+l.gestor+' - '+fmtDateTime(l.fechaISO),action:"setView('liberaciones',document.querySelector('[data-view=liberaciones]'));setTimeout(function(){openLib('"+l.id+"');},80)"}); });
+  cobrosSin.forEach(function(c){ criticos.push({tipo:'cob',nivel:'danger',main:'Cobro '+c.id+' - sin justificacion',meta:c.cajero+' - '+fmtShortDateTime(c.fechaISO),repeat:repeatBadge(c.cajero),req:reqBadge(c.id),action:"setView('cobros',document.querySelector('[data-view=cobros]'));setTimeout(function(){openCobro('"+c.id+"');},80)"}); });
+  libSin.forEach(function(l){ criticos.push({tipo:'lib',nivel:'danger',main:'Liberacion '+l.id+' - sin autoridad',meta:l.gestor+' - '+fmtShortDateTime(l.fechaISO),repeat:repeatBadge(l.gestor),req:reqBadge(l.id),action:"setView('liberaciones',document.querySelector('[data-view=liberaciones]'));setTimeout(function(){openLib('"+l.id+"');},80)"}); });
   var sospechosos = [];
-  nrsMod.forEach(function(n){ sospechosos.push({tipo:'nr',nivel:'warn',main:'NR '+n.id+' - cambio detectado despues del cierre',meta:'Persona: '+n.quien+' - '+fmtDateTime(n.deteccionISO),action:"setView('nrs',document.querySelector('[data-view=nrs]'));setTimeout(function(){openNR('"+n.id+"');},80)"}); });
-  vmMod.forEach(function(v){ sospechosos.push({tipo:'vm',nivel:'warn',main:'Venta '+v.id+' - cambio detectado despues del cobro',meta:'Cajero: '+v.cajero+' - '+fmtDateTime(v.cobradoISO),action:"setView('ventas',document.querySelector('[data-view=ventas]'));setTimeout(function(){openVM('"+v.id+"');},80)"}); });
-  anulSosp.forEach(function(a){ sospechosos.push({tipo:'anul',nivel:'warn',main:'Anulacion '+a.id+' - evento posterior relacionado',meta:a.quien+' - '+fmtDateTime(a.fechaISO),action:"setView('anulaciones',document.querySelector('[data-view=anulaciones]'));setTimeout(function(){openAnul('"+a.id+"');},80)"}); });
+  nrsMod.forEach(function(n){ sospechosos.push({tipo:'nr',nivel:'warn',main:'NR '+n.id+' - cambio no justificado',meta:n.quien+' - '+timeAfter(n.cierreISO, n.deteccionISO),repeat:repeatBadge(n.quien),req:reqBadge(n.id),action:"setView('nrs',document.querySelector('[data-view=nrs]'));setTimeout(function(){openNR('"+n.id+"');},80)"}); });
+  vmMod.forEach(function(v){ sospechosos.push({tipo:'vm',nivel:'warn',main:'Venta '+v.id+' - cambio no justificado',meta:v.cajero+' - '+fmtShortDateTime(v.cobradoISO),repeat:repeatBadge(v.cajero),req:reqBadge(v.id),action:"setView('ventas',document.querySelector('[data-view=ventas]'));setTimeout(function(){openVM('"+v.id+"');},80)"}); });
+  anulSosp.forEach(function(a){ sospechosos.push({tipo:'anul',nivel:'warn',main:'Anulacion '+a.id+' - evento posterior',meta:a.quien+' - '+fmtShortDateTime(a.fechaISO),repeat:repeatBadge(a.quien),req:reqBadge(a.id),action:"setView('anulaciones',document.querySelector('[data-view=anulaciones]'));setTimeout(function(){openAnul('"+a.id+"');},80)"}); });
   var pendientes = [];
-  cobrosPend.forEach(function(c){ pendientes.push({tipo:'cob',nivel:'warn',main:'Cobro '+c.id+' - informacion insuficiente',meta:'Cajero: '+c.cajero+' - '+fmtDateTime(c.fechaISO),action:"setView('cobros',document.querySelector('[data-view=cobros]'));setTimeout(function(){openCobro('"+c.id+"');},80)"}); });
-  libPend.forEach(function(l){ pendientes.push({tipo:'lib',nivel:'warn',main:'Liberacion '+l.id+' - autoridad no verificable',meta:'Gestor: '+l.gestor+' - '+fmtDateTime(l.fechaISO),action:"setView('liberaciones',document.querySelector('[data-view=liberaciones]'));setTimeout(function(){openLib('"+l.id+"');},80)"}); });
+  cobrosPend.forEach(function(c){ pendientes.push({tipo:'cob',nivel:'warn',main:'Cobro '+c.id+' - informacion insuficiente',meta:c.cajero+' - '+fmtShortDateTime(c.fechaISO),repeat:repeatBadge(c.cajero),req:reqBadge(c.id),action:"setView('cobros',document.querySelector('[data-view=cobros]'));setTimeout(function(){openCobro('"+c.id+"');},80)"}); });
+  libPend.forEach(function(l){ pendientes.push({tipo:'lib',nivel:'warn',main:'Liberacion '+l.id+' - informacion insuficiente',meta:l.gestor+' - '+fmtShortDateTime(l.fechaISO),repeat:repeatBadge(l.gestor),req:reqBadge(l.id),action:"setView('liberaciones',document.querySelector('[data-view=liberaciones]'));setTimeout(function(){openLib('"+l.id+"');},80)"}); });
   var html = '';
-  if (criticos.length) html += '<div class="alert-section"><div class="alert-section-head">Requieren atencion inmediata - '+criticos.length+'</div><div class="alert-list">'+criticos.map(makeCard).join('')+'</div></div>';
-  if (sospechosos.length) html += '<div class="alert-section"><div class="alert-section-head">Eventos sospechosos - '+sospechosos.length+'</div><div class="alert-list">'+sospechosos.map(makeCard).join('')+'</div></div>';
-  if (pendientes.length) html += '<div class="alert-section"><div class="alert-section-head">Pendientes de revision - '+pendientes.length+'</div><div class="alert-list">'+pendientes.map(makeCard).join('')+'</div></div>';
+  if (criticos.length) html += '<div class="alert-section"><div class="alert-section-head">Atencion inmediata - '+criticos.length+'</div><div class="alert-list">'+criticos.map(makeCard).join('')+'</div></div>';
+  if (sospechosos.length) html += '<div class="alert-section"><div class="alert-section-head">Cambios detectados - '+sospechosos.length+'</div><div class="alert-list">'+sospechosos.map(makeCard).join('')+'</div></div>';
+  if (pendientes.length) html += '<div class="alert-section"><div class="alert-section-head">Informacion insuficiente - '+pendientes.length+'</div><div class="alert-list">'+pendientes.map(makeCard).join('')+'</div></div>';
+  if (reincidentes.length) html += '<div class="alert-section"><div class="alert-section-head">Reincidencia reportada - '+reincidentes.length+'</div><div class="alert-list">'+reincidentes.map(makeRepeatCard).join('')+'</div></div>';
   container.innerHTML = html;
 }
 
@@ -707,6 +727,107 @@ function fmtDate(iso) { return iso ? new Date(iso).toLocaleDateString('es-BO', {
 function fmtTime(iso) { return iso ? new Date(iso).toLocaleTimeString('es-BO', {hour:'2-digit',minute:'2-digit'}) : '-'; }
 function fmtDateTime(iso) { return iso ? fmtDate(iso) + ' - ' + fmtTime(iso) : '-'; }
 function fmtShortDateTime(iso) { return iso ? fmtDate(iso) + ' ' + fmtTime(iso) : '-'; }
+function pad2(n) { return String(n).padStart(2, '0'); }
+function dateKey(d) { return d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate()); }
+function parseLocal(value) {
+  if (!value) return null;
+  var p = value.split('T');
+  var d = p[0].split('-').map(Number);
+  var t = (p[1] || '00:00').split(':').map(Number);
+  return new Date(d[0], d[1]-1, d[2], t[0] || 0, t[1] || 0);
+}
+function rangeValue(key, side) {
+  var r = rangeState[key];
+  if (!r) return null;
+  return side === 'start' ? r.startDate + 'T' + r.startTime : r.endDate + 'T' + r.endTime;
+}
+function matchRange(iso, key) {
+  var r = rangeState[key];
+  if (!iso || !r) return true;
+  var value = parseLocal(iso);
+  return value >= parseLocal(rangeValue(key, 'start')) && value <= parseLocal(rangeValue(key, 'end'));
+}
+function renderRangeLabel(value) {
+  return fmtDate(value) + ' ' + fmtTime(value);
+}
+function monthName(date) {
+  return date.toLocaleDateString('es-BO', {month:'long', year:'numeric'});
+}
+function initRangeFilters() {
+  document.querySelectorAll('.range-filter').forEach(function(el){
+    var key = el.dataset.range;
+    var start = el.dataset.start.split('T');
+    var end = el.dataset.end.split('T');
+    rangeState[key] = { startDate:start[0], startTime:start[1], endDate:end[0], endTime:end[1], active:'start', month:parseLocal(el.dataset.start) };
+    renderRangeFilter(key);
+  });
+}
+function renderRangeFilter(key) {
+  var el = document.querySelector('.range-filter[data-range="'+key+'"]');
+  if (!el) return;
+  var r = rangeState[key];
+  var first = new Date(r.month.getFullYear(), r.month.getMonth(), 1);
+  var startOffset = (first.getDay() + 6) % 7;
+  var cursor = new Date(first);
+  cursor.setDate(first.getDate() - startOffset);
+  var days = '';
+  ['lu','ma','mi','ju','vi','sa','do'].forEach(function(d){ days += '<div class="range-dow">'+d+'</div>'; });
+  for (var i=0; i<42; i++) {
+    var keyDate = dateKey(cursor);
+    var muted = cursor.getMonth() !== r.month.getMonth() ? ' muted' : '';
+    var selected = keyDate === r.startDate || keyDate === r.endDate ? ' selected' : '';
+    var inRange = keyDate > r.startDate && keyDate < r.endDate ? ' in-range' : '';
+    days += '<button class="range-day'+muted+inRange+selected+'" onclick="selectRangeDay(\''+key+'\',\''+keyDate+'\')">'+cursor.getDate()+'</button>';
+    cursor.setDate(cursor.getDate() + 1);
+  }
+  el.innerHTML =
+    '<button class="range-field '+(r.active==='start'?'active':'')+'" onclick="setRangeActive(\''+key+'\',\'start\')"><span>Inicio</span><strong>'+renderRangeLabel(rangeValue(key,'start'))+'</strong></button>' +
+    '<button class="range-field '+(r.active==='end'?'active':'')+'" onclick="setRangeActive(\''+key+'\',\'end\')"><span>Fin</span><strong>'+renderRangeLabel(rangeValue(key,'end'))+'</strong></button>' +
+    '<div class="range-popover">' +
+      '<div class="range-head"><button class="range-nav" onclick="moveRangeMonth(\''+key+'\',-1)">‹</button><div class="range-month">'+monthName(r.month)+'</div><button class="range-nav" onclick="moveRangeMonth(\''+key+'\',1)">›</button></div>' +
+      '<div class="range-grid">'+days+'</div>' +
+      '<div class="range-times"><label>Hora inicio<input type="time" value="'+r.startTime+'" onchange="setRangeTime(\''+key+'\',\'start\',this.value)"></label><label>Hora fin<input type="time" value="'+r.endTime+'" onchange="setRangeTime(\''+key+'\',\'end\',this.value)"></label></div>' +
+    '</div>';
+}
+function runRangeRender(key) {
+  var el = document.querySelector('.range-filter[data-range="'+key+'"]');
+  if (el && window[el.dataset.render]) window[el.dataset.render]();
+}
+function setRangeActive(key, active) {
+  document.querySelectorAll('.range-filter').forEach(function(el){ if (el.dataset.range !== key) el.classList.remove('open'); });
+  rangeState[key].active = active;
+  var el = document.querySelector('.range-filter[data-range="'+key+'"]');
+  if (el) el.classList.add('open');
+  renderRangeFilter(key);
+}
+function selectRangeDay(key, value) {
+  var r = rangeState[key];
+  if (r.active === 'start') {
+    r.startDate = value;
+    if (r.startDate > r.endDate) r.endDate = value;
+    r.active = 'end';
+  } else {
+    r.endDate = value;
+    if (r.endDate < r.startDate) r.startDate = value;
+  }
+  renderRangeFilter(key);
+  document.querySelector('.range-filter[data-range="'+key+'"]').classList.add('open');
+  runRangeRender(key);
+}
+function setRangeTime(key, side, value) {
+  var r = rangeState[key];
+  if (side === 'start') r.startTime = value;
+  else r.endTime = value;
+  renderRangeFilter(key);
+  document.querySelector('.range-filter[data-range="'+key+'"]').classList.add('open');
+  runRangeRender(key);
+}
+function moveRangeMonth(key, delta) {
+  var r = rangeState[key];
+  r.month = new Date(r.month.getFullYear(), r.month.getMonth() + delta, 1);
+  renderRangeFilter(key);
+  document.querySelector('.range-filter[data-range="'+key+'"]').classList.add('open');
+}
 function matchTime(iso, fromId, toId) {
   var from = document.getElementById(fromId);
   var to = document.getElementById(toId);
@@ -735,16 +856,16 @@ function reqForEvent(evento) { return reqs.find(function(r){ return r.evento ===
 function reqBadge(evento) { return reqForEvent(evento) ? '<span class="chip chip-muted chip-mini">Req. generado</span>' : ''; }
 function repeatCount(name) {
   if (!name || name === '-') return 0;
-  var all = []
-    .concat(DATA.cobros.map(function(x){ return x.cajero; }))
-    .concat(DATA.liberaciones.map(function(x){ return x.gestor; }))
-    .concat(DATA.ventas.map(function(x){ return x.cajero; }))
-    .concat(DATA.anulaciones.map(function(x){ return x.quien; }));
-  return all.filter(function(x){ return x === name; }).length;
+  return reqs.filter(function(r){ return r.destinatario === name; }).length;
 }
 function repeatBadge(name) {
   var count = repeatCount(name);
-  return count >= 3 ? '<span class="chip chip-muted chip-mini">'+count+' eventos</span>' : '';
+  return count > 1 ? '<span class="chip chip-muted chip-mini">'+count+' reportes</span>' : '';
+}
+function repeatSummary() {
+  var grouped = {};
+  reqs.forEach(function(r){ grouped[r.destinatario] = (grouped[r.destinatario] || 0) + 1; });
+  return Object.keys(grouped).filter(function(name){ return grouped[name] > 1; }).map(function(name){ return {name:name,count:grouped[name]}; });
 }
 function timeAfter(startIso, endIso) {
   if (!startIso || !endIso) return 'Cambio detectado';
@@ -762,7 +883,7 @@ function renderCobros() {
   var rows = DATA.cobros.filter(function(c){
     var mf = filter === 'all' || c.estadoAuditoria === filter;
     var ms = !search || c.id.toLowerCase().indexOf(search) >= 0 || c.cajero.toLowerCase().indexOf(search) >= 0;
-    return mf && ms && matchDateFrom(c.fechaISO, 'cobros-desde') && matchTime(c.fechaISO, 'cobros-hora-desde', 'cobros-hora-hasta');
+    return mf && ms && matchRange(c.fechaISO, 'cobros');
   });
   document.getElementById('cobros-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
   var tbody = document.getElementById('cobros-tbody');
@@ -797,7 +918,11 @@ function openCobro(id) {
 
 function renderLib() {
   var filter = document.getElementById('lib-filter').value;
-  var rows = DATA.liberaciones.filter(function(l){ return (filter === 'all' || l.estado === filter) && matchDateFrom(l.fechaISO, 'lib-desde') && matchTime(l.fechaISO, 'lib-hora-desde', 'lib-hora-hasta'); });
+  var search = document.getElementById('lib-search').value.toLowerCase();
+  var rows = DATA.liberaciones.filter(function(l){
+    var ms = !search || [l.id,l.ref,l.gestor,l.auth,l.obs,l.paciente].join(' ').toLowerCase().indexOf(search) >= 0;
+    return (filter === 'all' || l.estado === filter) && matchRange(l.fechaISO, 'lib') && ms;
+  });
   document.getElementById('lib-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
   var tbody = document.getElementById('lib-tbody');
   if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Sin resultados</td></tr>'; return; }
@@ -829,12 +954,16 @@ function openLib(id) {
 
 function renderNRs() {
   var filter = document.getElementById('nr-filter').value;
+  var search = document.getElementById('nr-search').value.toLowerCase();
   var rows = DATA.nrs.filter(function(n){
     if (filter === 'modified') return n.integridad === 'bad';
     if (filter === 'ok') return n.integridad === 'ok';
     return true;
   });
-  rows = rows.filter(function(n){ return matchDateFrom(n.cierreISO, 'nr-desde') && matchTime(n.cierreISO, 'nr-hora-desde', 'nr-hora-hasta'); });
+  rows = rows.filter(function(n){
+    var ms = !search || [n.id,n.expediente,n.quien,n.motivo,n.estado].join(' ').toLowerCase().indexOf(search) >= 0;
+    return matchRange(n.cierreISO, 'nr') && ms;
+  });
   document.getElementById('nr-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
   var tbody = document.getElementById('nr-tbody');
   if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Sin resultados</td></tr>'; return; }
@@ -877,10 +1006,12 @@ function openNR(id) {
 function renderVentas() {
   var tipo = document.getElementById('vm-tipo').value;
   var filter = document.getElementById('vm-filter').value;
+  var search = document.getElementById('vm-search').value.toLowerCase();
   var rows = DATA.ventas.filter(function(v){
     var mt = tipo === 'all' || v.tipo === tipo;
     var mf = filter === 'all' || (filter === 'modified' && v.integridad === 'bad') || (filter === 'ok' && v.integridad === 'ok');
-    return mt && mf && matchDateFrom(v.cobradoISO, 'vm-desde') && matchTime(v.cobradoISO, 'vm-hora-desde', 'vm-hora-hasta');
+    var ms = !search || [v.id,v.tipo,v.cliente,v.cajero,v.motivo].join(' ').toLowerCase().indexOf(search) >= 0;
+    return mt && mf && matchRange(v.cobradoISO, 'vm') && ms;
   });
   document.getElementById('vm-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
   var tbody = document.getElementById('vm-tbody');
@@ -920,12 +1051,16 @@ function openVM(id) {
 
 function renderAnulaciones() {
   var filter = document.getElementById('anul-filter').value;
+  var search = document.getElementById('anul-search').value.toLowerCase();
   var rows = DATA.anulaciones.filter(function(a){
     if (filter === 'suspicious') return a.alerta;
     if (filter === 'ok') return !a.alerta;
     return true;
   });
-  rows = rows.filter(function(a){ return matchDateFrom(a.fechaISO, 'anul-desde') && matchTime(a.fechaISO, 'anul-hora-desde', 'anul-hora-hasta'); });
+  rows = rows.filter(function(a){
+    var ms = !search || [a.id,a.original,a.factura,a.nr,a.quien,a.motivo,a.nuevoCobro,a.eventoPosterior].join(' ').toLowerCase().indexOf(search) >= 0;
+    return matchRange(a.fechaISO, 'anul') && ms;
+  });
   document.getElementById('anul-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
   var tbody = document.getElementById('anul-tbody');
   if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Sin resultados</td></tr>'; return; }
@@ -983,9 +1118,9 @@ function currentEventInfo() {
 
 function renderReqs() {
   var tbody = document.getElementById('req-tbody');
-  if (!reqs.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No hay requerimientos. Abre un evento sospechoso y usa Generar requerimiento.</td></tr>'; return; }
+  if (!reqs.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No hay requerimientos. Abre un evento sospechoso y usa Generar requerimiento.</td></tr>'; return; }
   tbody.innerHTML = reqs.map(function(r){
-    return '<tr><td class="td-mono">'+r.id+'</td><td class="td-mono">'+fmtShortDateTime(r.fechaISO)+'</td><td class="td-muted">'+r.destinatario+'</td><td class="td-mono">'+r.evento+'</td><td><span class="chip chip-warn">'+r.estado+'</span></td><td><button class="btn btn-ghost" onclick="exportarPDF(\''+r.id+'\')">PDF</button><button class="btn btn-ghost" onclick="imprimirReq(\''+r.id+'\')">Imprimir</button></td></tr>';
+    return '<tr><td class="td-mono">'+r.id+'</td><td class="td-mono">'+fmtShortDateTime(r.fechaISO)+'</td><td class="td-muted">'+r.auditor+'</td><td class="td-muted">'+r.destinatario+'</td><td class="td-mono">'+r.evento+'</td><td><span class="chip chip-warn">'+r.estado+'</span></td><td><button class="btn btn-ghost" onclick="exportarPDF(\''+r.id+'\')">PDF</button><button class="btn btn-ghost" onclick="imprimirReq(\''+r.id+'\')">Imprimir</button></td></tr>';
   }).join('');
 }
 
@@ -1012,7 +1147,7 @@ function confirmarReq() {
   var info = currentEventInfo() || {destinatario:'Responsable no identificado', evento:currentEvent.id};
   var id = 'REQ-' + String(reqCounter++).padStart(3, '0');
   var now = new Date();
-  reqs.unshift({ id: id, evento: info.evento, tipo: tipo, destinatario: info.destinatario, motivo: motivo, fechaISO: now.toISOString(), estado: 'Pendiente' });
+  reqs.unshift({ id: id, evento: info.evento, tipo: tipo, destinatario: info.destinatario, auditor: AUDITOR.nombre, auditorId: AUDITOR.id, motivo: motivo, fechaISO: now.toISOString(), estado: 'Pendiente' });
   var badge = document.getElementById('badge-req');
   badge.textContent = reqs.length;
   badge.style.display = '';
@@ -1072,6 +1207,7 @@ function toast(msg, type) {
 (function(){
   var now = new Date();
   document.getElementById('sidebar-date').textContent = now.toLocaleDateString('es-BO', {weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'});
+  initRangeFilters();
   renderDashboard();
   renderCobros();
 })();
