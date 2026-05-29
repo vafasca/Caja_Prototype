@@ -20,7 +20,7 @@ html,body{height:100%;overflow:hidden}
   --font-sans:"Syne",sans-serif;--font-mono:"IBM Plex Mono",monospace;
   --sidebar:220px;--panel:300px;
 }
-body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:14px}
+body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px}
 .shell{display:flex;height:100vh}
 .sidebar{width:var(--sidebar);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
@@ -39,8 +39,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-si
 .sidebar-footer{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border);font-size:11px;color:var(--text3)}
 .sidebar-date{font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-top:2px}
 .topbar{padding:14px 20px 12px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0}
-.page-title{font-size:16px;font-weight:600;color:var(--text);letter-spacing:-.01em}
-.page-q{font-size:12px;color:var(--text2);margin-top:3px;font-style:italic}
+.page-title{font-size:17px;font-weight:600;color:var(--text);letter-spacing:-.01em}
+.page-q{font-size:13px;color:var(--text2);margin-top:3px;font-style:italic}
 .topbar-right{display:flex;gap:8px;align-items:center;padding-top:2px}
 .content{flex:1;overflow-y:auto;padding:18px 20px;scroll-behavior:smooth}
 .content::-webkit-scrollbar{width:4px}
@@ -58,8 +58,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-si
 /* DASH FILTER */
 .dash-filter{display:flex;align-items:center;gap:10px;padding:12px 20px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;flex-wrap:wrap}
 .dash-filter-label{font-size:11px;color:var(--text3);white-space:nowrap}
-.dash-filter input[type=date]{font-size:12px;font-family:var(--font-mono);padding:5px 10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface2);color:var(--text2);outline:none;cursor:pointer}
-.dash-filter input[type=date]:focus{border-color:var(--text3);color:var(--text)}
+.dash-filter input[type=date],.dash-filter input[type=time]{font-size:13px;font-family:var(--font-mono);padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface2);color:var(--text2);outline:none;cursor:pointer}
+.dash-filter input[type=date]:focus,.dash-filter input[type=time]:focus{border-color:var(--text3);color:var(--text)}
 .dash-filter-sep{color:var(--text3);font-size:11px}
 .dash-periodo{font-size:11px;color:var(--text3);margin-left:4px;font-family:var(--font-mono)}
 /* ALERTAS */
@@ -95,45 +95,46 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-si
 .view-layout{display:grid;gap:16px}
 .view-layout.has-panel{grid-template-columns:1fr var(--panel)}
 .filters{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
-.filters select,.filters input[type=search]{font-size:12px;font-family:var(--font-sans);padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text2);outline:none;transition:border-color .12s}
+.filters select,.filters input[type=search],.filters input[type=date],.filters input[type=time]{font-size:13px;font-family:var(--font-sans);padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text2);outline:none;transition:border-color .12s}
 .filters select:hover,.filters input:hover{border-color:var(--border2)}
 .filters select:focus,.filters input:focus{border-color:var(--text3);color:var(--text)}
 .filters input[type=search]{max-width:200px}
 .filter-count{font-size:11px;color:var(--text3);margin-left:auto;font-family:var(--font-mono)}
 .table-box{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
 table{width:100%;border-collapse:collapse}
-thead th{padding:9px 12px;text-align:left;font-size:10px;font-weight:500;color:var(--text3);background:var(--surface);border-bottom:1px solid var(--border);letter-spacing:.05em;text-transform:uppercase}
+thead th{padding:10px 12px;text-align:left;font-size:11px;font-weight:500;color:var(--text2);background:var(--surface);border-bottom:1px solid var(--border);letter-spacing:.05em;text-transform:uppercase}
 tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
 tbody tr:last-child{border-bottom:none}
 tbody tr:hover{background:var(--surface2)}
 tbody tr.selected{background:var(--surface2);border-left:3px solid var(--text3)}
-td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
-.td-mono{font-family:var(--font-mono);font-size:11px}
+td{padding:11px 12px;font-size:13px;color:var(--text);vertical-align:middle}
+.td-mono{font-family:var(--font-mono);font-size:12px}
 .td-muted{color:var(--text2)}
-.td-flag{color:var(--danger-text);font-size:11px}
-.td-warn{color:var(--warn-text);font-size:11px}
+.td-flag{color:var(--danger-text);font-size:12px}
+.td-warn{color:var(--warn-text);font-size:12px}
 .empty-row td{color:var(--text3);text-align:center;padding:24px;font-size:12px}
-.chip{display:inline-flex;align-items:center;font-size:10px;font-family:var(--font-mono);padding:2px 8px;border-radius:20px;white-space:nowrap}
+.chip{display:inline-flex;align-items:center;font-size:11px;font-family:var(--font-mono);padding:3px 8px;border-radius:20px;white-space:nowrap}
 .chip-danger{background:var(--danger-bg);color:var(--danger-text);border:1px solid var(--danger-border)}
 .chip-warn{background:var(--warn-bg);color:var(--warn-text);border:1px solid var(--warn-border)}
 .chip-ok{background:var(--ok-bg);color:var(--ok-text);border:1px solid var(--ok-border)}
-.chip-muted{background:var(--surface2);color:var(--text3);border:1px solid var(--border)}
+.chip-muted{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
+.chip-mini{margin-left:8px}
 /* PANEL */
 .panel{border:1px solid var(--border);border-radius:var(--radius-lg);display:flex;flex-direction:column;background:var(--surface);overflow:hidden;max-height:calc(100vh - 140px);position:sticky;top:0}
 .panel-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text3);font-size:12px;padding:24px;text-align:center}
 .panel-empty svg{width:32px;height:32px;opacity:.3}
 .panel-header{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--surface2)}
-.panel-id{font-size:14px;font-weight:600;color:var(--text);font-family:var(--font-mono);letter-spacing:-.01em}
-.panel-subtitle{font-size:11px;color:var(--text3);margin-top:3px}
+.panel-id{font-size:15px;font-weight:600;color:var(--text);font-family:var(--font-mono);letter-spacing:-.01em}
+.panel-subtitle{font-size:12px;color:var(--text2);margin-top:3px}
 .panel-body{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column}
 .panel-body::-webkit-scrollbar{width:3px}
 .panel-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
 .field{margin-bottom:12px}
-.field-label{font-size:9px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;font-weight:500}
-.field-value{font-size:12px;color:var(--text);line-height:1.4}
+.field-label{font-size:10px;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;font-weight:500}
+.field-value{font-size:13px;color:var(--text);line-height:1.4}
 .field-value.flag{color:var(--danger-text)}
 .field-value.warn-v{color:var(--warn-text)}
-.field-value.mono{font-family:var(--font-mono);font-size:11px}
+.field-value.mono{font-family:var(--font-mono);font-size:12px}
 .panel-divider{height:1px;background:var(--border);margin:10px 0 12px}
 .panel-actions{padding:12px 16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px;background:var(--surface)}
 .panel-note{font-size:10px;color:var(--text3);padding:8px 10px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border);line-height:1.5}
@@ -263,17 +264,20 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
       <div>
         <div class="filters">
           <select id="cobros-filter" onchange="renderCobros()">
-            <option value="nojust">Sin justificacion</option>
-            <option value="pend">Pendiente revision</option>
+            <option value="nojust">Atencion inmediata</option>
+            <option value="pend">Pendiente</option>
             <option value="all">Todos los cobros</option>
             <option value="just">Justificados</option>
           </select>
+          <input type="date" id="cobros-desde" value="2026-05-01" onchange="renderCobros()">
+          <input type="time" id="cobros-hora-desde" value="00:00" onchange="renderCobros()">
+          <input type="time" id="cobros-hora-hasta" value="23:59" onchange="renderCobros()">
           <input type="search" id="cobros-search" placeholder="Buscar ID o cajero..." oninput="renderCobros()">
           <span class="filter-count" id="cobros-count"></span>
         </div>
         <div class="table-box">
           <table>
-            <thead><tr><th>ID cobro</th><th>Tipo</th><th>Cobertura</th><th>Observacion</th><th>Cajero</th><th>Fecha</th><th>Estado</th></tr></thead>
+            <thead><tr><th>ID cobro</th><th>Fecha / hora</th><th>Cajero</th><th>Problema</th></tr></thead>
             <tbody id="cobros-tbody"></tbody>
           </table>
         </div>
@@ -287,20 +291,16 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
           <div id="cobros-panel-content" style="display:none;flex-direction:column;flex:1;overflow:hidden">
             <div class="panel-header"><div class="panel-id" id="cp-id">-</div><div class="panel-subtitle" id="cp-sub">-</div></div>
             <div class="panel-body">
+              <div class="field"><div class="field-label">Referencia venta/NR</div><div class="field-value mono" id="cp-ref">-</div></div>
               <div class="field"><div class="field-label">Tipo de venta</div><div class="field-value" id="cp-tipo">-</div></div>
               <div class="field"><div class="field-label">Monto total</div><div class="field-value mono" id="cp-monto">-</div></div>
               <div class="field"><div class="field-label">Monto cubierto</div><div class="field-value mono" id="cp-cubierto">-</div></div>
               <div class="field"><div class="field-label">Porcentaje de cobertura</div><div class="field-value mono" id="cp-pct">-</div></div>
               <div class="panel-divider"></div>
-              <div class="field"><div class="field-label">Observacion del cajero</div><div class="field-value" id="cp-obs">-</div></div>
+              <div class="field"><div class="field-label">Justificacion registrada</div><div class="field-value" id="cp-obs">-</div></div>
               <div class="panel-divider"></div>
               <div class="field"><div class="field-label">Cajero responsable</div><div class="field-value" id="cp-cajero">-</div></div>
               <div class="field"><div class="field-label">Fecha y hora</div><div class="field-value mono" id="cp-fecha">-</div></div>
-              <div class="panel-divider"></div>
-              <div id="cp-integrity-block" class="integrity-block ok">
-                <div class="int-icon" id="cp-int-icon">ok</div>
-                <div class="int-text"><strong id="cp-int-title">-</strong><span id="cp-int-sub">-</span></div>
-              </div>
               <div class="field"><div class="field-label">Estado de auditoria</div><div class="field-value" id="cp-auditoria">-</div></div>
             </div>
             <div class="panel-actions">
@@ -327,16 +327,19 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
       <div>
         <div class="filters">
           <select id="lib-filter" onchange="renderLib()">
-            <option value="nojust">Sin respaldo</option>
+            <option value="nojust">Atencion inmediata</option>
             <option value="pend">Pendiente</option>
             <option value="all">Todas</option>
             <option value="just">Con respaldo</option>
           </select>
+          <input type="date" id="lib-desde" value="2026-05-01" onchange="renderLib()">
+          <input type="time" id="lib-hora-desde" value="00:00" onchange="renderLib()">
+          <input type="time" id="lib-hora-hasta" value="23:59" onchange="renderLib()">
           <span class="filter-count" id="lib-count"></span>
         </div>
         <div class="table-box">
           <table>
-            <thead><tr><th>ID lib.</th><th>Monto liberado</th><th>Observacion</th><th>Autoridad mencionada</th><th>Gestor</th><th>Fecha</th><th>Estado</th></tr></thead>
+            <thead><tr><th>ID liberacion</th><th>Fecha / hora</th><th>Gestor</th><th>Problema</th></tr></thead>
             <tbody id="lib-tbody"></tbody>
           </table>
         </div>
@@ -350,10 +353,11 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
           <div id="lib-panel-content" style="display:none;flex-direction:column;flex:1;overflow:hidden">
             <div class="panel-header"><div class="panel-id" id="lp-id">-</div><div class="panel-subtitle">100% del monto liberado</div></div>
             <div class="panel-body">
+              <div class="field"><div class="field-label">Referencia venta/NR</div><div class="field-value mono" id="lp-ref">-</div></div>
               <div class="field"><div class="field-label">Monto total original</div><div class="field-value mono" id="lp-monto">-</div></div>
               <div class="field"><div class="field-label">Monto liberado</div><div class="field-value mono" id="lp-liberado">-</div></div>
               <div class="panel-divider"></div>
-              <div class="field"><div class="field-label">Observacion registrada</div><div class="field-value" id="lp-obs">-</div></div>
+              <div class="field"><div class="field-label">Justificacion registrada</div><div class="field-value" id="lp-obs">-</div></div>
               <div class="field"><div class="field-label">Autoridad mencionada</div><div class="field-value" id="lp-auth">-</div></div>
               <div class="panel-divider"></div>
               <div class="field"><div class="field-label">Gestor que libero</div><div class="field-value" id="lp-gestor">-</div></div>
@@ -387,11 +391,14 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
             <option value="all">Todas</option>
             <option value="ok">Integras</option>
           </select>
+          <input type="date" id="nr-desde" value="2026-05-01" onchange="renderNRs()">
+          <input type="time" id="nr-hora-desde" value="00:00" onchange="renderNRs()">
+          <input type="time" id="nr-hora-hasta" value="23:59" onchange="renderNRs()">
           <span class="filter-count" id="nr-count"></span>
         </div>
         <div class="table-box">
           <table>
-            <thead><tr><th>ID NR</th><th>Fecha cierre</th><th>Monto</th><th>Integridad</th><th>Quien modifico</th><th>Cuando</th><th>Estado</th></tr></thead>
+            <thead><tr><th>NR</th><th>Cierre</th><th>Usuario relacionado</th><th>Problema</th></tr></thead>
             <tbody id="nr-tbody"></tbody>
           </table>
         </div>
@@ -412,8 +419,8 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
                 <div class="int-icon" id="np-int-icon">!</div>
                 <div class="int-text"><strong id="np-int-title">-</strong><span id="np-int-sub">-</span></div>
               </div>
-              <div class="field"><div class="field-label">Modificado por</div><div class="field-value" id="np-quien">-</div></div>
-              <div class="field"><div class="field-label">Fecha modificacion</div><div class="field-value" id="np-cuando">-</div></div>
+              <div class="field"><div class="field-label">Usuario relacionado</div><div class="field-value" id="np-quien">-</div></div>
+              <div class="field"><div class="field-label">Cambio detectado</div><div class="field-value" id="np-cuando">-</div></div>
               <div class="field"><div class="field-label">Motivo registrado</div><div class="field-value" id="np-motivo">-</div></div>
               <div class="panel-divider"></div>
               <div class="section-head">Cadena de eventos</div>
@@ -445,17 +452,21 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
             <option value="all">Todos los tipos</option>
             <option value="Farmacia">Farmacia</option>
             <option value="Ambulatorio">Ambulatorio</option>
+            <option value="Contingencia">Contingencia</option>
           </select>
           <select id="vm-filter" onchange="renderVentas()">
             <option value="modified">Solo modificadas</option>
             <option value="all">Todas</option>
             <option value="ok">Integras</option>
           </select>
+          <input type="date" id="vm-desde" value="2026-05-01" onchange="renderVentas()">
+          <input type="time" id="vm-hora-desde" value="00:00" onchange="renderVentas()">
+          <input type="time" id="vm-hora-hasta" value="23:59" onchange="renderVentas()">
           <span class="filter-count" id="vm-count"></span>
         </div>
         <div class="table-box">
           <table>
-            <thead><tr><th>ID venta</th><th>Tipo</th><th>Cliente</th><th>Monto</th><th>Cajero</th><th>Cobrado</th><th>Integridad</th></tr></thead>
+            <thead><tr><th>ID venta</th><th>Fecha / hora</th><th>Cajero</th><th>Problema</th></tr></thead>
             <tbody id="vm-tbody"></tbody>
           </table>
         </div>
@@ -475,7 +486,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
               <div class="field"><div class="field-label">Cajero</div><div class="field-value" id="vp-cajero">-</div></div>
               <div class="panel-divider"></div>
               <div class="field"><div class="field-label">Cobrado el</div><div class="field-value mono" id="vp-cobrado">-</div></div>
-              <div class="field"><div class="field-label">Modificado el</div><div class="field-value" id="vp-modificado">-</div></div>
+              <div class="field"><div class="field-label">Cambio detectado</div><div class="field-value" id="vp-modificado">-</div></div>
               <div class="field"><div class="field-label">Motivo del cambio</div><div class="field-value" id="vp-motivo">-</div></div>
               <div class="panel-divider"></div>
               <div id="vp-integrity-block" class="integrity-block bad">
@@ -498,7 +509,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
   <div class="topbar">
     <div>
       <div class="page-title">Anulaciones</div>
-      <div class="page-q">La anulacion genero un nuevo cobro diferente o reabrio un expediente cerrado?</div>
+      <div class="page-q">La anulacion genero un evento posterior que debe aclararse?</div>
     </div>
   </div>
   <div class="content">
@@ -506,15 +517,18 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
       <div>
         <div class="filters">
           <select id="anul-filter" onchange="renderAnulaciones()">
-            <option value="suspicious">Solo sospechosas</option>
+            <option value="suspicious">Con evento posterior</option>
             <option value="all">Todas</option>
             <option value="ok">Normales</option>
           </select>
+          <input type="date" id="anul-desde" value="2026-05-01" onchange="renderAnulaciones()">
+          <input type="time" id="anul-hora-desde" value="00:00" onchange="renderAnulaciones()">
+          <input type="time" id="anul-hora-hasta" value="23:59" onchange="renderAnulaciones()">
           <span class="filter-count" id="anul-count"></span>
         </div>
         <div class="table-box">
           <table>
-            <thead><tr><th>ID</th><th>Cobro anulado</th><th>Anulado por</th><th>Motivo declarado</th><th>Nuevo cobro</th><th>Alerta</th></tr></thead>
+            <thead><tr><th>ID anulacion</th><th>Fecha / hora</th><th>Usuario</th><th>Cobro original</th><th>Problema</th></tr></thead>
             <tbody id="anul-tbody"></tbody>
           </table>
         </div>
@@ -529,6 +543,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
             <div class="panel-header"><div class="panel-id" id="ap-id">-</div><div class="panel-subtitle" id="ap-sub">-</div></div>
             <div class="panel-body">
               <div class="field"><div class="field-label">Cobro original anulado</div><div class="field-value mono" id="ap-original">-</div></div>
+              <div class="field"><div class="field-label">Factura / NR</div><div class="field-value mono" id="ap-ref">-</div></div>
               <div class="field"><div class="field-label">Quien anulo</div><div class="field-value" id="ap-quien">-</div></div>
               <div class="field"><div class="field-label">Motivo declarado</div><div class="field-value" id="ap-motivo">-</div></div>
               <div class="panel-divider"></div>
@@ -553,17 +568,17 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
   <div class="topbar">
     <div>
       <div class="page-title">Requerimientos generados</div>
-      <div class="page-q">Solicitudes formales enviadas al cajero o gestor para que expliquen un evento</div>
+      <div class="page-q">Solicitudes formales para imprimir o guardar constancia</div>
     </div>
     <div class="topbar-right">
-      <button class="btn" onclick="exportarPDF()">Exportar PDF</button>
+      <button class="btn" onclick="exportarPDF()">Generar PDF</button>
     </div>
   </div>
   <div class="content">
     <div class="table-box">
       <table>
-        <thead><tr><th>ID req.</th><th>Evento</th><th>Tipo</th><th>Destinatario</th><th>Motivo</th><th>Generado</th><th>Estado</th><th></th></tr></thead>
-        <tbody id="req-tbody"><tr class="empty-row"><td colspan="8">No hay requerimientos. Abre un evento sospechoso y usa "Generar requerimiento".</td></tr></tbody>
+        <thead><tr><th>ID req.</th><th>Fecha / hora</th><th>Destinatario</th><th>Evento</th><th>Estado</th><th>Acciones</th></tr></thead>
+        <tbody id="req-tbody"><tr class="empty-row"><td colspan="6">No hay requerimientos. Abre un evento sospechoso y usa "Generar requerimiento".</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -586,7 +601,7 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
     </div>
     <div class="modal-footer">
       <button class="btn btn-ghost" onclick="cerrarModalReq()">Cancelar</button>
-      <button class="btn btn-danger" onclick="confirmarReq()">Guardar y enviar</button>
+      <button class="btn btn-danger" onclick="confirmarReq()">Guardar constancia</button>
     </div>
   </div>
 </div>
@@ -595,34 +610,33 @@ td{padding:9px 12px;font-size:12px;color:var(--text);vertical-align:middle}
 
 const DATA = {
   cobros: [
-    { id:'C-1042', tipo:'Manual', cobertura:'80%', montoCubierto:'Bs 992,00', montoTotal:'Bs 1.240,00', obs:null, cajero:'M. Vargas - turno noche', fecha:'26/05/2026 - 02:14', estadoAuditoria:'nojust', estadoIntegridad:'ok', intMsg:'Registro integro - hash verificado' },
-    { id:'C-1039', tipo:'Expediente', cobertura:'50%', montoCubierto:'Bs 610,00', montoTotal:'Bs 1.220,00', obs:'autorizado - sin nombre ni cargo', cajero:'L. Choque - turno tarde', fecha:'25/05/2026 - 14:30', estadoAuditoria:'pend', estadoIntegridad:'ok', intMsg:'Registro integro - hash verificado' },
-    { id:'C-1035', tipo:'Manual', cobertura:'25%', montoCubierto:'Bs 200,00', montoTotal:'Bs 800,00', obs:'Gerencia - Dr. Soria - memo 14-B', cajero:'K. Poma - turno manana', fecha:'25/05/2026 - 09:50', estadoAuditoria:'just', estadoIntegridad:'ok', intMsg:'Registro integro - hash verificado' },
-    { id:'C-1031', tipo:'NR', cobertura:'30%', montoCubierto:'Bs 330,00', montoTotal:'Bs 1.100,00', obs:'Autoriza Gerencia - Dr. Soria - ref. 22-B', cajero:'K. Poma - turno manana', fecha:'24/05/2026 - 10:05', estadoAuditoria:'just', estadoIntegridad:'ok', intMsg:'Registro integro - hash verificado' },
-    { id:'C-1028', tipo:'Farmacia', cobertura:'100%', montoCubierto:'Bs 780,00', montoTotal:'Bs 780,00', obs:null, cajero:'M. Vargas - turno noche', fecha:'24/05/2026 - 03:40', estadoAuditoria:'nojust', estadoIntegridad:'ok', intMsg:'Registro integro - hash verificado' },
+    { id:'COB-2003', ref:'NR-5002', tipo:'NR', cobertura:'100%', montoCubierto:780, montoTotal:780, obs:'autorizado', cajero:'Cajero Turno Noche', correo:'caja-noche@hospital.bo', turno:'NOCHE', fechaISO:'2026-05-10T23:50:00', estadoAuditoria:'nojust', estadoIntegridad:'CAMBIADO', motivoAlerta:'Cobro nocturno con cobertura total sin respaldo.' },
+    { id:'COB-2002', ref:'VEN-3002', tipo:'MANUAL', cobertura:'50%', montoCubierto:250, montoTotal:500, obs:'autorizado', cajero:'Cajero Tarde', correo:'caja-tarde@hospital.bo', turno:'TARDE', fechaISO:'2026-05-11T14:30:00', estadoAuditoria:'pend', estadoIntegridad:'INTEGRO', motivoAlerta:'Justificacion generica sin autoridad verificable.' },
+    { id:'COB-2001', ref:'VEN-3001', tipo:'MANUAL', cobertura:'50%', montoCubierto:250, montoTotal:500, obs:'Cobertura aprobada por trabajo social.', cajero:'Cajero Noche', correo:'caja-noche@hospital.bo', turno:'NOCHE', fechaISO:'2026-05-11T14:30:00', estadoAuditoria:'just', estadoIntegridad:'INTEGRO', motivoAlerta:'Cobertura con respaldo registrado.' },
   ],
   liberaciones: [
-    { id:'L-308', monto:'Bs 4.800,00', montoLib:'Bs 4.800,00 (100%)', obs:null, auth:null, gestor:'R. Flores', fecha:'25/05/2026 - 23:50', estado:'nojust' },
-    { id:'L-301', monto:'Bs 2.100,00', montoLib:'Bs 2.100,00 (100%)', obs:'por instruccion superior', auth:'por instruccion superior - sin nombre ni cargo', gestor:'K. Poma', fecha:'24/05/2026 - 16:20', estado:'pend' },
-    { id:'L-295', monto:'Bs 3.300,00', montoLib:'Bs 3.300,00 (100%)', obs:'Presidencia - Ing. Varela - carta ref. 22-B', auth:'Presidencia - Ing. Varela - carta ref. 22-B', gestor:'L. Choque', fecha:'22/05/2026 - 11:00', estado:'just' },
+    { id:'LIB-1003', ref:'VEN-4003', paciente:'-', monto:4800, montoLib:4800, obs:null, auth:null, gestor:'R. Flores', correo:'r.flores@hospital.bo', fechaISO:'2026-05-25T23:50:00', estado:'nojust' },
+    { id:'LIB-1002', ref:'VEN-4002', paciente:'-', monto:2100, montoLib:2100, obs:'por instruccion superior', auth:null, gestor:'K. Poma', correo:'k.poma@hospital.bo', fechaISO:'2026-05-24T16:20:00', estado:'pend' },
+    { id:'LIB-1001', ref:'VEN-4001', paciente:'Ana Perez', monto:900, montoLib:900, obs:'Autorizacion formal de trabajo social TS-44.', auth:'Lic. Maria Quispe - Trabajo Social', gestor:'Cajero Noche', correo:'caja-noche@hospital.bo', fechaISO:'2026-05-10T09:00:00', estado:'just' },
   ],
   nrs: [
-    { id:'NR-7821', cierre:'20/05/2026 - 18:30', monto:'Bs 3.100,00', integridad:'bad', quien:'P. Quispe', cuando:'22/05/2026 - 09:12 (2 dias post cierre)', motivo:null, estado:'nojust',
-      timeline:[{dot:'ok',label:'NR generada y cerrada',meta:'20/05/2026 18:30 Sistema'},{dot:'bad',label:'Hash diferente detectado',meta:'22/05/2026 09:12 P. Quispe modifico'},{dot:'warn',label:'Pendiente de justificacion',meta:'Hoy - auditoria en curso'}]},
-    { id:'NR-7810', cierre:'19/05/2026 - 15:00', monto:'Bs 1.800,00', integridad:'bad', quien:'M. Vargas', cuando:'21/05/2026 - 01:30 (2 dias post cierre)', motivo:null, estado:'nojust',
-      timeline:[{dot:'ok',label:'NR generada y cerrada',meta:'19/05/2026 15:00 Sistema'},{dot:'bad',label:'Hash diferente detectado',meta:'21/05/2026 01:30 M. Vargas modifico'}]},
-    { id:'NR-7799', cierre:'18/05/2026 - 10:20', monto:'Bs 900,00', integridad:'ok', quien:'-', cuando:'-', motivo:'-', estado:'just',
-      timeline:[{dot:'ok',label:'NR generada y cerrada',meta:'18/05/2026 10:20 Sistema'},{dot:'ok',label:'Hash verificado integro',meta:'Verificado hoy'}]},
+    { id:'NR-5002', expediente:'EXP-7001', generacionISO:'2026-05-10T10:00:00', cierreISO:'2026-05-10T11:00:00', monto:780, integridad:'bad', quien:'supervisor.caja', deteccionISO:'2026-05-12T08:15:00', motivo:null, estado:'nojust',
+      timeline:[{dot:'bad',label:'Cambio detectado',meta:'12/05/2026 08:15 supervisor.caja'},{dot:'ok',label:'NR cerrada',meta:'10/05/2026 11:00 Sistema'},{dot:'ok',label:'NR generada',meta:'10/05/2026 10:00 Sistema'}]},
+    { id:'NR-5001', expediente:'EXP-7001', generacionISO:'2026-05-10T10:00:00', cierreISO:'2026-05-10T11:00:00', monto:780, integridad:'bad', quien:'operador.nr', deteccionISO:'2026-05-12T08:30:00', motivo:'Correccion de referencia interna.', estado:'pend',
+      timeline:[{dot:'warn',label:'Cambio detectado',meta:'12/05/2026 08:30 operador.nr'},{dot:'ok',label:'NR cerrada',meta:'10/05/2026 11:00 Sistema'},{dot:'ok',label:'NR generada',meta:'10/05/2026 10:00 Sistema'}]},
+    { id:'NR-4998', expediente:'EXP-6998', generacionISO:'2026-05-09T09:20:00', cierreISO:'2026-05-09T10:20:00', monto:900, integridad:'ok', quien:'-', deteccionISO:'2026-05-12T08:30:00', motivo:'-', estado:'just',
+      timeline:[{dot:'ok',label:'Sin cambios detectados',meta:'12/05/2026 08:30 Sistema'},{dot:'ok',label:'NR cerrada',meta:'09/05/2026 10:20 Sistema'},{dot:'ok',label:'NR generada',meta:'09/05/2026 09:20 Sistema'}]},
   ],
   ventas: [
-    { id:'VM-441', tipo:'Farmacia', cliente:null, monto:'Bs 380,00', cajero:'M. Vargas', cobrado:'24/05/2026 - 22:10', modificado:'25/05/2026 - 01:30 (post cobro)', motivo:null, integridad:'bad' },
-    { id:'VM-438', tipo:'Ambulatorio', cliente:'Juan Perez', monto:'Bs 220,00', cajero:'L. Choque', cobrado:'24/05/2026 - 14:00', modificado:'-', motivo:'-', integridad:'ok' },
+    { id:'VM-6002', tipo:'Farmacia', cliente:null, monto:380, cajero:'Cajero Noche', correo:'caja-noche@hospital.bo', cobradoISO:'2026-05-10T22:45:00', deteccionISO:'2026-05-12T07:45:00', motivo:null, integridad:'bad' },
+    { id:'VM-6001', tipo:'Contingencia', cliente:'Cliente Particular', monto:220, cajero:'Cajero Noche', correo:'caja-noche@hospital.bo', cobradoISO:'2026-05-10T22:45:00', deteccionISO:'2026-05-12T07:45:00', motivo:'Se ajusto observacion posterior al cierre.', integridad:'bad' },
+    { id:'VM-5998', tipo:'Ambulatorio', cliente:'Juan Perez', monto:220, cajero:'Cajero Tarde', correo:'caja-tarde@hospital.bo', cobradoISO:'2026-05-09T14:00:00', deteccionISO:null, motivo:'-', integridad:'ok' },
   ],
   anulaciones: [
-    { id:'A-501', original:'C-1030', quien:'T. Mamani - turno noche', motivo:'error de ingreso', nuevoCobro:'C-1044 (3 horas despues)', diferencia:'Bs 240,00 menos que el original', alerta:true,
-      timeline:[{dot:'ok',label:'Cobro original C-1030',meta:'24/05/2026 21:00'},{dot:'bad',label:'Anulacion A-501 ejecutada',meta:'24/05/2026 23:30 T. Mamani'},{dot:'warn',label:'Nuevo cobro C-1044',meta:'25/05/2026 02:15 monto menor sin justificacion'}]},
-    { id:'A-498', original:'C-1021', quien:'L. Choque - turno tarde', motivo:'registro duplicado', nuevoCobro:'-', diferencia:'-', alerta:false,
-      timeline:[{dot:'ok',label:'Cobro original C-1021',meta:'23/05/2026 11:00'},{dot:'ok',label:'Anulacion por duplicado',meta:'23/05/2026 11:45 L. Choque'}]},
+    { id:'ANU-8001', original:'COB-2004', factura:'FAC-12345', nr:'NR-5003', quien:'supervisor.caja', fechaISO:'2026-05-09T10:00:00', motivo:'Error en monto facturado.', nuevoCobro:'COB-2004-R1', eventoPosterior:'REAPERTURA', fechaPosteriorISO:'2026-05-09T10:30:00', alerta:true,
+      timeline:[{dot:'warn',label:'Reapertura relacionada',meta:'09/05/2026 10:30 COB-2004-R1'},{dot:'bad',label:'Anulacion ejecutada',meta:'09/05/2026 10:00 supervisor.caja'},{dot:'ok',label:'Cobro original',meta:'COB-2004'}]},
+    { id:'ANU-7998', original:'COB-1998', factura:'FAC-12290', nr:'NR-4990', quien:'cajero.tarde', fechaISO:'2026-05-08T11:45:00', motivo:'Registro duplicado.', nuevoCobro:'-', eventoPosterior:null, fechaPosteriorISO:null, alerta:false,
+      timeline:[{dot:'ok',label:'Anulacion por duplicado',meta:'08/05/2026 11:45 cajero.tarde'},{dot:'ok',label:'Cobro original',meta:'COB-1998'}]},
   ],
 };
 
@@ -666,15 +680,15 @@ function renderDashboard() {
     return '<div class="alert-card ' + item.nivel + '" onclick="' + item.action + '"><span class="alert-badge badge-' + item.tipo + '">' + badgeLabel[item.tipo] + '</span><div><div class="alert-main">' + item.main + '</div><div class="alert-meta">' + item.meta + '</div></div><div class="alert-arrow">&#8250;</div></div>';
   }
   var criticos = [];
-  cobrosSin.forEach(function(c){ criticos.push({tipo:'cob',nivel:'danger',main:'Cobro '+c.id+' - cobertura '+c.cobertura+' sin observacion valida',meta:'Cajero: '+c.cajero.split(' - ')[0]+' - '+c.fecha.split(' - ')[0],action:"setView('cobros',document.querySelector('[data-view=cobros]'));setTimeout(function(){openCobro('"+c.id+"');},80)"}); });
-  libSin.forEach(function(l){ criticos.push({tipo:'lib',nivel:'danger',main:'Liberacion '+l.id+' - 100% sin autoridad mencionada',meta:'Gestor: '+l.gestor+' - '+l.fecha.split(' - ')[0],action:"setView('liberaciones',document.querySelector('[data-view=liberaciones]'));setTimeout(function(){openLib('"+l.id+"');},80)"}); });
+  cobrosSin.forEach(function(c){ criticos.push({tipo:'cob',nivel:'danger',main:'Cobro '+c.id+' - cobertura '+c.cobertura+' sin justificacion',meta:'Cajero: '+c.cajero+' - '+fmtDateTime(c.fechaISO),action:"setView('cobros',document.querySelector('[data-view=cobros]'));setTimeout(function(){openCobro('"+c.id+"');},80)"}); });
+  libSin.forEach(function(l){ criticos.push({tipo:'lib',nivel:'danger',main:'Liberacion '+l.id+' - 100% sin autoridad mencionada',meta:'Gestor: '+l.gestor+' - '+fmtDateTime(l.fechaISO),action:"setView('liberaciones',document.querySelector('[data-view=liberaciones]'));setTimeout(function(){openLib('"+l.id+"');},80)"}); });
   var sospechosos = [];
-  nrsMod.forEach(function(n){ sospechosos.push({tipo:'nr',nivel:'warn',main:'NR '+n.id+' - hash diferente al registrado al cierre',meta:'Modifico: '+n.quien+' - '+n.cuando.split(' (')[0],action:"setView('nrs',document.querySelector('[data-view=nrs]'));setTimeout(function(){openNR('"+n.id+"');},80)"}); });
-  vmMod.forEach(function(v){ sospechosos.push({tipo:'vm',nivel:'warn',main:'Venta '+v.id+' - '+v.tipo+' - modificada post-cobro',meta:'Cajero: '+v.cajero+' - '+v.cobrado.split(' - ')[0],action:"setView('ventas',document.querySelector('[data-view=ventas]'));setTimeout(function(){openVM('"+v.id+"');},80)"}); });
-  anulSosp.forEach(function(a){ sospechosos.push({tipo:'anul',nivel:'warn',main:'Anulacion '+a.id+' - genero nuevo cobro '+a.nuevoCobro,meta:a.quien.split(' - ')[0]+' - diferencia: '+a.diferencia,action:"setView('anulaciones',document.querySelector('[data-view=anulaciones]'));setTimeout(function(){openAnul('"+a.id+"');},80)"}); });
+  nrsMod.forEach(function(n){ sospechosos.push({tipo:'nr',nivel:'warn',main:'NR '+n.id+' - cambio detectado despues del cierre',meta:'Persona: '+n.quien+' - '+fmtDateTime(n.deteccionISO),action:"setView('nrs',document.querySelector('[data-view=nrs]'));setTimeout(function(){openNR('"+n.id+"');},80)"}); });
+  vmMod.forEach(function(v){ sospechosos.push({tipo:'vm',nivel:'warn',main:'Venta '+v.id+' - cambio detectado despues del cobro',meta:'Cajero: '+v.cajero+' - '+fmtDateTime(v.cobradoISO),action:"setView('ventas',document.querySelector('[data-view=ventas]'));setTimeout(function(){openVM('"+v.id+"');},80)"}); });
+  anulSosp.forEach(function(a){ sospechosos.push({tipo:'anul',nivel:'warn',main:'Anulacion '+a.id+' - evento posterior relacionado',meta:a.quien+' - '+fmtDateTime(a.fechaISO),action:"setView('anulaciones',document.querySelector('[data-view=anulaciones]'));setTimeout(function(){openAnul('"+a.id+"');},80)"}); });
   var pendientes = [];
-  cobrosPend.forEach(function(c){ pendientes.push({tipo:'cob',nivel:'warn',main:'Cobro '+c.id+' - observacion generica sin nombre ni cargo',meta:'Cajero: '+c.cajero.split(' - ')[0]+' - '+c.fecha.split(' - ')[0],action:"setView('cobros',document.querySelector('[data-view=cobros]'));setTimeout(function(){openCobro('"+c.id+"');},80)"}); });
-  libPend.forEach(function(l){ pendientes.push({tipo:'lib',nivel:'warn',main:'Liberacion '+l.id+' - autoridad no verificable',meta:'Gestor: '+l.gestor+' - '+l.fecha.split(' - ')[0],action:"setView('liberaciones',document.querySelector('[data-view=liberaciones]'));setTimeout(function(){openLib('"+l.id+"');},80)"}); });
+  cobrosPend.forEach(function(c){ pendientes.push({tipo:'cob',nivel:'warn',main:'Cobro '+c.id+' - informacion insuficiente',meta:'Cajero: '+c.cajero+' - '+fmtDateTime(c.fechaISO),action:"setView('cobros',document.querySelector('[data-view=cobros]'));setTimeout(function(){openCobro('"+c.id+"');},80)"}); });
+  libPend.forEach(function(l){ pendientes.push({tipo:'lib',nivel:'warn',main:'Liberacion '+l.id+' - autoridad no verificable',meta:'Gestor: '+l.gestor+' - '+fmtDateTime(l.fechaISO),action:"setView('liberaciones',document.querySelector('[data-view=liberaciones]'));setTimeout(function(){openLib('"+l.id+"');},80)"}); });
   var html = '';
   if (criticos.length) html += '<div class="alert-section"><div class="alert-section-head">Requieren atencion inmediata - '+criticos.length+'</div><div class="alert-list">'+criticos.map(makeCard).join('')+'</div></div>';
   if (sospechosos.length) html += '<div class="alert-section"><div class="alert-section-head">Eventos sospechosos - '+sospechosos.length+'</div><div class="alert-list">'+sospechosos.map(makeCard).join('')+'</div></div>';
@@ -688,19 +702,73 @@ function toggleStats() {
   document.getElementById('stats-toggle').classList.toggle('open', statsVisible);
 }
 
+function fmtMoney(value) { return 'Bs ' + Number(value || 0).toLocaleString('es-BO', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function fmtDate(iso) { return iso ? new Date(iso).toLocaleDateString('es-BO', {day:'2-digit',month:'2-digit',year:'numeric'}) : '-'; }
+function fmtTime(iso) { return iso ? new Date(iso).toLocaleTimeString('es-BO', {hour:'2-digit',minute:'2-digit'}) : '-'; }
+function fmtDateTime(iso) { return iso ? fmtDate(iso) + ' - ' + fmtTime(iso) : '-'; }
+function fmtShortDateTime(iso) { return iso ? fmtDate(iso) + ' ' + fmtTime(iso) : '-'; }
+function matchTime(iso, fromId, toId) {
+  var from = document.getElementById(fromId);
+  var to = document.getElementById(toId);
+  if (!iso || !from || !to) return true;
+  var t = fmtTime(iso);
+  return t >= from.value && t <= to.value;
+}
+function matchDateFrom(iso, fromId) {
+  var from = document.getElementById(fromId);
+  if (!iso || !from || !from.value) return true;
+  return iso.slice(0,10) >= from.value;
+}
+function problemaAuditoria(estado) {
+  if (estado === 'nojust') return '<span class="chip chip-danger">Sin justificacion</span>';
+  if (estado === 'pend') return '<span class="chip chip-warn">Informacion insuficiente</span>';
+  if (estado === 'just') return '<span class="chip chip-muted">Justificado</span>';
+  return '<span class="chip chip-muted">' + (estado||'-') + '</span>';
+}
+function problemaCambio(integridad, estado) {
+  if (integridad === 'bad' && estado === 'pend') return '<span class="chip chip-warn">Cambio por revisar</span>';
+  if (integridad === 'bad') return '<span class="chip chip-warn">Cambio no justificado</span>';
+  if (estado === 'pend') return '<span class="chip chip-warn">Informacion insuficiente</span>';
+  return '<span class="chip chip-muted">Sin cambios</span>';
+}
+function reqForEvent(evento) { return reqs.find(function(r){ return r.evento === evento; }); }
+function reqBadge(evento) { return reqForEvent(evento) ? '<span class="chip chip-muted chip-mini">Req. generado</span>' : ''; }
+function repeatCount(name) {
+  if (!name || name === '-') return 0;
+  var all = []
+    .concat(DATA.cobros.map(function(x){ return x.cajero; }))
+    .concat(DATA.liberaciones.map(function(x){ return x.gestor; }))
+    .concat(DATA.ventas.map(function(x){ return x.cajero; }))
+    .concat(DATA.anulaciones.map(function(x){ return x.quien; }));
+  return all.filter(function(x){ return x === name; }).length;
+}
+function repeatBadge(name) {
+  var count = repeatCount(name);
+  return count >= 3 ? '<span class="chip chip-muted chip-mini">'+count+' eventos</span>' : '';
+}
+function timeAfter(startIso, endIso) {
+  if (!startIso || !endIso) return 'Cambio detectado';
+  var diff = Math.max(0, new Date(endIso) - new Date(startIso));
+  var mins = Math.round(diff / 60000);
+  if (mins < 60) return mins + ' min postcierre';
+  var hrs = Math.round(mins / 60);
+  if (hrs < 48) return hrs + ' h postcierre';
+  return Math.round(hrs / 24) + ' dias postcierre';
+}
+
 function renderCobros() {
   var filter = document.getElementById('cobros-filter').value;
   var search = document.getElementById('cobros-search').value.toLowerCase();
   var rows = DATA.cobros.filter(function(c){
     var mf = filter === 'all' || c.estadoAuditoria === filter;
     var ms = !search || c.id.toLowerCase().indexOf(search) >= 0 || c.cajero.toLowerCase().indexOf(search) >= 0;
-    return mf && ms;
+    return mf && ms && matchDateFrom(c.fechaISO, 'cobros-desde') && matchTime(c.fechaISO, 'cobros-hora-desde', 'cobros-hora-hasta');
   });
   document.getElementById('cobros-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
   var tbody = document.getElementById('cobros-tbody');
-  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Sin resultados para los filtros seleccionados</td></tr>'; return; }
+  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Sin resultados para los filtros seleccionados</td></tr>'; return; }
   tbody.innerHTML = rows.map(function(c){
-    return '<tr onclick="openCobro(\''+c.id+'\')" id="row-cobro-'+c.id+'"><td class="td-mono">'+c.id+'</td><td class="td-muted">'+c.tipo+'</td><td class="td-mono">'+c.cobertura+'</td><td class="'+(c.obs?'td-muted':'td-flag')+'" style="font-size:11px">'+(c.obs||'Sin observacion')+'</td><td class="td-muted" style="font-size:11px">'+c.cajero+'</td><td class="td-mono" style="font-size:11px">'+c.fecha.split(' - ')[0]+'</td><td>'+chipAuditoria(c.estadoAuditoria)+'</td></tr>';
+    return '<tr onclick="openCobro(\''+c.id+'\')" id="row-cobro-'+c.id+'"><td class="td-mono">'+c.id+'</td><td class="td-mono">'+fmtShortDateTime(c.fechaISO)+'</td><td class="td-muted">'+c.cajero+repeatBadge(c.cajero)+'</td><td>'+problemaAuditoria(c.estadoAuditoria)+reqBadge(c.id)+'</td></tr>';
   }).join('');
 }
 
@@ -715,32 +783,26 @@ function openCobro(id) {
   var cont = document.getElementById('cobros-panel-content');
   cont.style.cssText = 'display:flex;flex-direction:column;flex:1;overflow:hidden';
   set('cp-id', c.id); set('cp-sub', c.tipo + ' - ' + c.cobertura + ' de cobertura');
-  set('cp-tipo', c.tipo); set('cp-monto', c.montoTotal); set('cp-cubierto', c.montoCubierto); set('cp-pct', c.cobertura);
+  set('cp-ref', c.ref); set('cp-tipo', c.tipo); set('cp-monto', fmtMoney(c.montoTotal)); set('cp-cubierto', fmtMoney(c.montoCubierto)); set('cp-pct', c.cobertura);
   var obsEl = document.getElementById('cp-obs');
-  obsEl.textContent = c.obs || 'Sin observacion registrada';
-  obsEl.className = 'field-value' + (!c.obs ? ' flag' : '');
-  set('cp-cajero', c.cajero); set('cp-fecha', c.fecha);
-  var ib = document.getElementById('cp-integrity-block');
-  ib.className = 'integrity-block ' + (c.estadoIntegridad === 'ok' ? 'ok' : 'bad');
-  document.getElementById('cp-int-icon').textContent = c.estadoIntegridad === 'ok' ? 'ok' : '!';
-  document.getElementById('cp-int-title').textContent = c.estadoIntegridad === 'ok' ? 'Registro integro' : 'Hash diferente';
-  document.getElementById('cp-int-sub').textContent = c.intMsg;
-  document.getElementById('cp-auditoria').innerHTML = chipAuditoria(c.estadoAuditoria);
+  obsEl.textContent = c.estadoAuditoria === 'nojust' ? 'Sin justificacion suficiente' : (c.obs || 'Sin justificacion registrada');
+  obsEl.className = 'field-value' + (c.estadoAuditoria !== 'just' ? ' flag' : '');
+  set('cp-cajero', c.cajero + ' - ' + c.turno); set('cp-fecha', fmtDateTime(c.fechaISO));
+  document.getElementById('cp-auditoria').innerHTML = problemaAuditoria(c.estadoAuditoria) + reqBadge(c.id);
   var note = document.getElementById('cp-note');
-  if (c.estadoAuditoria === 'nojust') { note.textContent = 'Cobertura aplicada sin observacion valida. El cajero debe explicar quien autorizo y bajo que criterio.'; note.style.display = 'block'; }
-  else if (c.estadoAuditoria === 'pend') { note.textContent = 'La observacion existe pero es generica. Verificar si la autorizacion es valida.'; note.style.display = 'block'; }
+  if (c.estadoAuditoria === 'nojust') { note.textContent = c.motivoAlerta; note.style.display = 'block'; }
+  else if (c.estadoAuditoria === 'pend') { note.textContent = 'Informacion insuficiente: verificar autoridad, cargo o documento de respaldo.'; note.style.display = 'block'; }
   else { note.style.display = 'none'; }
 }
 
 function renderLib() {
   var filter = document.getElementById('lib-filter').value;
-  var rows = DATA.liberaciones.filter(function(l){ return filter === 'all' || l.estado === filter; });
+  var rows = DATA.liberaciones.filter(function(l){ return (filter === 'all' || l.estado === filter) && matchDateFrom(l.fechaISO, 'lib-desde') && matchTime(l.fechaISO, 'lib-hora-desde', 'lib-hora-hasta'); });
   document.getElementById('lib-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
   var tbody = document.getElementById('lib-tbody');
-  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Sin resultados</td></tr>'; return; }
+  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Sin resultados</td></tr>'; return; }
   tbody.innerHTML = rows.map(function(l){
-    var authCell = !l.auth ? '<span class="chip chip-danger">Sin referencia</span>' : '<span style="font-size:11px;color:var(--text2)">' + l.auth.substring(0,30) + '...</span>';
-    return '<tr onclick="openLib(\''+l.id+'\')" id="row-lib-'+l.id+'"><td class="td-mono">'+l.id+'</td><td class="td-mono">'+l.monto+'</td><td class="'+(l.obs?'td-muted':'td-flag')+'" style="font-size:11px">'+(l.obs||'Sin observacion')+'</td><td>'+authCell+'</td><td class="td-muted">'+l.gestor+'</td><td class="td-mono" style="font-size:11px">'+l.fecha.split(' - ')[0]+'</td><td>'+chipAuditoria(l.estado)+'</td></tr>';
+    return '<tr onclick="openLib(\''+l.id+'\')" id="row-lib-'+l.id+'"><td class="td-mono">'+l.id+'</td><td class="td-mono">'+fmtShortDateTime(l.fechaISO)+'</td><td class="td-muted">'+l.gestor+repeatBadge(l.gestor)+'</td><td>'+problemaAuditoria(l.estado)+reqBadge(l.id)+'</td></tr>';
   }).join('');
 }
 
@@ -754,15 +816,15 @@ function openLib(id) {
   document.getElementById('lib-panel-empty').style.display = 'none';
   var cont = document.getElementById('lib-panel-content');
   cont.style.cssText = 'display:flex;flex-direction:column;flex:1;overflow:hidden';
-  set('lp-id', l.id); set('lp-monto', l.monto); set('lp-liberado', l.montoLib);
+  set('lp-id', l.id); set('lp-ref', l.ref); set('lp-monto', fmtMoney(l.monto)); set('lp-liberado', fmtMoney(l.montoLib) + ' (100%)');
   var obsEl = document.getElementById('lp-obs');
-  obsEl.textContent = l.obs || 'Sin observacion registrada';
-  obsEl.className = 'field-value' + (!l.obs ? ' flag' : '');
+  obsEl.textContent = l.obs || 'Sin justificacion registrada';
+  obsEl.className = 'field-value' + (l.estado !== 'just' ? ' flag' : '');
   var authEl = document.getElementById('lp-auth');
-  authEl.textContent = l.auth || 'No se menciona ninguna autoridad';
+  authEl.textContent = l.auth || 'Ninguna';
   authEl.className = 'field-value' + (!l.auth ? ' flag' : '');
-  set('lp-gestor', l.gestor); set('lp-fecha', l.fecha);
-  document.getElementById('lp-estado').innerHTML = chipAuditoria(l.estado);
+  set('lp-gestor', l.gestor); set('lp-fecha', fmtDateTime(l.fechaISO));
+  document.getElementById('lp-estado').innerHTML = problemaAuditoria(l.estado) + reqBadge(l.id);
 }
 
 function renderNRs() {
@@ -772,12 +834,13 @@ function renderNRs() {
     if (filter === 'ok') return n.integridad === 'ok';
     return true;
   });
+  rows = rows.filter(function(n){ return matchDateFrom(n.cierreISO, 'nr-desde') && matchTime(n.cierreISO, 'nr-hora-desde', 'nr-hora-hasta'); });
   document.getElementById('nr-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
   var tbody = document.getElementById('nr-tbody');
-  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Sin resultados</td></tr>'; return; }
+  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Sin resultados</td></tr>'; return; }
   tbody.innerHTML = rows.map(function(n){
-    var intChip = n.integridad === 'ok' ? '<span class="chip chip-ok">Integra</span>' : '<span class="chip chip-danger">Hash diferente</span>';
-    return '<tr onclick="openNR(\''+n.id+'\')" id="row-nr-'+n.id+'"><td class="td-mono">'+n.id+'</td><td class="td-mono" style="font-size:11px">'+n.cierre.split(' - ')[0]+'</td><td class="td-mono">'+n.monto+'</td><td>'+intChip+'</td><td class="'+(n.integridad==='bad'?'td-flag':'td-muted')+'">'+n.quien+'</td><td class="'+(n.integridad==='bad'?'td-warn':'td-muted')+'" style="font-size:11px">'+(n.integridad==='bad'?n.cuando:'-')+'</td><td>'+chipAuditoria(n.estado)+'</td></tr>';
+    var problema = n.integridad === 'bad' ? problemaCambio(n.integridad, n.estado) + '<span class="chip chip-muted chip-mini">'+timeAfter(n.cierreISO, n.deteccionISO)+'</span>' : problemaCambio(n.integridad, n.estado);
+    return '<tr onclick="openNR(\''+n.id+'\')" id="row-nr-'+n.id+'"><td class="td-mono">'+n.id+'</td><td class="td-mono">'+fmtShortDateTime(n.cierreISO)+'</td><td class="td-muted">'+n.quien+'</td><td>'+problema+reqBadge(n.id)+'</td></tr>';
   }).join('');
 }
 
@@ -792,18 +855,18 @@ function openNR(id) {
   var cont = document.getElementById('nr-panel-content');
   cont.style.cssText = 'display:flex;flex-direction:column;flex:1;overflow:hidden';
   set('np-id', n.id);
-  set('np-sub', n.integridad === 'bad' ? 'Modificada despues del cierre' : 'Sin modificaciones detectadas');
-  set('np-cierre', n.cierre); set('np-monto', n.monto);
+  set('np-sub', n.integridad === 'bad' ? 'Cambio detectado despues del cierre' : 'Sin cambios detectados');
+  set('np-cierre', fmtDateTime(n.cierreISO)); set('np-monto', fmtMoney(n.monto));
   var ib = document.getElementById('np-integrity-block');
   ib.className = 'integrity-block ' + n.integridad;
   document.getElementById('np-int-icon').textContent = n.integridad === 'ok' ? 'ok' : '!';
-  document.getElementById('np-int-title').textContent = n.integridad === 'ok' ? 'Registro integro' : 'Hash diferente al original';
-  document.getElementById('np-int-sub').textContent = n.integridad === 'ok' ? 'Sin cambios desde el cierre' : 'El registro fue alterado despues de cerrarse';
+  document.getElementById('np-int-title').textContent = n.integridad === 'ok' ? 'Sin cambios detectados' : 'Cambio no justificado';
+  document.getElementById('np-int-sub').textContent = n.integridad === 'ok' ? 'La NR conserva los datos del cierre' : 'Se detecto un cambio despues del cierre';
   var quienEl = document.getElementById('np-quien');
   quienEl.textContent = n.quien;
   quienEl.className = 'field-value' + (n.integridad === 'bad' ? ' flag' : '');
   var cuandoEl = document.getElementById('np-cuando');
-  cuandoEl.textContent = n.cuando;
+  cuandoEl.textContent = fmtDateTime(n.deteccionISO);
   cuandoEl.className = 'field-value' + (n.integridad === 'bad' ? ' flag' : '');
   var motivoEl = document.getElementById('np-motivo');
   motivoEl.textContent = n.motivo || 'Sin motivo registrado';
@@ -817,14 +880,13 @@ function renderVentas() {
   var rows = DATA.ventas.filter(function(v){
     var mt = tipo === 'all' || v.tipo === tipo;
     var mf = filter === 'all' || (filter === 'modified' && v.integridad === 'bad') || (filter === 'ok' && v.integridad === 'ok');
-    return mt && mf;
+    return mt && mf && matchDateFrom(v.cobradoISO, 'vm-desde') && matchTime(v.cobradoISO, 'vm-hora-desde', 'vm-hora-hasta');
   });
   document.getElementById('vm-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
   var tbody = document.getElementById('vm-tbody');
-  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Sin resultados</td></tr>'; return; }
+  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Sin resultados</td></tr>'; return; }
   tbody.innerHTML = rows.map(function(v){
-    var intChip = v.integridad === 'ok' ? '<span class="chip chip-ok">Integra</span>' : '<span class="chip chip-danger">Modificada post-cobro</span>';
-    return '<tr onclick="openVM(\''+v.id+'\')" id="row-vm-'+v.id+'"><td class="td-mono">'+v.id+'</td><td class="td-muted">'+v.tipo+'</td><td class="'+(v.cliente?'td-muted':'td-flag')+'" style="font-size:11px">'+(v.cliente||'Sin nombre (generico)')+'</td><td class="td-mono">'+v.monto+'</td><td class="td-muted" style="font-size:11px">'+v.cajero+'</td><td class="td-mono" style="font-size:11px">'+v.cobrado.split(' - ')[0]+'</td><td>'+intChip+'</td></tr>';
+    return '<tr onclick="openVM(\''+v.id+'\')" id="row-vm-'+v.id+'"><td class="td-mono">'+v.id+'</td><td class="td-mono">'+fmtShortDateTime(v.cobradoISO)+'</td><td class="td-muted">'+v.cajero+repeatBadge(v.cajero)+'</td><td>'+problemaCambio(v.integridad)+reqBadge(v.id)+'</td></tr>';
   }).join('');
 }
 
@@ -843,17 +905,17 @@ function openVM(id) {
   var clienteEl = document.getElementById('vp-cliente');
   clienteEl.textContent = v.cliente || 'Sin nombre (cliente generico)';
   clienteEl.className = 'field-value' + (!v.cliente ? ' flag' : '');
-  set('vp-monto', v.monto); set('vp-cajero', v.cajero); set('vp-cobrado', v.cobrado);
+  set('vp-monto', fmtMoney(v.monto)); set('vp-cajero', v.cajero); set('vp-cobrado', fmtDateTime(v.cobradoISO));
   var modEl = document.getElementById('vp-modificado');
-  modEl.textContent = v.modificado;
+  modEl.textContent = fmtDateTime(v.deteccionISO);
   modEl.className = 'field-value' + (v.integridad === 'bad' ? ' flag' : '');
   var motivoEl = document.getElementById('vp-motivo');
   motivoEl.textContent = v.motivo || 'Sin motivo registrado';
   motivoEl.className = 'field-value' + (!v.motivo ? ' flag' : '');
   var ib = document.getElementById('vp-integrity-block');
   ib.className = 'integrity-block ' + v.integridad;
-  document.getElementById('vp-int-title').textContent = v.integridad === 'ok' ? 'Registro integro' : 'Modificada despues del cobro';
-  document.getElementById('vp-int-sub').textContent = v.integridad === 'ok' ? 'Sin cambios detectados' : 'El registro cambio despues de haberse cobrado';
+  document.getElementById('vp-int-title').textContent = v.integridad === 'ok' ? 'Sin cambios detectados' : 'Cambio detectado';
+  document.getElementById('vp-int-sub').textContent = v.integridad === 'ok' ? 'La venta conserva los datos del cobro' : 'La venta cambio despues de haberse cobrado';
 }
 
 function renderAnulaciones() {
@@ -863,12 +925,13 @@ function renderAnulaciones() {
     if (filter === 'ok') return !a.alerta;
     return true;
   });
+  rows = rows.filter(function(a){ return matchDateFrom(a.fechaISO, 'anul-desde') && matchTime(a.fechaISO, 'anul-hora-desde', 'anul-hora-hasta'); });
   document.getElementById('anul-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
   var tbody = document.getElementById('anul-tbody');
-  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Sin resultados</td></tr>'; return; }
+  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Sin resultados</td></tr>'; return; }
   tbody.innerHTML = rows.map(function(a){
-    var alertChip = a.alerta ? '<span class="chip chip-danger">Sospechosa</span>' : '<span class="chip chip-ok">Normal</span>';
-    return '<tr onclick="openAnul(\''+a.id+'\')" id="row-anul-'+a.id+'"><td class="td-mono">'+a.id+'</td><td class="td-mono">'+a.original+'</td><td class="td-muted" style="font-size:11px">'+a.quien+'</td><td class="td-muted" style="font-size:11px">'+a.motivo+'</td><td class="'+(a.nuevoCobro!=='-'?'td-flag':'td-muted')+'" style="font-size:11px">'+a.nuevoCobro+'</td><td>'+alertChip+'</td></tr>';
+    var problema = a.alerta ? '<span class="chip chip-warn">Evento posterior sin aclarar</span>' : '<span class="chip chip-muted">Normal</span>';
+    return '<tr onclick="openAnul(\''+a.id+'\')" id="row-anul-'+a.id+'"><td class="td-mono">'+a.id+'</td><td class="td-mono">'+fmtShortDateTime(a.fechaISO)+'</td><td class="td-muted">'+a.quien+repeatBadge(a.quien)+'</td><td class="td-mono">'+a.original+'</td><td>'+problema+reqBadge(a.id)+'</td></tr>';
   }).join('');
 }
 
@@ -883,22 +946,46 @@ function openAnul(id) {
   var cont = document.getElementById('anul-panel-content');
   cont.style.cssText = 'display:flex;flex-direction:column;flex:1;overflow:hidden';
   set('ap-id', a.id);
-  set('ap-sub', a.alerta ? 'Genero un nuevo cobro posterior' : 'Sin cobro nuevo generado');
-  set('ap-original', a.original); set('ap-quien', a.quien); set('ap-motivo', a.motivo);
+  set('ap-sub', a.alerta ? 'Evento posterior relacionado' : 'Sin evento posterior');
+  set('ap-original', a.original); set('ap-ref', a.factura + ' / ' + a.nr); set('ap-quien', a.quien); set('ap-motivo', a.motivo || 'Sin justificacion registrada');
   var nuevoEl = document.getElementById('ap-nuevo');
   nuevoEl.textContent = a.nuevoCobro;
   nuevoEl.className = 'field-value' + (a.nuevoCobro !== '-' ? ' flag' : '');
   var difEl = document.getElementById('ap-dif');
-  difEl.textContent = a.diferencia;
-  difEl.className = 'field-value' + (a.diferencia !== '-' ? ' warn-v' : '');
+  difEl.textContent = 'No disponible en endpoint actual';
+  difEl.className = 'field-value warn-v';
   renderTimeline('ap-timeline', a.timeline);
+}
+
+function currentEventInfo() {
+  if (currentEvent.type === 'cobros') {
+    var c = DATA.cobros.find(function(x){ return x.id === currentEvent.id; });
+    return c ? {destinatario:c.cajero, evento:c.id} : null;
+  }
+  if (currentEvent.type === 'liberacion') {
+    var l = DATA.liberaciones.find(function(x){ return x.id === currentEvent.id; });
+    return l ? {destinatario:l.gestor, evento:l.id} : null;
+  }
+  if (currentEvent.type === 'nr') {
+    var n = DATA.nrs.find(function(x){ return x.id === currentEvent.id; });
+    return n ? {destinatario:n.quien, evento:n.id} : null;
+  }
+  if (currentEvent.type === 'venta') {
+    var v = DATA.ventas.find(function(x){ return x.id === currentEvent.id; });
+    return v ? {destinatario:v.cajero, evento:v.id} : null;
+  }
+  if (currentEvent.type === 'anulacion') {
+    var a = DATA.anulaciones.find(function(x){ return x.id === currentEvent.id; });
+    return a ? {destinatario:a.quien, evento:a.id} : null;
+  }
+  return null;
 }
 
 function renderReqs() {
   var tbody = document.getElementById('req-tbody');
-  if (!reqs.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="8">No hay requerimientos. Abre un evento sospechoso y usa Generar requerimiento.</td></tr>'; return; }
+  if (!reqs.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="6">No hay requerimientos. Abre un evento sospechoso y usa Generar requerimiento.</td></tr>'; return; }
   tbody.innerHTML = reqs.map(function(r){
-    return '<tr><td class="td-mono">'+r.id+'</td><td class="td-mono">'+r.evento+'</td><td><span class="chip chip-muted">'+r.tipo+'</span></td><td class="td-muted" style="font-size:11px">'+r.destinatario+'</td><td class="td-muted" style="font-size:11px">'+r.motivo+'</td><td class="td-mono" style="font-size:11px">'+r.fecha+'</td><td><span class="chip chip-warn">'+r.estado+'</span></td><td><button class="btn btn-ghost" onclick="exportarPDF(\''+r.id+'\')">PDF</button></td></tr>';
+    return '<tr><td class="td-mono">'+r.id+'</td><td class="td-mono">'+fmtShortDateTime(r.fechaISO)+'</td><td class="td-muted">'+r.destinatario+'</td><td class="td-mono">'+r.evento+'</td><td><span class="chip chip-warn">'+r.estado+'</span></td><td><button class="btn btn-ghost" onclick="exportarPDF(\''+r.id+'\')">PDF</button><button class="btn btn-ghost" onclick="imprimirReq(\''+r.id+'\')">Imprimir</button></td></tr>';
   }).join('');
 }
 
@@ -906,7 +993,7 @@ function generarReq(tipo) {
   if (!currentEvent.id) return;
   var modal = document.getElementById('req-modal');
   var sub = document.getElementById('req-modal-sub');
-  sub.textContent = 'Evento: ' + currentEvent.id + ' · Tipo: ' + tipo;
+  sub.textContent = 'Evento: ' + currentEvent.id + ' - Tipo: ' + tipo;
   document.getElementById('req-motivo-input').value = '';
   modal.dataset.tipo = tipo;
   modal.classList.add('open');
@@ -922,22 +1009,40 @@ function confirmarReq() {
   var motivo = document.getElementById('req-motivo-input').value.trim();
   if (!motivo) { document.getElementById('req-motivo-input').focus(); return; }
   var tipo = document.getElementById('req-modal').dataset.tipo;
-  var destinatarios = {cobros:'Cajero responsable del cobro',liberacion:'Gestor que ejecuto la liberacion',nr:'Usuario que modifico la NR',venta:'Cajero responsable de la venta',anulacion:'Usuario que ejecuto la anulacion'};
+  var info = currentEventInfo() || {destinatario:'Responsable no identificado', evento:currentEvent.id};
   var id = 'REQ-' + String(reqCounter++).padStart(3, '0');
   var now = new Date();
-  var fecha = now.toLocaleDateString('es-BO', {day:'2-digit',month:'2-digit',year:'numeric'}) + ' ' + now.toLocaleTimeString('es-BO', {hour:'2-digit',minute:'2-digit'});
-  reqs.unshift({ id: id, evento: currentEvent.id, tipo: tipo, destinatario: destinatarios[tipo]||'-', motivo: motivo, fecha: fecha, estado: 'Generado' });
+  reqs.unshift({ id: id, evento: info.evento, tipo: tipo, destinatario: info.destinatario, motivo: motivo, fechaISO: now.toISOString(), estado: 'Pendiente' });
   var badge = document.getElementById('badge-req');
   badge.textContent = reqs.length;
   badge.style.display = '';
   badge.className = 'nav-badge warn';
-  document.getElementById('st-reqs').textContent = reqs.length;
+  var stReqs = document.getElementById('st-reqs');
+  if (stReqs) stReqs.textContent = reqs.length;
   document.getElementById('req-modal').classList.remove('open');
-  toast('Requerimiento ' + id + ' guardado · Correo enviado al responsable', 'success');
+  toast('Requerimiento ' + id + ' guardado para PDF o impresion', 'success');
   setTimeout(function(){ setView('requerimientos', document.querySelector('[data-view=requerimientos]')); }, 1600);
 }
 
-function exportarPDF(id) { toast('PDF listo para descargar - ' + (id||'todos'), 'success'); }
+function updateReqState(id, estado) {
+  if (!id) {
+    reqs.forEach(function(r){ r.estado = estado; });
+  } else {
+    var req = reqs.find(function(r){ return r.id === id; });
+    if (req) req.estado = estado;
+  }
+  renderReqs();
+}
+
+function exportarPDF(id) {
+  updateReqState(id, 'PDF generado');
+  toast('PDF generado - ' + (id||'todos'), 'success');
+}
+
+function imprimirReq(id) {
+  updateReqState(id, 'Impreso');
+  toast('Requerimiento marcado como impreso - ' + id, 'success');
+}
 
 function set(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
 
