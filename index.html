@@ -42,10 +42,25 @@
     .pill.active,.btn.primary{background:var(--green);border-color:var(--green);color:white}.select option{color:#111}.search{min-width:240px}.select{min-width:180px}
     .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
     .card{padding:15px}.card strong{display:block;font-size:28px}.card span{font-weight:900;font-size:13px}.card p{margin:4px 0 0;color:var(--muted);font-size:12px}
-    .section-title{font-size:12px;font-weight:900;text-transform:uppercase;margin:12px 0 10px;color:#ffd1d8;letter-spacing:.04em}
+    .section-title{font-size:12px;font-weight:950;text-transform:uppercase;margin:18px 0 10px;color:#ffd1d8;letter-spacing:.06em;display:flex;align-items:center;gap:9px}
+    .section-title:before{content:'';width:7px;height:7px;border-radius:999px;background:#ff4d63;box-shadow:0 0 0 5px rgba(255,77,99,.12)}
     [data-theme="light"] .section-title{color:#9f1239}
-    .alert-list{display:grid;gap:8px}.alert-card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 12px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;cursor:pointer}
-    .alert-card.urgent{border-color:#ff4058}.alert-card.change{border-color:#f59e0b}.go{font-size:25px;font-weight:900}
+    [data-theme="light"] .section-title:before{box-shadow:0 0 0 5px rgba(190,18,60,.10)}
+    .alert-list{display:grid;gap:10px;margin-bottom:16px}
+    .show-more{justify-self:center;border:1px solid rgba(136,180,217,.65);background:rgba(255,255,255,.06);color:var(--text);border-radius:999px;padding:9px 16px;font-size:12px;font-weight:950;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.12);transition:transform .18s ease,background .18s ease,border-color .18s ease}
+    .show-more:hover{transform:translateY(-1px);background:rgba(255,255,255,.11);border-color:var(--accent)}
+    [data-theme="light"] .show-more{background:#f8fbff;color:#123b61;box-shadow:0 8px 18px rgba(15,23,42,.06)}
+    .alert-card{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025)),var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px 14px 14px 16px;display:grid;grid-template-columns:42px 1fr auto 24px;gap:13px;align-items:center;cursor:pointer;box-shadow:0 12px 26px rgba(0,0,0,.16);transition:transform .18s ease,border-color .18s ease,background .18s ease}
+    .alert-card:before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:0 999px 999px 0;background:var(--accent)}
+    .alert-card:hover{transform:translateY(-1px);border-color:rgba(88,166,255,.45);background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.035)),var(--panel)}
+    .alert-card.urgent:before{background:#ff4d63}.alert-card.change:before{background:#f59e0b}
+    [data-theme="light"] .alert-card{background:#fff;border-color:rgba(15,23,42,.10);box-shadow:0 12px 28px rgba(15,23,42,.08)}
+    .alert-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:20px;font-weight:950;color:#fff;border:1px solid rgba(255,255,255,.18)}
+    .alert-icon.red{background:rgba(255,77,99,.22);color:#ff8ca0}.alert-icon.orange{background:rgba(245,158,11,.20);color:#ffd28a}.alert-icon.blue{background:rgba(2,132,199,.22);color:#7dd3fc}.alert-icon.green{background:rgba(15,118,110,.24);color:#7ee0d5}
+    [data-theme="light"] .alert-icon.red{background:#ffe4e8;color:#be123c}[data-theme="light"] .alert-icon.orange{background:#fff3d6;color:#a16207}[data-theme="light"] .alert-icon.blue{background:#e0f2fe;color:#0369a1}[data-theme="light"] .alert-icon.green{background:#d9fbf3;color:#0f766e}
+    .alert-main{min-width:0}.alert-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px}.alert-code{font-size:13px;font-weight:950;letter-spacing:.02em}.alert-badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.04em;color:#fff}.alert-badge.red{background:#ff4d63}.alert-badge.orange{background:#f59e0b}.alert-badge.blue{background:#0284c7}.alert-badge.green{background:#0f766e}
+    .alert-main strong{display:block;font-size:14px;font-weight:950;line-height:1.25}.alert-main small{display:block;color:var(--muted);font-size:12px;font-weight:750;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .alert-time{text-align:right;color:var(--muted);font-size:11px;font-weight:900;line-height:1.25;min-width:72px}.alert-time b{display:block;color:var(--text);font-size:12px}.go{width:24px;height:24px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.08);color:var(--text);font-size:22px;font-weight:900;line-height:1}
     .tag{display:inline-flex;border-radius:8px;padding:6px 9px;color:white;font-size:11px;font-weight:900}.tag.red{background:#ff4d63}.tag.orange{background:#f59e0b}.tag.blue{background:#0284c7}.tag.green{background:#0f766e}
     .alert-text strong{display:block;font-size:14px;margin-bottom:4px}.alert-text small{display:block;color:var(--muted);font-size:12px}
     .toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.toolbar h3{margin:0;font-size:17px}
@@ -109,22 +124,16 @@
 
     <section class="page active" id="page-alertas">
       <div class="filter-panel"><div class="filter-title">Filtros</div><div class="filters">
-        <button class="pill active">Todos</button><button class="pill">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button><button class="pill">Personalizado</button>
+        <button class="pill">Todos</button><button class="pill active">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button><button class="pill">Personalizado</button>
         <select class="select"><option>Todos los tipos</option><option>Descuento no autorizado</option><option>Facturación incompleta</option><option>Liberación sospechosa</option><option>Cobertura aplicada</option><option>NCO anulada</option><option>Cambio detectado</option></select>
       </div></div>
-      <div class="summary">
-        <div class="card"><strong id="sumCaja">0</strong><span>Casos Caja</span><p>Descuentos, ajustes, anulaciones y ventas sin datos de factura.</p></div>
-        <div class="card"><strong id="sumCob">0</strong><span>Coberturas</span><p>Coberturas y NCO anuladas.</p></div>
-        <div class="card"><strong id="sumCambios">0</strong><span>Cambios detectados</span><p>Comparaciones automáticas de datos críticos.</p></div>
-        <div class="card"><strong id="sumPend">0</strong><span>Pendientes</span><p>Alertas encontradas todavía pendientes de revisión.</p></div>
-      </div>
       <div class="section-title">Atención inmediata - <span id="urgentCount">0</span></div><div class="alert-list" id="urgentList"></div>
       <div class="section-title">Cambios detectados - <span id="changeCount">0</span></div><div class="alert-list" id="changeList"></div>
     </section>
 
     <section class="page" id="page-caja">
       <div class="filter-panel"><div class="filter-title">Filtros</div><div class="filters">
-        <button class="pill active">Todos</button><button class="pill">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button><button class="pill">Personalizado</button>
+        <button class="pill">Todos</button><button class="pill active">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button><button class="pill">Personalizado</button>
         <select class="select" id="cajaAlerta" onchange="renderCaja()"><option value="">Todas las anomalías</option><option>Descuento no autorizado</option><option>Facturación incompleta</option><option>Liberación sospechosa</option></select>
         <select class="select" id="cajaRevision" onchange="renderCaja()"><option value="">Toda revisión</option><option>Pendiente</option><option>Justificado</option><option>Observado</option></select>
         <input class="search" id="cajaSearch" placeholder="Buscar por venta / NR o cliente" oninput="renderCaja()">
@@ -135,7 +144,7 @@
 
     <section class="page" id="page-coberturas">
       <div class="filter-panel"><div class="filter-title">Filtros</div><div class="filters">
-        <button class="pill active">Todos</button><button class="pill">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button><button class="pill">Personalizado</button>
+        <button class="pill">Todos</button><button class="pill active">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button><button class="pill">Personalizado</button>
         <select class="select" id="cobAlerta" onchange="renderCob()"><option value="">Todas las alertas</option><option>Cobertura aplicada</option><option>NCO anulada</option></select>
         <select class="select" id="cobRevision" onchange="renderCob()"><option value="">Toda revisión</option><option>Pendiente</option><option>Justificado</option><option>Observado</option></select>
         <input class="search" id="cobSearch" placeholder="Buscar por NCO, NR o cliente" oninput="renderCob()">
@@ -146,7 +155,7 @@
 
     <section class="page" id="page-cambios">
       <div class="filter-panel"><div class="filter-title">Filtros</div><div class="filters">
-        <button class="pill active">Todos</button><button class="pill">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button>
+        <button class="pill">Todos</button><button class="pill active">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button>
         <select class="select" id="chgEstado" onchange="renderChanges()"><option value="">Todos los estados</option><option>Pendiente</option><option>Justificado</option><option>Observado</option></select>
         <input class="search" id="chgSearch" placeholder="Buscar por NR, NCO o cliente" oninput="renderChanges()">
       </div></div>
@@ -250,6 +259,7 @@ function reviewDate(){return new Intl.DateTimeFormat('es-BO',{dateStyle:'medium'
 function goPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-btn[data-page]').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelector(`.nav-btn[data-page="${p}"]`).classList.add('active');document.getElementById('title').textContent={alertas:'Alertas de cajas',caja:'Casos Caja',coberturas:'Coberturas',cambios:'Cambios detectados',revisados:'Revisados',hasheo:'Hasheo Manual'}[p]}
 document.querySelectorAll('.nav-btn[data-page]').forEach(b=>b.onclick=()=>goPage(b.dataset.page));
 document.getElementById('themeBtn').onclick=()=>{let l=document.body.dataset.theme==='light';document.body.dataset.theme=l?'dark':'light';document.getElementById('themeBtn').textContent=l?'☾':'☀'}
+document.querySelectorAll('.filters').forEach(group=>{const pills=[...group.querySelectorAll('.pill')];pills.forEach(pill=>pill.onclick=()=>{pills.forEach(x=>x.classList.remove('active'));pill.classList.add('active')})});
 
 function setObservationAction(){
   const actions=document.getElementById('sideActions');
@@ -270,7 +280,27 @@ function commentBox(){
 
 function routeAlert(id){let c=activeCases().find(x=>x.id===id);if(!c)return;if(c.group==='caja'){goPage('caja');document.getElementById('cajaSearch').value=c.doc;document.getElementById('cajaAlerta').value=alertName(c);renderCaja()}else{goPage('coberturas');document.getElementById('cobSearch').value=c.doc;document.getElementById('cobAlerta').value=alertName(c);renderCob()}}
 function routeChange(id){let c=activeChanges().find(x=>x.id===id);if(!c)return;goPage('cambios');document.getElementById('chgSearch').value=c.doc;renderChanges()}
-function renderDashboard(){let urgent=activeCases().filter(c=>(['Facturación incompleta','Liberación sospechosa','NCO anulada'].includes(alertName(c))||alertName(c)==='Descuento no autorizado')&&alertName(c)!=='SIN_ALERTA'&&alertName(c)!=='Anulación');document.getElementById('urgentCount').textContent=urgent.length;document.getElementById('urgentList').innerHTML=urgent.length?urgent.map(c=>`<div class="alert-card urgent" onclick="routeAlert('${c.id}')"><span class="tag ${tagClass(alertName(c))}">${alertName(c)}</span><div class="alert-text"><strong>${c.doc}: ${message(c)}</strong><small>Responsable: ${c.collector} · Revisión: ${c.review}</small><small>${c.date}</small></div><div class="go">›</div></div>`).join(''):`<div class="empty-state">No hay alertas pendientes en esta sección.</div>`;document.getElementById('changeCount').textContent=activeChanges().length;document.getElementById('changeList').innerHTML=activeChanges().length?activeChanges().map(c=>`<div class="alert-card change" onclick="routeChange('${c.id}')"><span class="tag orange">Cambio</span><div class="alert-text"><strong>${c.doc}: Cambio detectado en datos críticos</strong><small>Cliente / seguro: ${c.client}</small><small>${c.date}</small></div><div class="go">›</div></div>`).join(''):`<div class="empty-state">No hay cambios pendientes en esta sección.</div>`}
+function alertTone(type){type=(type||'').toLowerCase();if(type.includes('facturación'))return 'blue';if(type.includes('liberación'))return 'red';if(type.includes('descuento'))return 'orange';if(type.includes('nco'))return 'red';if(type.includes('cobertura'))return 'green';return 'orange'}
+function alertIcon(type){type=(type||'').toLowerCase();if(type.includes('facturación'))return '🧾';if(type.includes('liberación'))return '🔓';if(type.includes('descuento'))return '%';if(type.includes('nco'))return '⛔';if(type.includes('cobertura'))return '🛡';return '⚠'}
+function compactDate(raw){let parts=(raw||'').split(',');let date=(parts[0]||'').trim().replace(' 2026','');let time=(parts[1]||'').trim();return {date,time}}
+function alertShort(c){let a=alertName(c);if(a==='Facturación incompleta')return 'Faltan datos de factura o cobro';if(a==='Liberación sospechosa')return 'Cuenta cerrada por ajuste manual';if(a==='Descuento no autorizado')return 'Descuento sin regla autorizada';if(a==='NCO anulada')return 'Documento anulado para validar';if(a==='Cobertura aplicada')return 'Cobertura aplicada al cobro';return message(c)}
+function changeShort(c){let n=(c.rows||[]).filter(r=>r[3]==='Modificado').length;return n===1?'1 dato crítico cambió':`${n} datos críticos cambiaron`}
+let dashboardExpanded={urgent:false,changes:false};
+function toggleAlertSection(section){dashboardExpanded[section]=!dashboardExpanded[section];renderDashboard()}
+function urgentAlertCard(c){let a=alertName(c),tone=alertTone(a),d=compactDate(c.date);return `<div class="alert-card urgent" onclick="routeAlert('${c.id}')" title="Abrir detalle de ${c.doc}"><div class="alert-icon ${tone}">${alertIcon(a)}</div><div class="alert-main"><div class="alert-top"><span class="alert-code">${c.doc}</span><span class="alert-badge ${tone}">${a}</span></div><strong>${alertShort(c)}</strong><small>${c.client}</small></div><div class="alert-time"><b>${d.date}</b>${d.time}</div><div class="go">›</div></div>`}
+function changeAlertCard(c){let d=compactDate(c.date);return `<div class="alert-card change" onclick="routeChange('${c.id}')" title="Abrir cambio detectado de ${c.doc}"><div class="alert-icon orange">↔</div><div class="alert-main"><div class="alert-top"><span class="alert-code">${c.doc}</span><span class="alert-badge orange">Cambio detectado</span></div><strong>${changeShort(c)}</strong><small>${c.client}</small></div><div class="alert-time"><b>${d.date}</b>${d.time}</div><div class="go">›</div></div>`}
+function moreButton(section,total){let opened=dashboardExpanded[section],hidden=total-3;if(total<=3)return '';let label=opened?'Ver menos':`Ver más (${hidden})`;return `<button class="show-more" onclick="toggleAlertSection('${section}')">${label}</button>`}
+function renderDashboard(){
+  const urgent=activeCases().filter(c=>(['Facturación incompleta','Liberación sospechosa','NCO anulada'].includes(alertName(c))||alertName(c)==='Descuento no autorizado')&&alertName(c)!=='SIN_ALERTA'&&alertName(c)!=='Anulación');
+  const visibleUrgent=dashboardExpanded.urgent?urgent:urgent.slice(0,3);
+  document.getElementById('urgentCount').textContent=urgent.length;
+  document.getElementById('urgentList').innerHTML=urgent.length?visibleUrgent.map(urgentAlertCard).join('')+moreButton('urgent',urgent.length):`<div class="empty-state">No hay alertas pendientes en esta sección.</div>`;
+
+  const changeItems=activeChanges();
+  const visibleChanges=dashboardExpanded.changes?changeItems:changeItems.slice(0,3);
+  document.getElementById('changeCount').textContent=changeItems.length;
+  document.getElementById('changeList').innerHTML=changeItems.length?visibleChanges.map(changeAlertCard).join('')+moreButton('changes',changeItems.length):`<div class="empty-state">No hay cambios pendientes en esta sección.</div>`;
+}
 function message(c){let a=alertName(c);if(a==='Facturación incompleta')return 'Venta con información de facturación o cobro incompleta.';if(a==='Liberación sospechosa')return 'Liberación o ajuste para revisión manual.';if(a==='Descuento no autorizado')return 'Descuento sin coincidencia con médico o regla autorizada.';if(a==='NCO anulada')return 'NCO anulada con factura relacionada.';return a}
 function renderCaja(){let a=document.getElementById('cajaAlerta').value,r=document.getElementById('cajaRevision').value,q=document.getElementById('cajaSearch').value.toLowerCase();let rows=activeCases().filter(c=>c.group==='caja').filter(c=>alertName(c)!=='SIN_ALERTA').filter(c=>alertName(c)!=='Anulación').filter(c=>!a||alertName(c)===a).filter(c=>!r||c.review===r).filter(c=>!q||c.doc.toLowerCase().includes(q)||c.client.toLowerCase().includes(q));document.getElementById('cajaRows').innerHTML=rows.length?rows.map(c=>`<tr><td><b>${c.doc}</b></td><td>${c.date}</td><td>${c.client}</td><td>${alertName(c)}</td><td><span class="chip ${chipClass(c.review)}">${c.review}</span></td><td><button class="action" onclick="openCase('${c.id}')">Ver más</button></td></tr>`).join(''):`<tr><td colspan="6" class="empty-state">No hay casos pendientes con esos filtros.</td></tr>`}
 function renderCob(){let a=document.getElementById('cobAlerta').value,r=document.getElementById('cobRevision').value,q=document.getElementById('cobSearch').value.toLowerCase();let rows=activeCases().filter(c=>c.group==='cob').filter(c=>!a||alertName(c)===a).filter(c=>!r||c.review===r).filter(c=>!q||c.doc.toLowerCase().includes(q)||c.client.toLowerCase().includes(q));document.getElementById('cobRows').innerHTML=rows.length?rows.map(c=>`<tr><td><b>${c.doc}</b></td><td>${c.client}</td><td>${c.date}</td><td>${alertName(c)}</td><td><span class="chip ${chipClass(c.review)}">${c.review}</span></td><td><button class="action" onclick="openCase('${c.id}')">Ver más</button></td></tr>`).join(''):`<tr><td colspan="6" class="empty-state">No hay coberturas pendientes con esos filtros.</td></tr>`}
@@ -281,14 +311,30 @@ function openCase(id){
   selectedType='case';
   let c=activeCases().find(x=>x.id===id);
   if(!c)return;
+
+  const alerta=alertName(c);
   document.getElementById('sideTitle').textContent=c.doc;
-  document.getElementById('sideSub').textContent=c.client+' · '+alertName(c);
+  document.getElementById('sideSub').textContent=c.client+' · '+alerta;
   setObservationAction();
+
+  const motivo={
+    'Facturación incompleta':'No se encontraron datos completos de factura asociados en el ERP recibido por auditoría.',
+    'Descuento no autorizado':'La venta tiene descuento aplicado y requiere validar autorización.',
+    'Liberación sospechosa':'La venta fue cerrada mediante ajuste o liberación y requiere respaldo.',
+    'Cobertura aplicada':'La venta tiene cobertura aplicada y debe verificarse contra respaldo del seguro.',
+    'NCO anulada':'La NCO figura como anulada y requiere validar respaldo administrativo.'
+  }[alerta] || 'Caso enviado para revisión de auditoría.';
 
   if(c.nco){
     document.getElementById('sideBody').innerHTML=`
       <div class="sp-section">
-        <div class="sp-section-title">Datos del documento</div>
+        <div class="sp-section-title">Por qué se generó</div>
+        <div class="sp-row full">
+          <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
+        </div>
+      </div>
+      <div class="sp-section">
+        <div class="sp-section-title">Datos mínimos de NCO anulada</div>
         <div class="sp-row">
           <div class="sp-field"><label>Código de NCO</label><div>${c.nco.code}</div></div>
           <div class="sp-field"><label>Factura relacionada</label><div>${c.nco.related}</div></div>
@@ -299,7 +345,7 @@ function openCase(id){
         </div>
         <div class="sp-row">
           <div class="sp-field"><label>Estado</label><div>${c.status}</div></div>
-          <div class="sp-field"><label>Usuario anulación</label><div>${c.nco.annulUser}</div></div>
+          <div class="sp-field"><label>Usuario que realizó la anulación</label><div>${c.nco.annulUser}</div></div>
         </div>
         <div class="sp-row full" style="border-bottom:none">
           <div class="sp-field"><label>Fecha de anulación</label><div>${c.nco.annulDate}</div></div>
@@ -310,47 +356,161 @@ function openCase(id){
     return;
   }
 
+  if(alerta==='Facturación incompleta'){
+    document.getElementById('sideBody').innerHTML=`
+      <div class="sp-section">
+        <div class="sp-section-title">Por qué se generó</div>
+        <div class="sp-row full">
+          <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
+        </div>
+      </div>
+      <div class="sp-section">
+        <div class="sp-section-title">Datos mínimos de la venta</div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Fecha</label><div>${c.date}</div></div>
+          <div class="sp-field"><label>Cliente</label><div>${c.client}</div></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
+          <div class="sp-field"><label>Usuario que cobró</label><div>${c.collector}</div></div>
+        </div>
+        <div class="sp-total-row"><span>Total final</span><strong>${c.total}</strong></div>
+      </div>
+      <div class="sp-section">
+        <div class="sp-section-title">Datos de factura recibidos</div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Nro. factura</label><div>${c.invoice.num}</div></div>
+          <div class="sp-field"><label>Estado factura</label><div>${c.invoice.status}</div></div>
+        </div>
+        <div class="sp-row" style="border-bottom:none">
+          <div class="sp-field"><label>Monto factura</label><div>${c.invoice.amount}</div></div>
+          <div class="sp-field"><label>Fecha factura</label><div>${c.invoice.date}</div></div>
+        </div>
+      </div>
+      ${commentBox()}`;
+    document.getElementById('sidePanel').classList.add('open');
+    return;
+  }
+
+  if(alerta==='Descuento no autorizado'){
+    document.getElementById('sideBody').innerHTML=`
+      <div class="sp-section">
+        <div class="sp-section-title">Por qué se generó</div>
+        <div class="sp-row full">
+          <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
+        </div>
+      </div>
+      <div class="sp-section">
+        <div class="sp-section-title">Datos para validar descuento</div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Fecha</label><div>${c.date}</div></div>
+          <div class="sp-field"><label>Cliente</label><div>${c.client}</div></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Médico responsable</label><div>${c.doctor}</div></div>
+          <div class="sp-field"><label>Usuario que cobró</label><div>${c.collector}</div></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Subtotal</label><div>${c.subtotal}</div></div>
+          <div class="sp-field"><label>Descuento</label><div>${c.discount}</div></div>
+        </div>
+        <div class="sp-total-row"><span>Total final</span><strong>${c.total}</strong></div>
+      </div>
+      <div class="sp-section">
+        <div class="sp-section-title">Factura mínima</div>
+        <div class="sp-row" style="border-bottom:none">
+          <div class="sp-field"><label>Nro. factura</label><div>${c.invoice.num}</div></div>
+          <div class="sp-field"><label>Monto factura</label><div>${c.invoice.amount}</div></div>
+        </div>
+      </div>
+      ${commentBox()}`;
+    document.getElementById('sidePanel').classList.add('open');
+    return;
+  }
+
+  if(alerta==='Liberación sospechosa'){
+    document.getElementById('sideBody').innerHTML=`
+      <div class="sp-section">
+        <div class="sp-section-title">Por qué se generó</div>
+        <div class="sp-row full">
+          <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
+        </div>
+      </div>
+      <div class="sp-section">
+        <div class="sp-section-title">Datos para validar liberación</div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Fecha</label><div>${c.date}</div></div>
+          <div class="sp-field"><label>Cliente</label><div>${c.client}</div></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
+          <div class="sp-field"><label>Usuario que cobró</label><div>${c.collector}</div></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Monto original</label><div>${c.subtotal}</div></div>
+          <div class="sp-field"><label>Total final</label><div>${c.total}</div></div>
+        </div>
+        <div class="sp-row full" style="border-bottom:none">
+          <div class="sp-field"><label>Observación de ajuste</label><div style="color:var(--muted);font-style:italic">${c.obs}</div></div>
+        </div>
+      </div>
+      ${commentBox()}`;
+    document.getElementById('sidePanel').classList.add('open');
+    return;
+  }
+
+  if(alerta==='Cobertura aplicada'){
+    document.getElementById('sideBody').innerHTML=`
+      <div class="sp-section">
+        <div class="sp-section-title">Por qué se generó</div>
+        <div class="sp-row full">
+          <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
+        </div>
+      </div>
+      <div class="sp-section">
+        <div class="sp-section-title">Datos para validar cobertura</div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Fecha</label><div>${c.date}</div></div>
+          <div class="sp-field"><label>Cliente / seguro</label><div>${c.client}</div></div>
+        </div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
+          <div class="sp-field"><label>Cobertura</label><div>${c.coverage}</div></div>
+        </div>
+        <div class="sp-total-row"><span>Total final</span><strong>${c.total}</strong></div>
+      </div>
+      <div class="sp-section">
+        <div class="sp-section-title">Factura mínima</div>
+        <div class="sp-row" style="border-bottom:none">
+          <div class="sp-field"><label>Nro. factura</label><div>${c.invoice.num}</div></div>
+          <div class="sp-field"><label>Monto factura</label><div>${c.invoice.amount}</div></div>
+        </div>
+      </div>
+      ${commentBox()}`;
+    document.getElementById('sidePanel').classList.add('open');
+    return;
+  }
+
   document.getElementById('sideBody').innerHTML=`
     <div class="sp-section">
-      <div class="sp-section-title">Datos generales</div>
+      <div class="sp-section-title">Por qué se generó</div>
+      <div class="sp-row full">
+        <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
+      </div>
+    </div>
+    <div class="sp-section">
+      <div class="sp-section-title">Datos mínimos</div>
       <div class="sp-row">
         <div class="sp-field"><label>Fecha</label><div>${c.date}</div></div>
         <div class="sp-field"><label>Cliente</label><div>${c.client}</div></div>
       </div>
-      <div class="sp-row">
-        <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
-        <div class="sp-field"><label>Usuario que cobró</label><div>${c.collector}</div></div>
-      </div>
-      <div class="sp-row">
-        <div class="sp-field"><label>Médico responsable</label><div>${c.doctor}</div></div>
-        <div class="sp-field"><label>Observación de ajuste</label><div style="color:var(--muted);font-style:italic">${c.obs}</div></div>
-      </div>
-    </div>
-    <div class="sp-section">
-      <div class="sp-section-title">Montos</div>
-      <div class="sp-row">
-        <div class="sp-field"><label>Subtotal</label><div>${c.subtotal}</div></div>
-        <div class="sp-field"><label>Descuento</label><div>${c.discount}</div></div>
-      </div>
       <div class="sp-row" style="border-bottom:none">
-        <div class="sp-field"><label>Cobertura</label><div>${c.coverage}</div></div>
-        <div class="sp-field"></div>
-      </div>
-      <div class="sp-total-row"><span>Total final</span><strong>${c.total}</strong></div>
-    </div>
-    <div class="sp-section">
-      <div class="sp-section-title">Factura</div>
-      <div class="sp-row">
-        <div class="sp-field"><label>Nro. factura</label><div>${c.invoice.num}</div></div>
-        <div class="sp-field"><label>Estado factura</label><div>${c.invoice.status}</div></div>
-      </div>
-      <div class="sp-row ${c.invoice.annulUser?'':'full'}" style="border-bottom:none">
-        <div class="sp-field"><label>Monto factura</label><div>${c.invoice.amount}</div></div>
-        ${c.invoice.annulUser?`<div class="sp-field"><label>Usuario anulación factura</label><div>${c.invoice.annulUser}</div></div>`:''}
+        <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
+        <div class="sp-field"><label>Total final</label><div>${c.total}</div></div>
       </div>
     </div>
     ${commentBox()}`;
-  document.getElementById('sidePanel').classList.add('open')
+  document.getElementById('sidePanel').classList.add('open');
 }
 function openChange(id){selected=id;selectedType='change';let c=activeChanges().find(x=>x.id===id);if(!c)return;let changedRows=c.rows.filter(r=>r[3]==='Modificado');document.getElementById('sideTitle').textContent=c.doc;document.getElementById('sideSub').textContent='Cambio detectado por comparación automática';setObservationAction();document.getElementById('sideBody').innerHTML=`
   <div class="sp-section">
@@ -412,7 +572,7 @@ function clearHash(){document.getElementById('hashDoc').value='';document.getEle
 function clearCaja(){document.getElementById('cajaAlerta').value='';document.getElementById('cajaRevision').value='';document.getElementById('cajaSearch').value='';renderCaja()}
 function clearCob(){document.getElementById('cobAlerta').value='';document.getElementById('cobRevision').value='';document.getElementById('cobSearch').value='';renderCob()}
 function clearChanges(){document.getElementById('chgEstado').value='';document.getElementById('chgSearch').value='';renderChanges()}
-function renderAll(){document.getElementById('sumCaja').textContent=activeCases().filter(c=>c.group==='caja').length;document.getElementById('sumCob').textContent=activeCases().filter(c=>c.group==='cob').length;document.getElementById('sumCambios').textContent=activeChanges().length;document.getElementById('sumPend').textContent=activeCases().filter(c=>c.review==='Pendiente').length+activeChanges().filter(c=>c.review==='Pendiente').length;renderDashboard();renderCaja();renderCob();renderChanges();renderReviewed()}
+function renderAll(){renderDashboard();renderCaja();renderCob();renderChanges();renderReviewed()}
 renderAll();
 </script>
 </body>
