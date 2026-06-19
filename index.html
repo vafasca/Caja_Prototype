@@ -1,1217 +1,296 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fenix - Auditoria Caja</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Syne:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;overflow:hidden}
-:root{
-  --bg:#0e0f11;--surface:#16181c;--surface2:#1e2026;
-  --border:#2a2d35;--border2:#363a44;
-  --text:#e8eaf0;--text2:#8b90a0;--text3:#555b6a;
-  --danger-bg:#2a1515;--danger-border:#5c2020;--danger-text:#f87171;
-  --warn-bg:#1f1a0e;--warn-border:#4a3a10;--warn-text:#fbbf24;
-  --ok-bg:#0e1f14;--ok-border:#1a4228;--ok-text:#4ade80;
-  --radius:6px;--radius-lg:10px;
-  --font-sans:"Syne",sans-serif;--font-mono:"IBM Plex Mono",monospace;
-  --sidebar:220px;--panel:300px;
-}
-body{background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:15px}
-.shell{display:flex;height:100vh}
-.sidebar{width:var(--sidebar);background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden}
-.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
-.brand{padding:20px 18px 16px;border-bottom:1px solid var(--border)}
-.brand-name{font-size:15px;font-weight:600;color:var(--text);letter-spacing:-.01em}
-.brand-sub{font-size:10px;color:var(--text3);margin-top:3px;letter-spacing:.06em;text-transform:uppercase}
-.nav-section{font-size:9px;color:var(--text3);padding:14px 18px 5px;letter-spacing:.1em;text-transform:uppercase}
-.nav-item{display:flex;align-items:center;gap:10px;padding:8px 18px;font-size:13px;color:var(--text2);cursor:pointer;border-left:2px solid transparent;transition:all .12s;user-select:none}
-.nav-item svg{width:15px;height:15px;opacity:.6;flex-shrink:0}
-.nav-item:hover{color:var(--text);background:var(--surface2)}
-.nav-item.active{color:var(--text);border-left-color:var(--text);background:var(--surface2);font-weight:500}
-.nav-item.active svg{opacity:1}
-.nav-badge{margin-left:auto;font-size:10px;font-family:var(--font-mono);padding:1px 6px;border-radius:20px;background:var(--danger-bg);color:var(--danger-text);border:1px solid var(--danger-border)}
-.nav-badge.warn{background:var(--warn-bg);color:var(--warn-text);border-color:var(--warn-border)}
-.nav-badge.ok{background:var(--ok-bg);color:var(--ok-text);border-color:var(--ok-border)}
-.sidebar-footer{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border);font-size:11px;color:var(--text3)}
-.sidebar-date{font-family:var(--font-mono);font-size:10px;color:var(--text3);margin-top:2px}
-.topbar{padding:14px 20px 12px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0}
-.page-title{font-size:17px;font-weight:600;color:var(--text);letter-spacing:-.01em}
-.page-q{font-size:13px;color:var(--text2);margin-top:3px;font-style:italic}
-.topbar-right{display:flex;gap:8px;align-items:center;padding-top:2px}
-.content{flex:1;overflow-y:auto;padding:18px 20px;scroll-behavior:smooth}
-.content::-webkit-scrollbar{width:4px}
-.content::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-.view{display:none}
-.view.active{display:flex;flex-direction:column;height:100%}
-.btn{padding:6px 14px;font-size:12px;font-family:var(--font-sans);border:1px solid var(--border2);border-radius:var(--radius);background:transparent;color:var(--text2);cursor:pointer;transition:all .12s;white-space:nowrap;display:inline-flex;align-items:center;gap:6px}
-.btn:hover{background:var(--surface2);color:var(--text)}
-.btn-danger{border-color:var(--danger-border);color:var(--danger-text);background:var(--danger-bg)}
-.btn-danger:hover{filter:brightness(1.15)}
-.btn-ghost{border-color:transparent;color:var(--text3)}
-.btn-ghost:hover{color:var(--text2);background:var(--surface2);border-color:var(--border)}
-.btn-primary{border-color:var(--border2);color:var(--text);background:var(--surface2);font-weight:500}
-.btn-primary:hover{background:var(--border2)}
-/* DASH FILTER */
-.dash-filter{display:flex;align-items:center;gap:10px;padding:12px 20px;border-bottom:1px solid var(--border);background:var(--surface);flex-shrink:0;flex-wrap:wrap}
-.dash-filter-label{font-size:11px;color:var(--text3);white-space:nowrap}
-.dash-filter input[type=date],.dash-filter input[type=time]{font-size:13px;font-family:var(--font-mono);padding:6px 10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface2);color:var(--text2);outline:none;cursor:pointer}
-.dash-filter input[type=date]:focus,.dash-filter input[type=time]:focus{border-color:var(--text3);color:var(--text)}
-.dash-filter-sep{color:var(--text3);font-size:11px}
-.dash-periodo{font-size:11px;color:var(--text3);margin-left:4px;font-family:var(--font-mono)}
-/* ALERTAS */
-.alert-section{margin-bottom:4px}
-.alert-section-head{font-size:10px;font-weight:500;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px}
-.alert-section-head::after{content:"";flex:1;height:1px;background:var(--border)}
-.alert-list{display:flex;flex-direction:column;gap:5px;margin-bottom:18px}
-.alert-card{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:11px 16px;border:1px solid var(--border);border-radius:var(--radius-lg);cursor:pointer;background:var(--surface);transition:border-color .12s,background .12s}
-.alert-card:hover{border-color:var(--border2);background:var(--surface2)}
-.alert-card.danger{border-left:3px solid var(--danger-text)}
-.alert-card.warn{border-left:3px solid var(--warn-text)}
-.alert-badge{font-size:10px;font-family:var(--font-mono);padding:2px 8px;border-radius:20px;white-space:nowrap}
-.badge-cob,.badge-lib{background:var(--danger-bg);color:var(--danger-text);border:1px solid var(--danger-border)}
-.badge-nr,.badge-vm,.badge-anul{background:var(--warn-bg);color:var(--warn-text);border:1px solid var(--warn-border)}
-.alert-main{font-size:13px;color:var(--text);line-height:1.3}
-.alert-meta{font-size:11px;color:var(--text3);margin-top:2px;font-family:var(--font-mono)}
-.alert-arrow{color:var(--text3);font-size:18px;line-height:1}
-.clean-state{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:40px 20px;text-align:center;background:var(--ok-bg);border:1px solid var(--ok-border);border-radius:var(--radius-lg)}
-.clean-icon{font-size:28px}
-.clean-title{font-size:14px;font-weight:600;color:var(--ok-text)}
-.clean-sub{font-size:12px;color:var(--text3)}
-/* ESTADISTICAS */
-.stats-toggle{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text3);cursor:pointer;padding:10px 0 8px;border-top:1px solid var(--border);user-select:none;margin-top:6px}
-.stats-toggle:hover{color:var(--text2)}
-.stats-toggle svg{width:12px;height:12px;transition:transform .2s}
-.stats-toggle.open svg{transform:rotate(180deg)}
-.stats-grid{display:none;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
-.stats-grid.visible{display:grid}
-.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px}
-.stat-num{font-size:20px;font-weight:600;font-family:var(--font-mono);color:var(--text);line-height:1;margin-bottom:4px}
-.stat-label{font-size:10px;color:var(--text3)}
-/* TABLA */
-.view-layout{display:grid;gap:16px}
-.view-layout.has-panel{grid-template-columns:1fr var(--panel)}
-.filters{display:flex;gap:8px;margin-bottom:14px;align-items:center;flex-wrap:wrap}
-.filters select,.filters input[type=search],.filters input[type=date],.filters input[type=time]{font-size:13px;font-family:var(--font-sans);padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text2);outline:none;transition:border-color .12s}
-.filters select:hover,.filters input:hover{border-color:var(--border2)}
-.filters select:focus,.filters input:focus{border-color:var(--text3);color:var(--text)}
-.filters input[type=search]{max-width:200px}
-.filter-count{font-size:11px;color:var(--text3);margin-left:auto;font-family:var(--font-mono)}
-.range-filter{position:relative;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.range-field{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--text2);padding:6px 10px;min-width:128px;cursor:pointer;text-align:left;font-family:var(--font-sans)}
-.range-field:hover,.range-field.active{border-color:var(--border2);color:var(--text)}
-.range-field span{display:block;font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
-.range-field strong{font-size:12px;font-family:var(--font-mono);font-weight:500;color:inherit}
-.range-popover{position:absolute;top:42px;left:0;width:280px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);box-shadow:0 16px 38px rgba(0,0,0,.32);padding:12px;z-index:20;display:none}
-.range-filter.open .range-popover{display:block}
-.range-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.range-month{font-size:13px;font-weight:600;color:var(--text)}
-.range-nav{width:26px;height:26px;border:1px solid var(--border);border-radius:var(--radius);background:transparent;color:var(--text2);cursor:pointer}
-.range-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-.range-dow{font-size:10px;color:var(--text3);text-align:center;padding:4px 0}
-.range-day{height:30px;border:0;border-radius:0;background:transparent;color:var(--text2);font-family:var(--font-mono);font-size:12px;cursor:pointer}
-.range-day:hover{background:var(--surface2);color:var(--text)}
-.range-day.muted{color:var(--text3);opacity:.45}
-.range-day.in-range{background:#1f2a44;color:#c8d7ff}
-.range-day.selected{background:#2563eb;color:#fff;border-radius:50%;font-weight:600}
-.range-times{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
-.range-times label{font-size:9px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase}
-.range-times input{width:100%;margin-top:4px;font-size:12px;font-family:var(--font-mono);padding:6px 8px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface2);color:var(--text)}
-.table-box{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-table{width:100%;border-collapse:collapse}
-thead th{padding:10px 12px;text-align:left;font-size:11px;font-weight:500;color:var(--text2);background:var(--surface);border-bottom:1px solid var(--border);letter-spacing:.05em;text-transform:uppercase}
-tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
-tbody tr:last-child{border-bottom:none}
-tbody tr:hover{background:var(--surface2)}
-tbody tr.selected{background:var(--surface2);border-left:3px solid var(--text3)}
-td{padding:11px 12px;font-size:13px;color:var(--text);vertical-align:middle}
-.td-mono{font-family:var(--font-mono);font-size:12px}
-.td-muted{color:var(--text2)}
-.td-flag{color:var(--danger-text);font-size:12px}
-.td-warn{color:var(--warn-text);font-size:12px}
-.empty-row td{color:var(--text3);text-align:center;padding:24px;font-size:12px}
-.chip{display:inline-flex;align-items:center;font-size:11px;font-family:var(--font-mono);padding:3px 8px;border-radius:20px;white-space:nowrap}
-.chip-danger{background:var(--danger-bg);color:var(--danger-text);border:1px solid var(--danger-border)}
-.chip-warn{background:var(--warn-bg);color:var(--warn-text);border:1px solid var(--warn-border)}
-.chip-ok{background:var(--ok-bg);color:var(--ok-text);border:1px solid var(--ok-border)}
-.chip-muted{background:var(--surface2);color:var(--text2);border:1px solid var(--border)}
-.chip-mini{margin-left:8px}
-/* PANEL */
-.panel{border:1px solid var(--border);border-radius:var(--radius-lg);display:flex;flex-direction:column;background:var(--surface);overflow:hidden;max-height:calc(100vh - 140px);position:sticky;top:0}
-.panel-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text3);font-size:12px;padding:24px;text-align:center}
-.panel-empty svg{width:32px;height:32px;opacity:.3}
-.panel-header{padding:14px 16px;border-bottom:1px solid var(--border);background:var(--surface2)}
-.panel-id{font-size:15px;font-weight:600;color:var(--text);font-family:var(--font-mono);letter-spacing:-.01em}
-.panel-subtitle{font-size:12px;color:var(--text2);margin-top:3px}
-.panel-body{flex:1;overflow-y:auto;padding:14px 16px;display:flex;flex-direction:column}
-.panel-body::-webkit-scrollbar{width:3px}
-.panel-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-.field{margin-bottom:12px}
-.field-label{font-size:10px;color:var(--text2);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;font-weight:500}
-.field-value{font-size:13px;color:var(--text);line-height:1.4}
-.field-value.flag{color:var(--danger-text)}
-.field-value.warn-v{color:var(--warn-text)}
-.field-value.mono{font-family:var(--font-mono);font-size:12px}
-.panel-divider{height:1px;background:var(--border);margin:10px 0 12px}
-.panel-actions{padding:12px 16px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:6px;background:var(--surface)}
-.panel-note{font-size:10px;color:var(--text3);padding:8px 10px;background:var(--surface2);border-radius:var(--radius);border:1px solid var(--border);line-height:1.5}
-.section-head{font-size:11px;font-weight:500;color:var(--text3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:10px}
-.integrity-block{padding:10px 12px;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.integrity-block.ok{border-color:var(--ok-border);background:var(--ok-bg)}
-.integrity-block.bad{border-color:var(--danger-border);background:var(--danger-bg)}
-.int-icon{font-size:18px}
-.int-text{font-size:11px;color:var(--text2);line-height:1.4}
-.int-text strong{display:block;font-size:12px;color:var(--text);margin-bottom:1px}
-.timeline{display:flex;flex-direction:column}
-.tl-item{display:flex;gap:10px;padding-bottom:12px}
-.tl-item:last-child{padding-bottom:0}
-.tl-left{display:flex;flex-direction:column;align-items:center;width:16px;flex-shrink:0}
-.tl-dot{width:8px;height:8px;border-radius:50%;margin-top:3px;flex-shrink:0}
-.tl-dot.ok{background:var(--ok-text);box-shadow:0 0 0 3px var(--ok-bg)}
-.tl-dot.bad{background:var(--danger-text);box-shadow:0 0 0 3px var(--danger-bg)}
-.tl-dot.warn{background:var(--warn-text);box-shadow:0 0 0 3px var(--warn-bg)}
-.tl-line{flex:1;width:1px;background:var(--border);margin-top:4px}
-.tl-item:last-child .tl-line{display:none}
-.tl-right{flex:1}
-.tl-label{font-size:12px;color:var(--text);font-weight:500}
-.tl-meta{font-size:10px;color:var(--text3);margin-top:2px;font-family:var(--font-mono)}
-#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--surface2);border:1px solid var(--border2);color:var(--text);padding:9px 18px;border-radius:var(--radius-lg);font-size:12px;z-index:9999;display:none;pointer-events:none;white-space:nowrap}
-#toast.success{border-color:var(--ok-border);color:var(--ok-text)}
-#toast.error{border-color:var(--danger-border);color:var(--danger-text)}
-::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
-@media(max-width:900px){.view-layout.has-panel{grid-template-columns:1fr}.stats-grid{grid-template-columns:repeat(2,1fr)}}
-/* MODAL REQUERIMIENTO */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:10000;display:none;align-items:center;justify-content:center}
-.modal-overlay.open{display:flex}
-.modal-box{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius-lg);width:440px;max-width:90vw;display:flex;flex-direction:column;overflow:hidden}
-.modal-header{padding:16px 18px;border-bottom:1px solid var(--border);background:var(--surface2)}
-.modal-title{font-size:14px;font-weight:600;color:var(--text);letter-spacing:-.01em}
-.modal-subtitle{font-size:11px;color:var(--text3);margin-top:3px}
-.modal-body{padding:18px}
-.modal-label{font-size:9px;font-weight:500;color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
-.modal-textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-sans);font-size:13px;padding:10px 12px;resize:vertical;min-height:90px;outline:none;transition:border-color .12s;line-height:1.5}
-.modal-textarea:focus{border-color:var(--text3)}
-.modal-textarea::placeholder{color:var(--text3)}
-.modal-footer{padding:12px 18px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;background:var(--surface)}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fénix - Prototipo Auditoría Caja v7</title>
+  <style>
+    :root{
+      --bg:#1e4a75; --panel:#012544; --sidebar:#001f3a; --sidebar2:#07345b;
+      --text:#f7fbff; --muted:#c7d7eb; --line:rgba(255,255,255,.14);
+      --accent:#58a6ff; --green:#0b7a78; --red:#ff4d63; --orange:#f59e0b;
+      --chip:#09365f; --shadow:0 16px 38px rgba(0,0,0,.25);
+    }
+    [data-theme="light"]{
+      --bg:#eef5fb; --panel:#ffffff; --sidebar:#0b2c4b; --sidebar2:#123b61;
+      --text:#12263f; --muted:#58708b; --line:rgba(18,38,63,.14);
+      --accent:#0ea5e9; --green:#0f766e; --red:#be123c; --orange:#a16207;
+      --chip:#eaf3ff; --shadow:0 12px 30px rgba(15,23,42,.08);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+    .app{min-height:100vh;display:grid;grid-template-columns:176px 1fr}
+    aside{background:var(--sidebar);border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:100vh}
+    .brand{padding:18px 14px;border-bottom:1px solid var(--line)}
+    .brand h1{margin:0;font-size:19px}.brand p{margin:2px 0 0;font-size:11px;color:#d7e7ff}
+    .menu-section{padding:14px 0 10px;border-bottom:1px solid var(--line)}
+    .menu-title{padding:0 14px 10px;font-size:13px;font-weight:900;display:flex;justify-content:space-between}
+    .nav-btn{width:100%;border:0;background:transparent;color:var(--text);padding:10px 14px;text-align:left;cursor:pointer;font-size:14px}
+    .nav-btn.active,.nav-btn:hover{background:var(--sidebar2);border-left:3px solid var(--accent);padding-left:11px}
+    .spacer{flex:1}.logout{margin:14px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--text);padding:10px;text-align:left}
+    main{min-width:0}.topbar{padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+    .topbar h2{margin:0;font-size:17px}.top-actions{display:flex;gap:12px;align-items:center}
+    .theme{width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.08);color:var(--text);cursor:pointer}
+    .user{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:800}
+    .avatar{width:30px;height:30px;border-radius:50%;background:#60a5fa;display:grid;place-items:center}
+    .page{display:none;padding:0 24px 28px}.page.active{display:block}
+    .filter-panel,.card,.table-panel,.form-panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow)}
+    .filter-panel{position:relative;padding:18px 14px 14px;margin-bottom:16px}
+    .filter-title{position:absolute;top:-13px;left:45px;background:var(--panel);border:1px solid var(--accent);border-radius:12px;padding:6px 14px;font-weight:900;font-size:13px}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    button,.btn{font:inherit}.pill,.btn,.select,.search,.input,.textarea{border:1px solid #88b4d9;border-radius:8px;background:transparent;color:var(--text);padding:8px 12px;font-weight:800}
+    .pill.active,.btn.primary{background:var(--green);border-color:var(--green);color:white}.select option{color:#111}.search{min-width:240px}.select{min-width:180px}
+    .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+    .card{padding:15px}.card strong{display:block;font-size:28px}.card span{font-weight:900;font-size:13px}.card p{margin:4px 0 0;color:var(--muted);font-size:12px}
+    .section-title{font-size:12px;font-weight:900;text-transform:uppercase;margin:12px 0 10px;color:#ffd1d8;letter-spacing:.04em}
+    [data-theme="light"] .section-title{color:#9f1239}
+    .alert-list{display:grid;gap:8px}.alert-card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px 12px;display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;cursor:pointer}
+    .alert-card.urgent{border-color:#ff4058}.alert-card.change{border-color:#f59e0b}.go{font-size:25px;font-weight:900}
+    .tag{display:inline-flex;border-radius:8px;padding:6px 9px;color:white;font-size:11px;font-weight:900}.tag.red{background:#ff4d63}.tag.orange{background:#f59e0b}.tag.blue{background:#0284c7}.tag.green{background:#0f766e}
+    .alert-text strong{display:block;font-size:14px;margin-bottom:4px}.alert-text small{display:block;color:var(--muted);font-size:12px}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.toolbar h3{margin:0;font-size:17px}
+    .tool-actions{display:flex;gap:8px;flex-wrap:wrap}.btn{cursor:pointer}.btn.soft{background:rgba(255,255,255,.06)}
+    table{width:100%;border-collapse:collapse;min-width:850px}th,td{padding:14px 16px;border-top:1px solid var(--line);font-size:14px;text-align:left;vertical-align:middle}
+    th{font-size:13px;background:rgba(0,0,0,.08);font-weight:900}[data-theme="light"] th{background:#f3f7fb}
+    .table-wrap{overflow:auto}.chip{display:inline-flex;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:900;text-transform:uppercase}
+    .chip.pendiente{background:#fef3c7;color:#92400e}.chip.justificado{background:#ccfbf1;color:#0f766e}.chip.no{background:#ffe4e6;color:#be123c}.chip.revisado{background:#dbeafe;color:#0c4a6e}.chip.modificado{background:#ffe4e6;color:#be123c}.chip.integro{background:#ccfbf1;color:#0f766e}
+    .action{border:0;background:var(--green);color:white;border-radius:999px;padding:8px 14px;font-weight:900;cursor:pointer}
+    .warning{border:1px solid #c76b00;background:rgba(199,107,0,.14);color:#ffd166;border-radius:10px;padding:12px 14px;font-weight:800;margin-bottom:14px}
+    .form-panel{padding:14px}.form-panel h3{margin:0 0 14px;font-size:16px}.stack{display:grid;gap:12px}.textarea{min-height:92px;resize:vertical;width:100%}
+    .result{display:none}.result.active{display:block}.result h3{padding:14px 16px;margin:0;font-size:16px}
+    .side-panel{position:fixed;top:0;right:-650px;width:min(650px,100%);height:100vh;background:var(--panel);border-left:1px solid var(--line);box-shadow:-18px 0 50px rgba(0,0,0,.32);z-index:30;transition:.25s ease;display:flex;flex-direction:column}
+    .side-panel.open{right:0}.side-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px}.side-head h3{margin:0 0 4px}.side-head p{margin:0;color:var(--muted);font-size:13px}
+    .side-body{padding:16px 18px;overflow:auto;display:grid;gap:14px}.side-actions{padding:14px 18px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.field{border:1px solid var(--line);background:rgba(255,255,255,.05);border-radius:10px;padding:11px}.field label{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:900;margin-bottom:5px}.field div{font-weight:800}
+    .doctor-item{border:1px solid var(--line);border-radius:10px;padding:11px;display:flex;justify-content:space-between;gap:10px;align-items:center;background:rgba(255,255,255,.05)}
+    @media(max-width:1000px){.app{grid-template-columns:1fr}.summary{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}aside{min-height:auto}.search,.select{min-width:100%}}
+    @media(max-width:650px){.summary{grid-template-columns:1fr}}
+  </style>
 </head>
-<body>
-<div class="shell">
-<nav class="sidebar">
-  <div class="brand">
-    <div class="brand-name">Fenix &middot; Caja</div>
-    <div class="brand-sub">Auditoria financiera</div>
-  </div>
-  <div class="nav-section">Revision diaria</div>
-  <div class="nav-item active" data-view="dashboard" onclick="setView('dashboard',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"/></svg>
-    Inicio
-    <span class="nav-badge" id="badge-dashboard"></span>
-  </div>
-  <div class="nav-item" data-view="cobros" onclick="setView('cobros',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18"/><path d="M8 13h3"/></svg>
-    Cobros con cobertura
-    <span class="nav-badge" id="badge-cobros"></span>
-  </div>
-  <div class="nav-item" data-view="liberaciones" onclick="setView('liberaciones',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
-    Liberaciones 100%
-    <span class="nav-badge" id="badge-lib"></span>
-  </div>
-  <div class="nav-item" data-view="nrs" onclick="setView('nrs',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
-    Notas de remision
-    <span class="nav-badge warn" id="badge-nr"></span>
-  </div>
-  <div class="nav-item" data-view="ventas" onclick="setView('ventas',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.63L23 6H6"/></svg>
-    Ventas manuales
-    <span class="nav-badge warn" id="badge-vm"></span>
-  </div>
-  <div class="nav-item" data-view="anulaciones" onclick="setView('anulaciones',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 00-4-4H4"/></svg>
-    Anulaciones
-    <span class="nav-badge warn" id="badge-anul"></span>
-  </div>
-  <div class="nav-section">Seguimiento</div>
-  <div class="nav-item" data-view="requerimientos" onclick="setView('requerimientos',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-    Requerimientos
-    <span class="nav-badge ok" id="badge-req" style="display:none">0</span>
-  </div>
-  <div class="sidebar-footer">
-    auditor1 &middot; turno manana
-    <div class="sidebar-date" id="sidebar-date"></div>
-  </div>
-</nav>
-<main class="main">
-
-<!-- DASHBOARD -->
-<div id="v-dashboard" class="view active">
-  <div class="topbar">
-    <div>
-      <div class="page-title">Inicio</div>
-      <div class="page-q">Hay algo que revisar ahora?</div>
+<body data-theme="dark">
+<div class="app">
+  <aside>
+    <div class="brand"><h1>Fénix</h1><p>Sistema de Auditoría</p></div>
+    <div class="menu-section">
+      <div class="menu-title">Auditoría Clínica <span>▾</span></div>
+      <button class="nav-btn">Dashboard</button><button class="nav-btn">Informes integrales</button><button class="nav-btn">Hasheo Manual</button>
     </div>
-  </div>
-  <div class="dash-filter">
-    <span class="dash-filter-label">Periodo</span>
-    <div class="range-filter" data-range="dashboard" data-render="renderDashboard" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
-    <span class="dash-periodo" id="dash-periodo-label"></span>
-  </div>
-  <div class="content">
-    <div id="dash-alertas"></div>
-  </div>
+    <div class="menu-section">
+      <div class="menu-title">Auditoría Cajas <span>▾</span></div>
+      <button class="nav-btn active" data-page="alertas">Alertas de cajas</button>
+      <button class="nav-btn" data-page="caja">Casos Caja</button>
+      <button class="nav-btn" data-page="coberturas">Coberturas</button>
+      <button class="nav-btn" data-page="cambios">Cambios detectados</button>
+      <button class="nav-btn" data-page="hasheo">Hasheo Manual</button>
+    </div>
+    <div class="spacer"></div><button class="logout">Cerrar sesión</button>
+  </aside>
+  <main>
+    <div class="topbar">
+      <h2 id="title">Alertas de cajas</h2>
+      <div class="top-actions"><button class="theme" id="themeBtn">☾</button><div class="user"><span class="avatar">A</span><span>auditor-C<br><small style="color:var(--muted)">auditor</small></span></div></div>
+    </div>
+
+    <section class="page active" id="page-alertas">
+      <div class="filter-panel"><div class="filter-title">Filtros</div><div class="filters">
+        <button class="pill active">Todos</button><button class="pill">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button><button class="pill">Personalizado</button>
+        <select class="select"><option>Todos los tipos</option><option>Descuentos</option><option>Sin datos de factura</option><option>Liberación / ajuste</option><option>Sin datos de cobro</option><option>Factura anulada</option><option>Cobertura</option><option>Cambio detectado</option></select>
+      </div></div>
+      <div class="summary">
+        <div class="card"><strong id="sumCaja">0</strong><span>Casos Caja</span><p>Descuentos, ajustes, anulaciones y ventas sin datos de factura.</p></div>
+        <div class="card"><strong id="sumCob">0</strong><span>Coberturas</span><p>Coberturas y NCO anuladas.</p></div>
+        <div class="card"><strong id="sumCambios">0</strong><span>Cambios detectados</span><p>Comparaciones automáticas de datos críticos.</p></div>
+        <div class="card"><strong id="sumPend">0</strong><span>Pendientes</span><p>Casos sin revisión del auditor.</p></div>
+      </div>
+      <div class="section-title">Atención inmediata - <span id="urgentCount">0</span></div><div class="alert-list" id="urgentList"></div>
+      <div class="section-title">Cambios detectados - <span id="changeCount">0</span></div><div class="alert-list" id="changeList"></div>
+    </section>
+
+    <section class="page" id="page-caja">
+      <div class="filter-panel"><div class="filter-title">Filtros</div><div class="filters">
+        <button class="pill active">Todos</button><button class="pill">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button><button class="pill">Personalizado</button>
+        <select class="select" id="cajaAlerta" onchange="renderCaja()"><option value="">Todas las alertas</option><option>Descuento autorizado</option><option>Descuento por revisar</option><option>Descuento total</option><option>Sin datos de factura</option><option>Sin datos de cobro</option><option>Liberación / ajuste</option><option>Anulación</option><option>Factura anulada</option></select>
+        <select class="select" id="cajaRevision" onchange="renderCaja()"><option value="">Toda revisión</option><option>Pendiente</option><option>Justificado</option><option>No justificado</option><option>Revisado</option></select>
+        <input class="search" id="cajaSearch" placeholder="Buscar por venta / NR o cliente" oninput="renderCaja()">
+      </div></div>
+      <div class="toolbar"><h3>Casos Caja</h3><div class="tool-actions"><button class="btn soft" onclick="openDoctors()">Médicos autorizados</button><button class="btn" onclick="clearCaja()">Limpiar filtros</button><button class="btn primary">Generar reporte</button></div></div>
+      <div class="table-panel"><div class="table-wrap"><table><thead><tr><th>Venta / NR</th><th>Fecha</th><th>Cliente</th><th>Alerta</th><th>Revisión</th><th>Acciones</th></tr></thead><tbody id="cajaRows"></tbody></table></div></div>
+    </section>
+
+    <section class="page" id="page-coberturas">
+      <div class="filter-panel"><div class="filter-title">Filtros</div><div class="filters">
+        <button class="pill active">Todos</button><button class="pill">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button><button class="pill">Personalizado</button>
+        <select class="select" id="cobAlerta" onchange="renderCob()"><option value="">Todas las alertas</option><option>Cobertura aplicada</option><option>NCO anulada</option></select>
+        <select class="select" id="cobRevision" onchange="renderCob()"><option value="">Toda revisión</option><option>Pendiente</option><option>Justificado</option><option>No justificado</option><option>Revisado</option></select>
+        <input class="search" id="cobSearch" placeholder="Buscar por NCO, NR o cliente" oninput="renderCob()">
+      </div></div>
+      <div class="toolbar"><h3>Historial de coberturas</h3><div class="tool-actions"><button class="btn" onclick="clearCob()">Limpiar filtros</button><button class="btn primary">Generar reporte</button></div></div>
+      <div class="table-panel"><div class="table-wrap"><table><thead><tr><th>Documento</th><th>Cliente / Seguro</th><th>Fecha</th><th>Tipo de alerta</th><th>Revisión</th><th>Acciones</th></tr></thead><tbody id="cobRows"></tbody></table></div></div>
+    </section>
+
+    <section class="page" id="page-cambios">
+      <div class="filter-panel"><div class="filter-title">Filtros</div><div class="filters">
+        <button class="pill active">Todos</button><button class="pill">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button>
+        <select class="select" id="chgEstado" onchange="renderChanges()"><option value="">Todos los estados</option><option>Pendiente</option><option>Revisado</option><option>Justificado</option><option>No justificado</option></select>
+        <input class="search" id="chgSearch" placeholder="Buscar por NR, NCO o cliente" oninput="renderChanges()">
+      </div></div>
+      <div class="toolbar"><h3>Cambios detectados por comparación automática</h3><div class="tool-actions"><button class="btn" onclick="clearChanges()">Limpiar filtros</button><button class="btn primary">Generar reporte</button></div></div>
+      <div class="table-panel"><div class="table-wrap"><table><thead><tr><th>Documento</th><th>Cliente / Seguro</th><th>Fecha detección</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="changeRows"></tbody></table></div></div>
+    </section>
+
+    <section class="page" id="page-hasheo">
+      <div class="form-panel">
+        <h3>Ejecutar hasheo manual de una venta / NCO</h3>
+        <div class="warning">Esta acción ejecuta manualmente la misma comparación que el sistema realiza cada cierto tiempo.</div>
+        <div class="stack">
+          <input class="input" id="hashDoc" placeholder="Venta / NR o código NCO *">
+          <textarea class="textarea" id="hashReason" placeholder="Motivo *"></textarea>
+          <div style="display:flex;justify-content:flex-end;gap:8px"><button class="btn" onclick="clearHash()">Cancelar</button><button class="btn primary" onclick="runHash()">Ejecutar Hasheo</button></div>
+        </div>
+      </div>
+      <div class="table-panel result" id="hashResult" style="margin-top:16px">
+        <div class="toolbar" style="padding:14px 16px;margin:0"><h3>Resultado de comparación manual</h3></div>
+        <div class="table-wrap"><table><thead><tr><th>Dato crítico</th><th>Dato anterior</th><th>Dato actual</th><th>Resultado</th></tr></thead><tbody id="hashCompare"></tbody></table></div>
+      </div>
+    </section>
+  </main>
 </div>
 
-<!-- COBROS -->
-<div id="v-cobros" class="view">
-  <div class="topbar">
-    <div>
-      <div class="page-title">Cobros con cobertura o descuento</div>
-      <div class="page-q">Cada cobertura tiene una observacion que respalde su autorizacion?</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="view-layout has-panel">
-      <div>
-        <div class="filters">
-          <select id="cobros-filter" onchange="renderCobros()">
-            <option value="nojust">Atencion inmediata</option>
-            <option value="pend">Pendiente</option>
-            <option value="all">Todos los cobros</option>
-            <option value="just">Justificados</option>
-          </select>
-          <div class="range-filter" data-range="cobros" data-render="renderCobros" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
-          <input type="search" id="cobros-search" placeholder="Buscar ID o cajero..." oninput="renderCobros()">
-          <span class="filter-count" id="cobros-count"></span>
-        </div>
-        <div class="table-box">
-          <table>
-            <thead><tr><th>ID cobro</th><th>Fecha / hora</th><th>Cajero</th><th>Problema</th></tr></thead>
-            <tbody id="cobros-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <div class="panel">
-          <div class="panel-empty" id="cobros-panel-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M8 13h3"/></svg>
-            <span>Selecciona un cobro para ver el detalle</span>
-          </div>
-          <div id="cobros-panel-content" style="display:none;flex-direction:column;flex:1;overflow:hidden">
-            <div class="panel-header"><div class="panel-id" id="cp-id">-</div><div class="panel-subtitle" id="cp-sub">-</div></div>
-            <div class="panel-body">
-              <div class="field"><div class="field-label">Referencia venta/NR</div><div class="field-value mono" id="cp-ref">-</div></div>
-              <div class="field"><div class="field-label">Tipo de venta</div><div class="field-value" id="cp-tipo">-</div></div>
-              <div class="field"><div class="field-label">Monto total</div><div class="field-value mono" id="cp-monto">-</div></div>
-              <div class="field"><div class="field-label">Monto cubierto</div><div class="field-value mono" id="cp-cubierto">-</div></div>
-              <div class="field"><div class="field-label">Porcentaje de cobertura</div><div class="field-value mono" id="cp-pct">-</div></div>
-              <div class="panel-divider"></div>
-              <div class="field"><div class="field-label">Justificacion registrada</div><div class="field-value" id="cp-obs">-</div></div>
-              <div class="panel-divider"></div>
-              <div class="field"><div class="field-label">Cajero responsable</div><div class="field-value" id="cp-cajero">-</div></div>
-              <div class="field"><div class="field-label">Fecha y hora</div><div class="field-value mono" id="cp-fecha">-</div></div>
-              <div class="field"><div class="field-label">Estado de auditoria</div><div class="field-value" id="cp-auditoria">-</div></div>
-            </div>
-            <div class="panel-actions">
-              <button class="btn btn-danger" onclick="generarReq('cobros')">Generar requerimiento al cajero</button>
-              <div class="panel-note" id="cp-note" style="display:none"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="side-panel" id="sidePanel">
+  <div class="side-head"><div><h3 id="sideTitle">Detalle</h3><p id="sideSub">Panel de revisión</p></div><button class="btn" onclick="closePanel()">Cerrar</button></div>
+  <div class="side-body" id="sideBody"></div>
+  <div class="side-actions"><button class="btn" onclick="setReview('Revisado')">Marcar revisado</button><button class="btn primary" onclick="setReview('Justificado')">Justificado</button><button class="btn" onclick="setReview('No justificado')">No justificado</button></div>
 </div>
 
-<!-- LIBERACIONES -->
-<div id="v-liberaciones" class="view">
-  <div class="topbar">
-    <div>
-      <div class="page-title">Liberaciones al 100%</div>
-      <div class="page-q">La liberacion fue autorizada por gerencia u otra autoridad valida?</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="view-layout has-panel">
-      <div>
-        <div class="filters">
-          <select id="lib-filter" onchange="renderLib()">
-            <option value="nojust">Atencion inmediata</option>
-            <option value="pend">Pendiente</option>
-            <option value="all">Todas</option>
-            <option value="just">Con respaldo</option>
-          </select>
-          <div class="range-filter" data-range="lib" data-render="renderLib" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
-          <input type="search" id="lib-search" placeholder="Buscar ID o gestor..." oninput="renderLib()">
-          <span class="filter-count" id="lib-count"></span>
-        </div>
-        <div class="table-box">
-          <table>
-            <thead><tr><th>ID liberacion</th><th>Fecha / hora</th><th>Gestor</th><th>Problema</th></tr></thead>
-            <tbody id="lib-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <div class="panel">
-          <div class="panel-empty" id="lib-panel-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg>
-            <span>Selecciona una liberacion para ver el detalle</span>
-          </div>
-          <div id="lib-panel-content" style="display:none;flex-direction:column;flex:1;overflow:hidden">
-            <div class="panel-header"><div class="panel-id" id="lp-id">-</div><div class="panel-subtitle">100% del monto liberado</div></div>
-            <div class="panel-body">
-              <div class="field"><div class="field-label">Referencia venta/NR</div><div class="field-value mono" id="lp-ref">-</div></div>
-              <div class="field"><div class="field-label">Monto total original</div><div class="field-value mono" id="lp-monto">-</div></div>
-              <div class="field"><div class="field-label">Monto liberado</div><div class="field-value mono" id="lp-liberado">-</div></div>
-              <div class="panel-divider"></div>
-              <div class="field"><div class="field-label">Justificacion registrada</div><div class="field-value" id="lp-obs">-</div></div>
-              <div class="field"><div class="field-label">Autoridad mencionada</div><div class="field-value" id="lp-auth">-</div></div>
-              <div class="panel-divider"></div>
-              <div class="field"><div class="field-label">Gestor que libero</div><div class="field-value" id="lp-gestor">-</div></div>
-              <div class="field"><div class="field-label">Fecha y hora</div><div class="field-value mono" id="lp-fecha">-</div></div>
-              <div class="field"><div class="field-label">Estado de auditoria</div><div class="field-value" id="lp-estado">-</div></div>
-            </div>
-            <div class="panel-actions">
-              <button class="btn btn-danger" onclick="generarReq('liberacion')">Generar requerimiento</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- NRS -->
-<div id="v-nrs" class="view">
-  <div class="topbar">
-    <div>
-      <div class="page-title">Notas de remision</div>
-      <div class="page-q">La NR fue modificada despues de su cierre?</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="view-layout has-panel">
-      <div>
-        <div class="filters">
-          <select id="nr-filter" onchange="renderNRs()">
-            <option value="modified">Solo modificadas</option>
-            <option value="all">Todas</option>
-            <option value="ok">Integras</option>
-          </select>
-          <div class="range-filter" data-range="nr" data-render="renderNRs" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
-          <input type="search" id="nr-search" placeholder="Buscar NR o usuario..." oninput="renderNRs()">
-          <span class="filter-count" id="nr-count"></span>
-        </div>
-        <div class="table-box">
-          <table>
-            <thead><tr><th>NR</th><th>Cierre</th><th>Usuario relacionado</th><th>Problema</th></tr></thead>
-            <tbody id="nr-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <div class="panel">
-          <div class="panel-empty" id="nr-panel-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            <span>Selecciona una NR para ver el detalle</span>
-          </div>
-          <div id="nr-panel-content" style="display:none;flex-direction:column;flex:1;overflow:hidden">
-            <div class="panel-header"><div class="panel-id" id="np-id">-</div><div class="panel-subtitle" id="np-sub">-</div></div>
-            <div class="panel-body">
-              <div class="field"><div class="field-label">Fecha de cierre</div><div class="field-value mono" id="np-cierre">-</div></div>
-              <div class="field"><div class="field-label">Monto al cierre</div><div class="field-value mono" id="np-monto">-</div></div>
-              <div class="panel-divider"></div>
-              <div id="np-integrity-block" class="integrity-block bad">
-                <div class="int-icon" id="np-int-icon">!</div>
-                <div class="int-text"><strong id="np-int-title">-</strong><span id="np-int-sub">-</span></div>
-              </div>
-              <div class="field"><div class="field-label">Usuario relacionado</div><div class="field-value" id="np-quien">-</div></div>
-              <div class="field"><div class="field-label">Cambio detectado</div><div class="field-value" id="np-cuando">-</div></div>
-              <div class="field"><div class="field-label">Motivo registrado</div><div class="field-value" id="np-motivo">-</div></div>
-              <div class="panel-divider"></div>
-              <div class="section-head">Cadena de eventos</div>
-              <div id="np-timeline" class="timeline"></div>
-            </div>
-            <div class="panel-actions">
-              <button class="btn btn-danger" onclick="generarReq('nr')">Generar requerimiento</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- VENTAS -->
-<div id="v-ventas" class="view">
-  <div class="topbar">
-    <div>
-      <div class="page-title">Ventas manuales</div>
-      <div class="page-q">La venta fue modificada despues de cobrarse?</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="view-layout has-panel">
-      <div>
-        <div class="filters">
-          <select id="vm-tipo" onchange="renderVentas()">
-            <option value="all">Todos los tipos</option>
-            <option value="Farmacia">Farmacia</option>
-            <option value="Ambulatorio">Ambulatorio</option>
-            <option value="Contingencia">Contingencia</option>
-          </select>
-          <select id="vm-filter" onchange="renderVentas()">
-            <option value="modified">Solo modificadas</option>
-            <option value="all">Todas</option>
-            <option value="ok">Integras</option>
-          </select>
-          <div class="range-filter" data-range="vm" data-render="renderVentas" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
-          <input type="search" id="vm-search" placeholder="Buscar ID o cajero..." oninput="renderVentas()">
-          <span class="filter-count" id="vm-count"></span>
-        </div>
-        <div class="table-box">
-          <table>
-            <thead><tr><th>ID venta</th><th>Fecha / hora</th><th>Cajero</th><th>Problema</th></tr></thead>
-            <tbody id="vm-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <div class="panel">
-          <div class="panel-empty" id="vm-panel-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 001.99 1.61h9.72a2 2 0 001.99-1.63L23 6H6"/></svg>
-            <span>Selecciona una venta para ver el detalle</span>
-          </div>
-          <div id="vm-panel-content" style="display:none;flex-direction:column;flex:1;overflow:hidden">
-            <div class="panel-header"><div class="panel-id" id="vp-id">-</div><div class="panel-subtitle" id="vp-sub">-</div></div>
-            <div class="panel-body">
-              <div class="field"><div class="field-label">Tipo</div><div class="field-value" id="vp-tipo">-</div></div>
-              <div class="field"><div class="field-label">Cliente registrado</div><div class="field-value" id="vp-cliente">-</div></div>
-              <div class="field"><div class="field-label">Monto</div><div class="field-value mono" id="vp-monto">-</div></div>
-              <div class="field"><div class="field-label">Cajero</div><div class="field-value" id="vp-cajero">-</div></div>
-              <div class="panel-divider"></div>
-              <div class="field"><div class="field-label">Cobrado el</div><div class="field-value mono" id="vp-cobrado">-</div></div>
-              <div class="field"><div class="field-label">Cambio detectado</div><div class="field-value" id="vp-modificado">-</div></div>
-              <div class="field"><div class="field-label">Motivo del cambio</div><div class="field-value" id="vp-motivo">-</div></div>
-              <div class="panel-divider"></div>
-              <div id="vp-integrity-block" class="integrity-block bad">
-                <div class="int-icon">!</div>
-                <div class="int-text"><strong id="vp-int-title">-</strong><span id="vp-int-sub">-</span></div>
-              </div>
-            </div>
-            <div class="panel-actions">
-              <button class="btn btn-danger" onclick="generarReq('venta')">Generar requerimiento</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ANULACIONES -->
-<div id="v-anulaciones" class="view">
-  <div class="topbar">
-    <div>
-      <div class="page-title">Anulaciones</div>
-      <div class="page-q">La anulacion genero un evento posterior que debe aclararse?</div>
-    </div>
-  </div>
-  <div class="content">
-    <div class="view-layout has-panel">
-      <div>
-        <div class="filters">
-          <select id="anul-filter" onchange="renderAnulaciones()">
-            <option value="suspicious">Con evento posterior</option>
-            <option value="all">Todas</option>
-            <option value="ok">Normales</option>
-          </select>
-          <div class="range-filter" data-range="anul" data-render="renderAnulaciones" data-start="2026-05-01T00:00" data-end="2026-05-31T23:59"></div>
-          <input type="search" id="anul-search" placeholder="Buscar ID o usuario..." oninput="renderAnulaciones()">
-          <span class="filter-count" id="anul-count"></span>
-        </div>
-        <div class="table-box">
-          <table>
-            <thead><tr><th>ID anulacion</th><th>Fecha / hora</th><th>Usuario</th><th>Cobro original</th><th>Problema</th></tr></thead>
-            <tbody id="anul-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-      <div>
-        <div class="panel">
-          <div class="panel-empty" id="anul-panel-empty">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 00-4-4H4"/></svg>
-            <span>Selecciona una anulacion para ver el detalle</span>
-          </div>
-          <div id="anul-panel-content" style="display:none;flex-direction:column;flex:1;overflow:hidden">
-            <div class="panel-header"><div class="panel-id" id="ap-id">-</div><div class="panel-subtitle" id="ap-sub">-</div></div>
-            <div class="panel-body">
-              <div class="field"><div class="field-label">Cobro original anulado</div><div class="field-value mono" id="ap-original">-</div></div>
-              <div class="field"><div class="field-label">Factura / NR</div><div class="field-value mono" id="ap-ref">-</div></div>
-              <div class="field"><div class="field-label">Quien anulo</div><div class="field-value" id="ap-quien">-</div></div>
-              <div class="field"><div class="field-label">Motivo declarado</div><div class="field-value" id="ap-motivo">-</div></div>
-              <div class="panel-divider"></div>
-              <div class="field"><div class="field-label">Nuevo cobro generado</div><div class="field-value" id="ap-nuevo">-</div></div>
-              <div class="field"><div class="field-label">Diferencia de monto</div><div class="field-value" id="ap-dif">-</div></div>
-              <div class="panel-divider"></div>
-              <div class="section-head">Cadena detectada</div>
-              <div id="ap-timeline" class="timeline"></div>
-            </div>
-            <div class="panel-actions">
-              <button class="btn btn-danger" onclick="generarReq('anulacion')">Generar requerimiento</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- REQUERIMIENTOS -->
-<div id="v-requerimientos" class="view">
-  <div class="topbar">
-    <div>
-      <div class="page-title">Requerimientos generados</div>
-      <div class="page-q">Solicitudes formales para imprimir o guardar constancia</div>
-    </div>
-    <div class="topbar-right">
-      <button class="btn" onclick="exportarPDF()">Generar PDF</button>
-    </div>
-  </div>
-  <div class="content">
-    <div class="table-box">
-      <table>
-        <thead><tr><th>ID req.</th><th>Fecha / hora</th><th>Auditor</th><th>Destinatario</th><th>Evento</th><th>Estado</th><th>Acciones</th></tr></thead>
-        <tbody id="req-tbody"><tr class="empty-row"><td colspan="7">No hay requerimientos. Abre un evento sospechoso y usa "Generar requerimiento".</td></tr></tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-</main>
-</div>
-<div id="toast"></div>
-
-<!-- MODAL MOTIVO REQUERIMIENTO -->
-<div class="modal-overlay" id="req-modal" onclick="cerrarModalReq(event)">
-  <div class="modal-box" onclick="event.stopPropagation()">
-    <div class="modal-header">
-      <div class="modal-title">Generar requerimiento al cajero</div>
-      <div class="modal-subtitle" id="req-modal-sub">Evento seleccionado: —</div>
-    </div>
-    <div class="modal-body">
-      <div class="modal-label">Motivo del requerimiento</div>
-      <textarea class="modal-textarea" id="req-motivo-input" placeholder="Describe el motivo por el cual se genera este requerimiento..." rows="4"></textarea>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-ghost" onclick="cerrarModalReq()">Cancelar</button>
-      <button class="btn btn-danger" onclick="confirmarReq()">Guardar constancia</button>
-    </div>
+<div class="side-panel" id="doctorPanel">
+  <div class="side-head"><div><h3>Médicos autorizados</h3><p>Lista interna para clasificar descuentos especiales.</p></div><button class="btn" onclick="closeDoctors()">Cerrar</button></div>
+  <div class="side-body">
+    <div class="field"><label>Nombre del médico</label><input class="input" id="doctorName" placeholder="Nombre completo"></div>
+    <div class="field"><label>Ítems autorizados</label><input class="input" id="doctorItems" placeholder="Detalle si aplica"></div>
+    <button class="btn primary" onclick="addDoctor()">Agregar médico autorizado</button>
+    <div id="doctorList" class="stack"></div>
   </div>
 </div>
 
 <script>
+const doctors=[
+  {name:'JOSE EDGAR SEMPERTEGUI SORIA',items:'Derecho quirófano, RX arco C, equipos médicos'},
+  {name:'CARLOS GABRIEL VELASCO CAVERO',items:'Derecho quirófano, RX arco C, equipos médicos'}
+];
 
-const DATA = {
-  cobros: [
-    { id:'COB-2003', ref:'NR-5002', tipo:'NR', cobertura:'100%', montoCubierto:780, montoTotal:780, obs:'autorizado', cajero:'Cajero Turno Noche', correo:'caja-noche@hospital.bo', turno:'NOCHE', fechaISO:'2026-05-10T23:50:00', estadoAuditoria:'nojust', estadoIntegridad:'CAMBIADO', motivoAlerta:'Cobro nocturno con cobertura total sin respaldo.' },
-    { id:'COB-2002', ref:'VEN-3002', tipo:'MANUAL', cobertura:'50%', montoCubierto:250, montoTotal:500, obs:'autorizado', cajero:'Cajero Tarde', correo:'caja-tarde@hospital.bo', turno:'TARDE', fechaISO:'2026-05-11T14:30:00', estadoAuditoria:'pend', estadoIntegridad:'INTEGRO', motivoAlerta:'Justificacion generica sin autoridad verificable.' },
-    { id:'COB-2001', ref:'VEN-3001', tipo:'MANUAL', cobertura:'50%', montoCubierto:250, montoTotal:500, obs:'Cobertura aprobada por trabajo social.', cajero:'Cajero Noche', correo:'caja-noche@hospital.bo', turno:'NOCHE', fechaISO:'2026-05-11T14:30:00', estadoAuditoria:'just', estadoIntegridad:'INTEGRO', motivoAlerta:'Cobertura con respaldo registrado.' },
-  ],
-  liberaciones: [
-    { id:'LIB-1003', ref:'VEN-4003', paciente:'-', monto:4800, montoLib:4800, obs:null, auth:null, gestor:'R. Flores', correo:'r.flores@hospital.bo', fechaISO:'2026-05-25T23:50:00', estado:'nojust' },
-    { id:'LIB-1002', ref:'VEN-4002', paciente:'-', monto:2100, montoLib:2100, obs:'por instruccion superior', auth:null, gestor:'K. Poma', correo:'k.poma@hospital.bo', fechaISO:'2026-05-24T16:20:00', estado:'pend' },
-    { id:'LIB-1001', ref:'VEN-4001', paciente:'Ana Perez', monto:900, montoLib:900, obs:'Autorizacion formal de trabajo social TS-44.', auth:'Lic. Maria Quispe - Trabajo Social', gestor:'Cajero Noche', correo:'caja-noche@hospital.bo', fechaISO:'2026-05-10T09:00:00', estado:'just' },
-  ],
-  nrs: [
-    { id:'NR-5002', expediente:'EXP-7001', generacionISO:'2026-05-10T10:00:00', cierreISO:'2026-05-10T11:00:00', monto:780, integridad:'bad', quien:'supervisor.caja', deteccionISO:'2026-05-12T08:15:00', motivo:null, estado:'nojust',
-      timeline:[{dot:'bad',label:'Cambio detectado',meta:'12/05/2026 08:15 supervisor.caja'},{dot:'ok',label:'NR cerrada',meta:'10/05/2026 11:00 Sistema'},{dot:'ok',label:'NR generada',meta:'10/05/2026 10:00 Sistema'}]},
-    { id:'NR-5001', expediente:'EXP-7001', generacionISO:'2026-05-10T10:00:00', cierreISO:'2026-05-10T11:00:00', monto:780, integridad:'bad', quien:'operador.nr', deteccionISO:'2026-05-12T08:30:00', motivo:'Correccion de referencia interna.', estado:'pend',
-      timeline:[{dot:'warn',label:'Cambio detectado',meta:'12/05/2026 08:30 operador.nr'},{dot:'ok',label:'NR cerrada',meta:'10/05/2026 11:00 Sistema'},{dot:'ok',label:'NR generada',meta:'10/05/2026 10:00 Sistema'}]},
-    { id:'NR-4998', expediente:'EXP-6998', generacionISO:'2026-05-09T09:20:00', cierreISO:'2026-05-09T10:20:00', monto:900, integridad:'ok', quien:'-', deteccionISO:'2026-05-12T08:30:00', motivo:'-', estado:'just',
-      timeline:[{dot:'ok',label:'Sin cambios detectados',meta:'12/05/2026 08:30 Sistema'},{dot:'ok',label:'NR cerrada',meta:'09/05/2026 10:20 Sistema'},{dot:'ok',label:'NR generada',meta:'09/05/2026 09:20 Sistema'}]},
-  ],
-  ventas: [
-    { id:'VM-6002', tipo:'Farmacia', cliente:null, monto:380, cajero:'Cajero Noche', correo:'caja-noche@hospital.bo', cobradoISO:'2026-05-10T22:45:00', deteccionISO:'2026-05-12T07:45:00', motivo:null, integridad:'bad' },
-    { id:'VM-6001', tipo:'Contingencia', cliente:'Cliente Particular', monto:220, cajero:'Cajero Noche', correo:'caja-noche@hospital.bo', cobradoISO:'2026-05-10T22:45:00', deteccionISO:'2026-05-12T07:45:00', motivo:'Se ajusto observacion posterior al cierre.', integridad:'bad' },
-    { id:'VM-5998', tipo:'Ambulatorio', cliente:'Juan Perez', monto:220, cajero:'Cajero Tarde', correo:'caja-tarde@hospital.bo', cobradoISO:'2026-05-09T14:00:00', deteccionISO:null, motivo:'-', integridad:'ok' },
-  ],
-  anulaciones: [
-    { id:'ANU-8001', original:'COB-2004', factura:'FAC-12345', nr:'NR-5003', quien:'supervisor.caja', fechaISO:'2026-05-09T10:00:00', motivo:'Error en monto facturado.', nuevoCobro:'COB-2004-R1', eventoPosterior:'REAPERTURA', fechaPosteriorISO:'2026-05-09T10:30:00', alerta:true,
-      timeline:[{dot:'warn',label:'Reapertura relacionada',meta:'09/05/2026 10:30 COB-2004-R1'},{dot:'bad',label:'Anulacion ejecutada',meta:'09/05/2026 10:00 supervisor.caja'},{dot:'ok',label:'Cobro original',meta:'COB-2004'}]},
-    { id:'ANU-7998', original:'COB-1998', factura:'FAC-12290', nr:'NR-4990', quien:'cajero.tarde', fechaISO:'2026-05-08T11:45:00', motivo:'Registro duplicado.', nuevoCobro:'-', eventoPosterior:null, fechaPosteriorISO:null, alerta:false,
-      timeline:[{dot:'ok',label:'Anulacion por duplicado',meta:'08/05/2026 11:45 cajero.tarde'},{dot:'ok',label:'Cobro original',meta:'COB-1998'}]},
-  ],
-};
+const cases=[
+{id:'1',group:'caja',doc:'NR-852329',date:'30 May 2026, 07:30',client:'JESED SAIRE FLORES',type:'Descuento aplicado',review:'Pendiente',subtotal:'2.080,30 Bs',discount:'200,00 Bs',total:'1.880,30 Bs',coverage:'0,00 Bs',status:'Contabilizada',collector:'lroda',doctor:'JOSE EDGAR SEMPERTEGUI SORIA',obs:'Sin observación de ajuste',invoice:{num:'291',status:'Válida',amount:'1.880,30 Bs',date:'30/05/2026'}},
+{id:'2',group:'caja',doc:'NR-824648',date:'11 Jun 2026, 12:11',client:'GERMAN VARGAS',type:'Sin datos de factura',review:'Pendiente',subtotal:'3.999,35 Bs',discount:'0,00 Bs',total:'3.999,35 Bs',coverage:'0,00 Bs',status:'Contabilizada',collector:'mmorenda',doctor:'CARLOS GABRIEL VELASCO CAVERO',obs:'Sin observación de ajuste',invoice:{num:'Sin dato',status:'Sin dato',amount:'Sin dato',date:'Sin dato'}},
+{id:'3',group:'caja',doc:'NR-853210',date:'15 Jun 2026, 09:15',client:'MARCELA ROJAS',type:'Liberación / ajuste',review:'Pendiente',subtotal:'1.250,00 Bs',discount:'0,00 Bs',total:'0,00 Bs',coverage:'0,00 Bs',status:'Ajuste',collector:'Sin dato',doctor:'JOSE EDGAR SEMPERTEGUI SORIA',obs:'Ajuste autorizado por Gerencia',invoice:{num:'Sin dato',status:'Sin dato',amount:'Sin dato',date:'Sin dato'}},
+{id:'4',group:'caja',doc:'NR-853455',date:'16 Jun 2026, 09:30',client:'PAOLA ARCE',type:'Descuento total',review:'Pendiente',subtotal:'580,00 Bs',discount:'580,00 Bs',total:'0,00 Bs',coverage:'0,00 Bs',status:'Ejecutada',collector:'pcharrias',doctor:'CARLOS GABRIEL VELASCO CAVERO',obs:'Sin observación de ajuste',invoice:{num:'304',status:'Válida',amount:'0,00 Bs',date:'16/06/2026'}},
+{id:'5',group:'caja',doc:'NR-853600',date:'17 Jun 2026, 11:20',client:'CARLOS MAMANI',type:'Anulación',review:'Revisado',subtotal:'720,00 Bs',discount:'0,00 Bs',total:'720,00 Bs',coverage:'0,00 Bs',status:'Anulada',collector:'pcharrias',doctor:'JOSE EDGAR SEMPERTEGUI SORIA',obs:'Sin observación de ajuste',invoice:{num:'309',status:'Anulada',amount:'720,00 Bs',date:'17/06/2026',annulUser:'admin'}},
+{id:'6',group:'caja',doc:'NR-853777',date:'17 Jun 2026, 14:10',client:'LUIS ROJAS',type:'Descuento aplicado',review:'No justificado',subtotal:'1.500,00 Bs',discount:'200,00 Bs',total:'1.300,00 Bs',coverage:'0,00 Bs',status:'Contabilizada',collector:'lroda',doctor:'MARCO ANTONIO PEREZ',obs:'Sin observación de ajuste',invoice:{num:'311',status:'Válida',amount:'1.300,00 Bs',date:'17/06/2026'}},
+{id:'7',group:'caja',doc:'NR-854001',date:'18 Jun 2026, 10:05',client:'ANA TORRICO',type:'Sin datos de cobro',review:'Pendiente',subtotal:'890,00 Bs',discount:'0,00 Bs',total:'890,00 Bs',coverage:'0,00 Bs',status:'Por cobrar',collector:'Sin dato',doctor:'CARLOS GABRIEL VELASCO CAVERO',obs:'Sin observación de ajuste',invoice:{num:'Sin dato',status:'Sin dato',amount:'Sin dato',date:'Sin dato'}},
+{id:'8',group:'caja',doc:'NR-854120',date:'18 Jun 2026, 11:35',client:'ROBERTO QUISPE',type:'Factura anulada',review:'Pendiente',subtotal:'1.140,00 Bs',discount:'0,00 Bs',total:'1.140,00 Bs',coverage:'0,00 Bs',status:'Contabilizada',collector:'pcharrias',doctor:'JOSE EDGAR SEMPERTEGUI SORIA',obs:'Sin observación de ajuste',invoice:{num:'312',status:'Anulada',amount:'1.140,00 Bs',date:'18/06/2026',annulUser:'admin'}},
+{id:'9',group:'cob',doc:'NR-824648',date:'11 Jun 2026, 12:11',client:'NACIONAL SEGUROS VIDA',type:'Cobertura aplicada',review:'Justificado',subtotal:'3.999,35 Bs',discount:'0,00 Bs',total:'3.999,35 Bs',coverage:'3.599,42 Bs',status:'Contabilizada',collector:'mmorenda',doctor:'CARLOS GABRIEL VELASCO CAVERO',obs:'Sin observación de ajuste',invoice:{num:'450',status:'Válida',amount:'3.599,42 Bs',date:'11/06/2026'}},
+{id:'10',group:'cob',doc:'NCO-04666',date:'18 Jun 2026, 08:40',client:'ALIANZA SEGUROS',type:'NCO anulada',review:'Pendiente',subtotal:'1.345,00 Bs',discount:'0,00 Bs',total:'1.345,00 Bs',coverage:'1.345,00 Bs',status:'Anulada',collector:'Sin dato',doctor:'No aplica',obs:'No se muestra motivo si no viene del ERP',invoice:{num:'450',status:'Anulada',amount:'1.345,00 Bs',date:'18/06/2026',annulUser:'admin'},nco:{code:'NCO-04666',related:'Factura 450',annulUser:'admin',annulDate:'18/06/2026'}},
+{id:'11',group:'cob',doc:'NCO-04667',date:'18 Jun 2026, 09:25',client:'SEGURO VIDA PLENA',type:'NCO anulada',review:'Pendiente',subtotal:'980,00 Bs',discount:'0,00 Bs',total:'980,00 Bs',coverage:'980,00 Bs',status:'Anulada',collector:'Sin dato',doctor:'No aplica',obs:'No se muestra motivo si no viene del ERP',invoice:{num:'451',status:'Anulada',amount:'980,00 Bs',date:'18/06/2026',annulUser:'admin'},nco:{code:'NCO-04667',related:'Factura 451',annulUser:'admin',annulDate:'18/06/2026'}}
+];
 
-var reqs = [];
-var reqCounter = 1;
-var currentEvent = { type: null, id: null };
-var statsVisible = false;
-var AUDITOR = { id:'USR-AUD-01', nombre:'auditor1' };
-var rangeState = {};
+const changes=[
+{id:'chg1',doc:'NR-852329',client:'JESED SAIRE FLORES',date:'18 Jun 2026, 09:00',review:'Pendiente',rows:[
+ ['Descuento','0,00 Bs','200,00 Bs','Modificado'],
+ ['Total final','2.080,30 Bs','1.880,30 Bs','Modificado'],
+ ['Monto factura','2.080,30 Bs','1.880,30 Bs','Modificado']
+]},
+{id:'chg2',doc:'NCO-04666',client:'ALIANZA SEGUROS',date:'18 Jun 2026, 09:10',review:'Pendiente',rows:[
+ ['Estado','Pendiente','Anulada','Modificado']
+]},
+{id:'chg3',doc:'NR-824648',client:'GERMAN VARGAS',date:'18 Jun 2026, 09:20',review:'Pendiente',rows:[
+ ['Nro. factura','Sin dato','450','Modificado'],
+ ['Monto factura','Sin dato','3.599,42 Bs','Modificado']
+]},
+{id:'chg4',doc:'NR-854120',client:'ROBERTO QUISPE',date:'18 Jun 2026, 12:00',review:'Pendiente',rows:[
+ ['Estado factura','Válida','Anulada','Modificado']
+]}
+];
 
-function setView(name, navEl) {
-  document.querySelectorAll('.view').forEach(function(v){ v.classList.remove('active'); });
-  document.getElementById('v-' + name).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(function(n){ n.classList.remove('active'); });
-  if (navEl) navEl.classList.add('active');
-  if (name === 'dashboard') renderDashboard();
-  if (name === 'cobros') renderCobros();
-  if (name === 'liberaciones') renderLib();
-  if (name === 'nrs') renderNRs();
-  if (name === 'ventas') renderVentas();
-  if (name === 'anulaciones') renderAnulaciones();
-  if (name === 'requerimientos') renderReqs();
-}
+let selected=null, selectedType='case';
 
-function aplicarFiltro() { renderDashboard(); }
+function norm(v){return (v||'').trim().toUpperCase()}
+function authorized(name){return doctors.some(d=>norm(d.name)===norm(name))}
+function alertName(c){return c.type==='Descuento aplicado' ? (authorized(c.doctor)?'Descuento autorizado':'Descuento por revisar') : c.type}
+function chipClass(v){v=(v||'').toLowerCase(); if(v.includes('no justificado'))return 'no'; if(v.includes('justificado'))return 'justificado'; if(v.includes('revisado'))return 'revisado'; if(v.includes('modificado'))return 'modificado'; if(v.includes('íntegro')||v.includes('integro'))return 'integro'; return 'pendiente'}
+function tagClass(v){v=(v||'').toLowerCase(); if(v.includes('cobertura')||v.includes('liberación'))return 'red'; if(v.includes('nco'))return 'blue'; if(v.includes('autorizado'))return 'green'; return 'orange'}
+function goPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-btn[data-page]').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelector(`.nav-btn[data-page="${p}"]`).classList.add('active');document.getElementById('title').textContent={alertas:'Alertas de cajas',caja:'Casos Caja',coberturas:'Coberturas',cambios:'Cambios detectados',hasheo:'Hasheo Manual'}[p]}
+document.querySelectorAll('.nav-btn[data-page]').forEach(b=>b.onclick=()=>goPage(b.dataset.page));
+document.getElementById('themeBtn').onclick=()=>{let l=document.body.dataset.theme==='light';document.body.dataset.theme=l?'dark':'light';document.getElementById('themeBtn').textContent=l?'☾':'☀'}
 
-function renderDashboard() {
-  var cobrosSin = DATA.cobros.filter(function(c){ return c.estadoAuditoria === 'nojust' && matchRange(c.fechaISO, 'dashboard'); });
-  var cobrosPend = DATA.cobros.filter(function(c){ return c.estadoAuditoria === 'pend' && matchRange(c.fechaISO, 'dashboard'); });
-  var libSin = DATA.liberaciones.filter(function(l){ return l.estado === 'nojust' && matchRange(l.fechaISO, 'dashboard'); });
-  var libPend = DATA.liberaciones.filter(function(l){ return l.estado === 'pend' && matchRange(l.fechaISO, 'dashboard'); });
-  var nrsMod = DATA.nrs.filter(function(n){ return n.integridad === 'bad' && matchRange(n.cierreISO, 'dashboard'); });
-  var vmMod = DATA.ventas.filter(function(v){ return v.integridad === 'bad' && matchRange(v.cobradoISO, 'dashboard'); });
-  var anulSosp = DATA.anulaciones.filter(function(a){ return a.alerta && matchRange(a.fechaISO, 'dashboard'); });
-  var total = cobrosSin.length + libSin.length + nrsMod.length + vmMod.length + anulSosp.length;
-  document.getElementById('badge-dashboard').textContent = total;
-  var container = document.getElementById('dash-alertas');
-  var reincidentes = repeatSummary();
-  if (total === 0 && !reincidentes.length) {
-    container.innerHTML = '<div class="clean-state"><div class="clean-icon">ok</div><div class="clean-title">Sin problemas detectados</div><div class="clean-sub">No se encontraron eventos sospechosos en el periodo seleccionado</div></div>';
+function routeAlert(id){let c=cases.find(x=>x.id===id);if(!c)return;if(c.group==='caja'){goPage('caja');document.getElementById('cajaSearch').value=c.doc;document.getElementById('cajaAlerta').value=alertName(c);renderCaja()}else{goPage('coberturas');document.getElementById('cobSearch').value=c.doc;document.getElementById('cobAlerta').value=alertName(c);renderCob()}}
+function routeChange(id){let c=changes.find(x=>x.id===id);goPage('cambios');document.getElementById('chgSearch').value=c.doc;renderChanges()}
+function renderDashboard(){let urgent=cases.filter(c=>['Sin datos de factura','Sin datos de cobro','Liberación / ajuste','Factura anulada','NCO anulada'].includes(c.type)||alertName(c)==='Descuento por revisar');document.getElementById('urgentCount').textContent=urgent.length;document.getElementById('urgentList').innerHTML=urgent.map(c=>`<div class="alert-card urgent" onclick="routeAlert('${c.id}')"><span class="tag ${tagClass(alertName(c))}">${alertName(c)}</span><div class="alert-text"><strong>${c.doc}: ${message(c)}</strong><small>Responsable: ${c.collector} · Revisión: ${c.review}</small><small>${c.date}</small></div><div class="go">›</div></div>`).join('');document.getElementById('changeCount').textContent=changes.length;document.getElementById('changeList').innerHTML=changes.map(c=>`<div class="alert-card change" onclick="routeChange('${c.id}')"><span class="tag orange">Cambio</span><div class="alert-text"><strong>${c.doc}: Cambio detectado en datos críticos</strong><small>Cliente / seguro: ${c.client}</small><small>${c.date}</small></div><div class="go">›</div></div>`).join('')}
+function message(c){let a=alertName(c);if(a==='Sin datos de factura')return 'Venta con datos de factura faltantes.';if(a==='Sin datos de cobro')return 'Venta sin datos de cobro registrados.';if(a==='Factura anulada')return 'Venta con datos de factura anulada.';if(a==='Liberación / ajuste')return 'Liberación al 100% para revisión.';if(a==='Descuento por revisar')return 'Descuento sin coincidencia con médico autorizado.';if(a==='NCO anulada')return 'NCO anulada con factura relacionada.';return a}
+function renderCaja(){let a=document.getElementById('cajaAlerta').value,r=document.getElementById('cajaRevision').value,q=document.getElementById('cajaSearch').value.toLowerCase();let rows=cases.filter(c=>c.group==='caja').filter(c=>!a||alertName(c)===a).filter(c=>!r||c.review===r).filter(c=>!q||c.doc.toLowerCase().includes(q)||c.client.toLowerCase().includes(q));document.getElementById('cajaRows').innerHTML=rows.map(c=>`<tr><td><b>${c.doc}</b></td><td>${c.date}</td><td>${c.client}</td><td>${alertName(c)}</td><td><span class="chip ${chipClass(c.review)}">${c.review}</span></td><td><button class="action" onclick="openCase('${c.id}')">Ver más</button></td></tr>`).join('')}
+function renderCob(){let a=document.getElementById('cobAlerta').value,r=document.getElementById('cobRevision').value,q=document.getElementById('cobSearch').value.toLowerCase();let rows=cases.filter(c=>c.group==='cob').filter(c=>!a||alertName(c)===a).filter(c=>!r||c.review===r).filter(c=>!q||c.doc.toLowerCase().includes(q)||c.client.toLowerCase().includes(q));document.getElementById('cobRows').innerHTML=rows.map(c=>`<tr><td><b>${c.doc}</b></td><td>${c.client}</td><td>${c.date}</td><td>${alertName(c)}</td><td><span class="chip ${chipClass(c.review)}">${c.review}</span></td><td><button class="action" onclick="openCase('${c.id}')">Ver más</button></td></tr>`).join('')}
+function renderChanges(){let r=document.getElementById('chgEstado').value,q=document.getElementById('chgSearch').value.toLowerCase();let rows=changes.filter(c=>!r||c.review===r).filter(c=>!q||c.doc.toLowerCase().includes(q)||c.client.toLowerCase().includes(q));document.getElementById('changeRows').innerHTML=rows.map(c=>`<tr><td><b>${c.doc}</b></td><td>${c.client}</td><td>${c.date}</td><td><span class="chip ${chipClass(c.review)}">${c.review}</span></td><td><button class="action" onclick="openChange('${c.id}')">Ver más</button></td></tr>`).join('')}
+function openCase(id){
+  selected=id;
+  selectedType='case';
+  let c=cases.find(x=>x.id===id);
+  document.getElementById('sideTitle').textContent=c.doc;
+  document.getElementById('sideSub').textContent=c.client+' · '+alertName(c);
+
+  if(c.nco){
+    document.getElementById('sideBody').innerHTML=`
+      <div class="grid">
+        <div class="field"><label>Código de NCO</label><div>${c.nco.code}</div></div>
+        <div class="field"><label>Factura relacionada</label><div>${c.nco.related}</div></div>
+        <div class="field"><label>Fecha de emisión</label><div>${c.date}</div></div>
+        <div class="field"><label>Cliente</label><div>${c.client}</div></div>
+        <div class="field"><label>Estado</label><div>${c.status}</div></div>
+        <div class="field"><label>Usuario que realizó la anulación</label><div>${c.nco.annulUser}</div></div>
+        <div class="field"><label>Fecha de anulación</label><div>${c.nco.annulDate}</div></div>
+      </div>
+      <div>
+        <label style="display:block;color:var(--muted);font-size:12px;font-weight:900;margin-bottom:8px">Justificación de auditoría</label>
+        <textarea class="textarea" id="reviewMsg"></textarea>
+      </div>`;
+    document.getElementById('sidePanel').classList.add('open');
     return;
   }
-  var badgeLabel = {cob:'cobertura',lib:'liberacion',nr:'NR',vm:'venta',anul:'anulacion'};
-  function makeCard(item) {
-    return '<div class="alert-card ' + item.nivel + '" onclick="' + item.action + '"><span class="alert-badge badge-' + item.tipo + '">' + badgeLabel[item.tipo] + '</span><div><div class="alert-main">' + item.main + item.repeat + item.req + '</div><div class="alert-meta">' + item.meta + '</div></div><div class="alert-arrow">&#8250;</div></div>';
-  }
-  function makeRepeatCard(r) {
-    return '<div class="alert-card warn" onclick="setView(\'requerimientos\',document.querySelector(\'[data-view=requerimientos]\'))"><span class="alert-badge badge-vm">usuario</span><div><div class="alert-main">'+r.name+'<span class="chip chip-muted chip-mini">'+r.count+' reportes</span></div><div class="alert-meta">Aparece en requerimientos generados por auditoria</div></div><div class="alert-arrow">&#8250;</div></div>';
-  }
-  var criticos = [];
-  cobrosSin.forEach(function(c){ criticos.push({tipo:'cob',nivel:'danger',main:'Cobro '+c.id+' - sin justificacion',meta:c.cajero+' - '+fmtShortDateTime(c.fechaISO),repeat:repeatBadge(c.cajero),req:reqBadge(c.id),action:"setView('cobros',document.querySelector('[data-view=cobros]'));setTimeout(function(){openCobro('"+c.id+"');},80)"}); });
-  libSin.forEach(function(l){ criticos.push({tipo:'lib',nivel:'danger',main:'Liberacion '+l.id+' - sin autoridad',meta:l.gestor+' - '+fmtShortDateTime(l.fechaISO),repeat:repeatBadge(l.gestor),req:reqBadge(l.id),action:"setView('liberaciones',document.querySelector('[data-view=liberaciones]'));setTimeout(function(){openLib('"+l.id+"');},80)"}); });
-  var sospechosos = [];
-  nrsMod.forEach(function(n){ sospechosos.push({tipo:'nr',nivel:'warn',main:'NR '+n.id+' - cambio no justificado',meta:n.quien+' - '+timeAfter(n.cierreISO, n.deteccionISO),repeat:repeatBadge(n.quien),req:reqBadge(n.id),action:"setView('nrs',document.querySelector('[data-view=nrs]'));setTimeout(function(){openNR('"+n.id+"');},80)"}); });
-  vmMod.forEach(function(v){ sospechosos.push({tipo:'vm',nivel:'warn',main:'Venta '+v.id+' - cambio no justificado',meta:v.cajero+' - '+fmtShortDateTime(v.cobradoISO),repeat:repeatBadge(v.cajero),req:reqBadge(v.id),action:"setView('ventas',document.querySelector('[data-view=ventas]'));setTimeout(function(){openVM('"+v.id+"');},80)"}); });
-  anulSosp.forEach(function(a){ sospechosos.push({tipo:'anul',nivel:'warn',main:'Anulacion '+a.id+' - evento posterior',meta:a.quien+' - '+fmtShortDateTime(a.fechaISO),repeat:repeatBadge(a.quien),req:reqBadge(a.id),action:"setView('anulaciones',document.querySelector('[data-view=anulaciones]'));setTimeout(function(){openAnul('"+a.id+"');},80)"}); });
-  var pendientes = [];
-  cobrosPend.forEach(function(c){ pendientes.push({tipo:'cob',nivel:'warn',main:'Cobro '+c.id+' - informacion insuficiente',meta:c.cajero+' - '+fmtShortDateTime(c.fechaISO),repeat:repeatBadge(c.cajero),req:reqBadge(c.id),action:"setView('cobros',document.querySelector('[data-view=cobros]'));setTimeout(function(){openCobro('"+c.id+"');},80)"}); });
-  libPend.forEach(function(l){ pendientes.push({tipo:'lib',nivel:'warn',main:'Liberacion '+l.id+' - informacion insuficiente',meta:l.gestor+' - '+fmtShortDateTime(l.fechaISO),repeat:repeatBadge(l.gestor),req:reqBadge(l.id),action:"setView('liberaciones',document.querySelector('[data-view=liberaciones]'));setTimeout(function(){openLib('"+l.id+"');},80)"}); });
-  var html = '';
-  if (criticos.length) html += '<div class="alert-section"><div class="alert-section-head">Atencion inmediata - '+criticos.length+'</div><div class="alert-list">'+criticos.map(makeCard).join('')+'</div></div>';
-  if (sospechosos.length) html += '<div class="alert-section"><div class="alert-section-head">Cambios detectados - '+sospechosos.length+'</div><div class="alert-list">'+sospechosos.map(makeCard).join('')+'</div></div>';
-  if (pendientes.length) html += '<div class="alert-section"><div class="alert-section-head">Informacion insuficiente - '+pendientes.length+'</div><div class="alert-list">'+pendientes.map(makeCard).join('')+'</div></div>';
-  if (reincidentes.length) html += '<div class="alert-section"><div class="alert-section-head">Reincidencia reportada - '+reincidentes.length+'</div><div class="alert-list">'+reincidentes.map(makeRepeatCard).join('')+'</div></div>';
-  container.innerHTML = html;
-}
 
-function toggleStats() {
-  statsVisible = !statsVisible;
-  document.getElementById('stats-grid').classList.toggle('visible', statsVisible);
-  document.getElementById('stats-toggle').classList.toggle('open', statsVisible);
+  document.getElementById('sideBody').innerHTML=`
+    <div class="grid">
+      <div class="field"><label>Fecha</label><div>${c.date}</div></div>
+      <div class="field"><label>Cliente</label><div>${c.client}</div></div>
+      <div class="field"><label>Estado de venta</label><div>${c.status}</div></div>
+      <div class="field"><label>Usuario que cobró</label><div>${c.collector}</div></div>
+      <div class="field"><label>Subtotal</label><div>${c.subtotal}</div></div>
+      <div class="field"><label>Descuento</label><div>${c.discount}</div></div>
+      <div class="field"><label>Cobertura</label><div>${c.coverage}</div></div>
+      <div class="field"><label>Total final</label><div>${c.total}</div></div>
+      <div class="field"><label>Médico responsable</label><div>${c.doctor}</div></div>
+      <div class="field"><label>Observación de ajuste</label><div>${c.obs}</div></div>
+      <div class="field"><label>Nro. factura</label><div>${c.invoice.num}</div></div>
+      <div class="field"><label>Estado factura</label><div>${c.invoice.status}</div></div>
+      <div class="field"><label>Monto factura</label><div>${c.invoice.amount}</div></div>
+      ${c.invoice.annulUser?`<div class="field"><label>Usuario anulación factura</label><div>${c.invoice.annulUser}</div></div>`:''}
+    </div>
+    <div>
+      <label style="display:block;color:var(--muted);font-size:12px;font-weight:900;margin-bottom:8px">Justificación de auditoría</label>
+      <textarea class="textarea" id="reviewMsg"></textarea>
+    </div>`;
+  document.getElementById('sidePanel').classList.add('open')
 }
-
-function fmtMoney(value) { return 'Bs ' + Number(value || 0).toLocaleString('es-BO', {minimumFractionDigits:2, maximumFractionDigits:2}); }
-function fmtDate(iso) { return iso ? new Date(iso).toLocaleDateString('es-BO', {day:'2-digit',month:'2-digit',year:'numeric'}) : '-'; }
-function fmtTime(iso) { return iso ? new Date(iso).toLocaleTimeString('es-BO', {hour:'2-digit',minute:'2-digit'}) : '-'; }
-function fmtDateTime(iso) { return iso ? fmtDate(iso) + ' - ' + fmtTime(iso) : '-'; }
-function fmtShortDateTime(iso) { return iso ? fmtDate(iso) + ' ' + fmtTime(iso) : '-'; }
-function pad2(n) { return String(n).padStart(2, '0'); }
-function dateKey(d) { return d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate()); }
-function parseLocal(value) {
-  if (!value) return null;
-  var p = value.split('T');
-  var d = p[0].split('-').map(Number);
-  var t = (p[1] || '00:00').split(':').map(Number);
-  return new Date(d[0], d[1]-1, d[2], t[0] || 0, t[1] || 0);
-}
-function rangeValue(key, side) {
-  var r = rangeState[key];
-  if (!r) return null;
-  return side === 'start' ? r.startDate + 'T' + r.startTime : r.endDate + 'T' + r.endTime;
-}
-function matchRange(iso, key) {
-  var r = rangeState[key];
-  if (!iso || !r) return true;
-  var value = parseLocal(iso);
-  return value >= parseLocal(rangeValue(key, 'start')) && value <= parseLocal(rangeValue(key, 'end'));
-}
-function renderRangeLabel(value) {
-  return fmtDate(value) + ' ' + fmtTime(value);
-}
-function monthName(date) {
-  return date.toLocaleDateString('es-BO', {month:'long', year:'numeric'});
-}
-function initRangeFilters() {
-  document.querySelectorAll('.range-filter').forEach(function(el){
-    var key = el.dataset.range;
-    var start = el.dataset.start.split('T');
-    var end = el.dataset.end.split('T');
-    rangeState[key] = { startDate:start[0], startTime:start[1], endDate:end[0], endTime:end[1], active:'start', month:parseLocal(el.dataset.start) };
-    renderRangeFilter(key);
-  });
-}
-function renderRangeFilter(key) {
-  var el = document.querySelector('.range-filter[data-range="'+key+'"]');
-  if (!el) return;
-  var r = rangeState[key];
-  var first = new Date(r.month.getFullYear(), r.month.getMonth(), 1);
-  var startOffset = (first.getDay() + 6) % 7;
-  var cursor = new Date(first);
-  cursor.setDate(first.getDate() - startOffset);
-  var days = '';
-  ['lu','ma','mi','ju','vi','sa','do'].forEach(function(d){ days += '<div class="range-dow">'+d+'</div>'; });
-  for (var i=0; i<42; i++) {
-    var keyDate = dateKey(cursor);
-    var muted = cursor.getMonth() !== r.month.getMonth() ? ' muted' : '';
-    var selected = keyDate === r.startDate || keyDate === r.endDate ? ' selected' : '';
-    var inRange = keyDate > r.startDate && keyDate < r.endDate ? ' in-range' : '';
-    days += '<button class="range-day'+muted+inRange+selected+'" onclick="selectRangeDay(\''+key+'\',\''+keyDate+'\')">'+cursor.getDate()+'</button>';
-    cursor.setDate(cursor.getDate() + 1);
-  }
-  el.innerHTML =
-    '<button class="range-field '+(r.active==='start'?'active':'')+'" onclick="setRangeActive(\''+key+'\',\'start\')"><span>Inicio</span><strong>'+renderRangeLabel(rangeValue(key,'start'))+'</strong></button>' +
-    '<button class="range-field '+(r.active==='end'?'active':'')+'" onclick="setRangeActive(\''+key+'\',\'end\')"><span>Fin</span><strong>'+renderRangeLabel(rangeValue(key,'end'))+'</strong></button>' +
-    '<div class="range-popover">' +
-      '<div class="range-head"><button class="range-nav" onclick="moveRangeMonth(\''+key+'\',-1)">‹</button><div class="range-month">'+monthName(r.month)+'</div><button class="range-nav" onclick="moveRangeMonth(\''+key+'\',1)">›</button></div>' +
-      '<div class="range-grid">'+days+'</div>' +
-      '<div class="range-times"><label>Hora inicio<input type="time" value="'+r.startTime+'" onchange="setRangeTime(\''+key+'\',\'start\',this.value)"></label><label>Hora fin<input type="time" value="'+r.endTime+'" onchange="setRangeTime(\''+key+'\',\'end\',this.value)"></label></div>' +
-    '</div>';
-}
-function runRangeRender(key) {
-  var el = document.querySelector('.range-filter[data-range="'+key+'"]');
-  if (el && window[el.dataset.render]) window[el.dataset.render]();
-}
-function setRangeActive(key, active) {
-  document.querySelectorAll('.range-filter').forEach(function(el){ if (el.dataset.range !== key) el.classList.remove('open'); });
-  rangeState[key].active = active;
-  var el = document.querySelector('.range-filter[data-range="'+key+'"]');
-  if (el) el.classList.add('open');
-  renderRangeFilter(key);
-}
-function selectRangeDay(key, value) {
-  var r = rangeState[key];
-  if (r.active === 'start') {
-    r.startDate = value;
-    if (r.startDate > r.endDate) r.endDate = value;
-    r.active = 'end';
-  } else {
-    r.endDate = value;
-    if (r.endDate < r.startDate) r.startDate = value;
-  }
-  renderRangeFilter(key);
-  document.querySelector('.range-filter[data-range="'+key+'"]').classList.add('open');
-  runRangeRender(key);
-}
-function setRangeTime(key, side, value) {
-  var r = rangeState[key];
-  if (side === 'start') r.startTime = value;
-  else r.endTime = value;
-  renderRangeFilter(key);
-  document.querySelector('.range-filter[data-range="'+key+'"]').classList.add('open');
-  runRangeRender(key);
-}
-function moveRangeMonth(key, delta) {
-  var r = rangeState[key];
-  r.month = new Date(r.month.getFullYear(), r.month.getMonth() + delta, 1);
-  renderRangeFilter(key);
-  document.querySelector('.range-filter[data-range="'+key+'"]').classList.add('open');
-}
-function matchTime(iso, fromId, toId) {
-  var from = document.getElementById(fromId);
-  var to = document.getElementById(toId);
-  if (!iso || !from || !to) return true;
-  var t = fmtTime(iso);
-  return t >= from.value && t <= to.value;
-}
-function matchDateFrom(iso, fromId) {
-  var from = document.getElementById(fromId);
-  if (!iso || !from || !from.value) return true;
-  return iso.slice(0,10) >= from.value;
-}
-function problemaAuditoria(estado) {
-  if (estado === 'nojust') return '<span class="chip chip-danger">Sin justificacion</span>';
-  if (estado === 'pend') return '<span class="chip chip-warn">Informacion insuficiente</span>';
-  if (estado === 'just') return '<span class="chip chip-muted">Justificado</span>';
-  return '<span class="chip chip-muted">' + (estado||'-') + '</span>';
-}
-function problemaCambio(integridad, estado) {
-  if (integridad === 'bad' && estado === 'pend') return '<span class="chip chip-warn">Cambio por revisar</span>';
-  if (integridad === 'bad') return '<span class="chip chip-warn">Cambio no justificado</span>';
-  if (estado === 'pend') return '<span class="chip chip-warn">Informacion insuficiente</span>';
-  return '<span class="chip chip-muted">Sin cambios</span>';
-}
-function reqForEvent(evento) { return reqs.find(function(r){ return r.evento === evento; }); }
-function reqBadge(evento) { return reqForEvent(evento) ? '<span class="chip chip-muted chip-mini">Req. generado</span>' : ''; }
-function repeatCount(name) {
-  if (!name || name === '-') return 0;
-  return reqs.filter(function(r){ return r.destinatario === name; }).length;
-}
-function repeatBadge(name) {
-  var count = repeatCount(name);
-  return count > 1 ? '<span class="chip chip-muted chip-mini">'+count+' reportes</span>' : '';
-}
-function repeatSummary() {
-  var grouped = {};
-  reqs.forEach(function(r){ grouped[r.destinatario] = (grouped[r.destinatario] || 0) + 1; });
-  return Object.keys(grouped).filter(function(name){ return grouped[name] > 1; }).map(function(name){ return {name:name,count:grouped[name]}; });
-}
-function timeAfter(startIso, endIso) {
-  if (!startIso || !endIso) return 'Cambio detectado';
-  var diff = Math.max(0, new Date(endIso) - new Date(startIso));
-  var mins = Math.round(diff / 60000);
-  if (mins < 60) return mins + ' min postcierre';
-  var hrs = Math.round(mins / 60);
-  if (hrs < 48) return hrs + ' h postcierre';
-  return Math.round(hrs / 24) + ' dias postcierre';
-}
-
-function renderCobros() {
-  var filter = document.getElementById('cobros-filter').value;
-  var search = document.getElementById('cobros-search').value.toLowerCase();
-  var rows = DATA.cobros.filter(function(c){
-    var mf = filter === 'all' || c.estadoAuditoria === filter;
-    var ms = !search || c.id.toLowerCase().indexOf(search) >= 0 || c.cajero.toLowerCase().indexOf(search) >= 0;
-    return mf && ms && matchRange(c.fechaISO, 'cobros');
-  });
-  document.getElementById('cobros-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
-  var tbody = document.getElementById('cobros-tbody');
-  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Sin resultados para los filtros seleccionados</td></tr>'; return; }
-  tbody.innerHTML = rows.map(function(c){
-    return '<tr onclick="openCobro(\''+c.id+'\')" id="row-cobro-'+c.id+'"><td class="td-mono">'+c.id+'</td><td class="td-mono">'+fmtShortDateTime(c.fechaISO)+'</td><td class="td-muted">'+c.cajero+repeatBadge(c.cajero)+'</td><td>'+problemaAuditoria(c.estadoAuditoria)+reqBadge(c.id)+'</td></tr>';
-  }).join('');
-}
-
-function openCobro(id) {
-  var c = DATA.cobros.find(function(x){ return x.id === id; });
-  if (!c) return;
-  currentEvent = { type: 'cobros', id: id };
-  document.querySelectorAll('#cobros-tbody tr').forEach(function(r){ r.classList.remove('selected'); });
-  var row = document.getElementById('row-cobro-' + id);
-  if (row) row.classList.add('selected');
-  document.getElementById('cobros-panel-empty').style.display = 'none';
-  var cont = document.getElementById('cobros-panel-content');
-  cont.style.cssText = 'display:flex;flex-direction:column;flex:1;overflow:hidden';
-  set('cp-id', c.id); set('cp-sub', c.tipo + ' - ' + c.cobertura + ' de cobertura');
-  set('cp-ref', c.ref); set('cp-tipo', c.tipo); set('cp-monto', fmtMoney(c.montoTotal)); set('cp-cubierto', fmtMoney(c.montoCubierto)); set('cp-pct', c.cobertura);
-  var obsEl = document.getElementById('cp-obs');
-  obsEl.textContent = c.estadoAuditoria === 'nojust' ? 'Sin justificacion suficiente' : (c.obs || 'Sin justificacion registrada');
-  obsEl.className = 'field-value' + (c.estadoAuditoria !== 'just' ? ' flag' : '');
-  set('cp-cajero', c.cajero + ' - ' + c.turno); set('cp-fecha', fmtDateTime(c.fechaISO));
-  document.getElementById('cp-auditoria').innerHTML = problemaAuditoria(c.estadoAuditoria) + reqBadge(c.id);
-  var note = document.getElementById('cp-note');
-  if (c.estadoAuditoria === 'nojust') { note.textContent = c.motivoAlerta; note.style.display = 'block'; }
-  else if (c.estadoAuditoria === 'pend') { note.textContent = 'Informacion insuficiente: verificar autoridad, cargo o documento de respaldo.'; note.style.display = 'block'; }
-  else { note.style.display = 'none'; }
-}
-
-function renderLib() {
-  var filter = document.getElementById('lib-filter').value;
-  var search = document.getElementById('lib-search').value.toLowerCase();
-  var rows = DATA.liberaciones.filter(function(l){
-    var ms = !search || [l.id,l.ref,l.gestor,l.auth,l.obs,l.paciente].join(' ').toLowerCase().indexOf(search) >= 0;
-    return (filter === 'all' || l.estado === filter) && matchRange(l.fechaISO, 'lib') && ms;
-  });
-  document.getElementById('lib-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
-  var tbody = document.getElementById('lib-tbody');
-  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Sin resultados</td></tr>'; return; }
-  tbody.innerHTML = rows.map(function(l){
-    return '<tr onclick="openLib(\''+l.id+'\')" id="row-lib-'+l.id+'"><td class="td-mono">'+l.id+'</td><td class="td-mono">'+fmtShortDateTime(l.fechaISO)+'</td><td class="td-muted">'+l.gestor+repeatBadge(l.gestor)+'</td><td>'+problemaAuditoria(l.estado)+reqBadge(l.id)+'</td></tr>';
-  }).join('');
-}
-
-function openLib(id) {
-  var l = DATA.liberaciones.find(function(x){ return x.id === id; });
-  if (!l) return;
-  currentEvent = { type: 'liberacion', id: id };
-  document.querySelectorAll('#lib-tbody tr').forEach(function(r){ r.classList.remove('selected'); });
-  var row = document.getElementById('row-lib-' + id);
-  if (row) row.classList.add('selected');
-  document.getElementById('lib-panel-empty').style.display = 'none';
-  var cont = document.getElementById('lib-panel-content');
-  cont.style.cssText = 'display:flex;flex-direction:column;flex:1;overflow:hidden';
-  set('lp-id', l.id); set('lp-ref', l.ref); set('lp-monto', fmtMoney(l.monto)); set('lp-liberado', fmtMoney(l.montoLib) + ' (100%)');
-  var obsEl = document.getElementById('lp-obs');
-  obsEl.textContent = l.obs || 'Sin justificacion registrada';
-  obsEl.className = 'field-value' + (l.estado !== 'just' ? ' flag' : '');
-  var authEl = document.getElementById('lp-auth');
-  authEl.textContent = l.auth || 'Ninguna';
-  authEl.className = 'field-value' + (!l.auth ? ' flag' : '');
-  set('lp-gestor', l.gestor); set('lp-fecha', fmtDateTime(l.fechaISO));
-  document.getElementById('lp-estado').innerHTML = problemaAuditoria(l.estado) + reqBadge(l.id);
-}
-
-function renderNRs() {
-  var filter = document.getElementById('nr-filter').value;
-  var search = document.getElementById('nr-search').value.toLowerCase();
-  var rows = DATA.nrs.filter(function(n){
-    if (filter === 'modified') return n.integridad === 'bad';
-    if (filter === 'ok') return n.integridad === 'ok';
-    return true;
-  });
-  rows = rows.filter(function(n){
-    var ms = !search || [n.id,n.expediente,n.quien,n.motivo,n.estado].join(' ').toLowerCase().indexOf(search) >= 0;
-    return matchRange(n.cierreISO, 'nr') && ms;
-  });
-  document.getElementById('nr-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
-  var tbody = document.getElementById('nr-tbody');
-  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Sin resultados</td></tr>'; return; }
-  tbody.innerHTML = rows.map(function(n){
-    var problema = n.integridad === 'bad' ? problemaCambio(n.integridad, n.estado) + '<span class="chip chip-muted chip-mini">'+timeAfter(n.cierreISO, n.deteccionISO)+'</span>' : problemaCambio(n.integridad, n.estado);
-    return '<tr onclick="openNR(\''+n.id+'\')" id="row-nr-'+n.id+'"><td class="td-mono">'+n.id+'</td><td class="td-mono">'+fmtShortDateTime(n.cierreISO)+'</td><td class="td-muted">'+n.quien+'</td><td>'+problema+reqBadge(n.id)+'</td></tr>';
-  }).join('');
-}
-
-function openNR(id) {
-  var n = DATA.nrs.find(function(x){ return x.id === id; });
-  if (!n) return;
-  currentEvent = { type: 'nr', id: id };
-  document.querySelectorAll('#nr-tbody tr').forEach(function(r){ r.classList.remove('selected'); });
-  var row = document.getElementById('row-nr-' + id);
-  if (row) row.classList.add('selected');
-  document.getElementById('nr-panel-empty').style.display = 'none';
-  var cont = document.getElementById('nr-panel-content');
-  cont.style.cssText = 'display:flex;flex-direction:column;flex:1;overflow:hidden';
-  set('np-id', n.id);
-  set('np-sub', n.integridad === 'bad' ? 'Cambio detectado despues del cierre' : 'Sin cambios detectados');
-  set('np-cierre', fmtDateTime(n.cierreISO)); set('np-monto', fmtMoney(n.monto));
-  var ib = document.getElementById('np-integrity-block');
-  ib.className = 'integrity-block ' + n.integridad;
-  document.getElementById('np-int-icon').textContent = n.integridad === 'ok' ? 'ok' : '!';
-  document.getElementById('np-int-title').textContent = n.integridad === 'ok' ? 'Sin cambios detectados' : 'Cambio no justificado';
-  document.getElementById('np-int-sub').textContent = n.integridad === 'ok' ? 'La NR conserva los datos del cierre' : 'Se detecto un cambio despues del cierre';
-  var quienEl = document.getElementById('np-quien');
-  quienEl.textContent = n.quien;
-  quienEl.className = 'field-value' + (n.integridad === 'bad' ? ' flag' : '');
-  var cuandoEl = document.getElementById('np-cuando');
-  cuandoEl.textContent = fmtDateTime(n.deteccionISO);
-  cuandoEl.className = 'field-value' + (n.integridad === 'bad' ? ' flag' : '');
-  var motivoEl = document.getElementById('np-motivo');
-  motivoEl.textContent = n.motivo || 'Sin motivo registrado';
-  motivoEl.className = 'field-value' + (!n.motivo ? ' flag' : '');
-  renderTimeline('np-timeline', n.timeline);
-}
-
-function renderVentas() {
-  var tipo = document.getElementById('vm-tipo').value;
-  var filter = document.getElementById('vm-filter').value;
-  var search = document.getElementById('vm-search').value.toLowerCase();
-  var rows = DATA.ventas.filter(function(v){
-    var mt = tipo === 'all' || v.tipo === tipo;
-    var mf = filter === 'all' || (filter === 'modified' && v.integridad === 'bad') || (filter === 'ok' && v.integridad === 'ok');
-    var ms = !search || [v.id,v.tipo,v.cliente,v.cajero,v.motivo].join(' ').toLowerCase().indexOf(search) >= 0;
-    return mt && mf && matchRange(v.cobradoISO, 'vm') && ms;
-  });
-  document.getElementById('vm-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
-  var tbody = document.getElementById('vm-tbody');
-  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="4">Sin resultados</td></tr>'; return; }
-  tbody.innerHTML = rows.map(function(v){
-    return '<tr onclick="openVM(\''+v.id+'\')" id="row-vm-'+v.id+'"><td class="td-mono">'+v.id+'</td><td class="td-mono">'+fmtShortDateTime(v.cobradoISO)+'</td><td class="td-muted">'+v.cajero+repeatBadge(v.cajero)+'</td><td>'+problemaCambio(v.integridad)+reqBadge(v.id)+'</td></tr>';
-  }).join('');
-}
-
-function openVM(id) {
-  var v = DATA.ventas.find(function(x){ return x.id === id; });
-  if (!v) return;
-  currentEvent = { type: 'venta', id: id };
-  document.querySelectorAll('#vm-tbody tr').forEach(function(r){ r.classList.remove('selected'); });
-  var row = document.getElementById('row-vm-' + id);
-  if (row) row.classList.add('selected');
-  document.getElementById('vm-panel-empty').style.display = 'none';
-  var cont = document.getElementById('vm-panel-content');
-  cont.style.cssText = 'display:flex;flex-direction:column;flex:1;overflow:hidden';
-  set('vp-id', v.id); set('vp-sub', v.tipo + (v.cliente ? '' : ' - cliente generico'));
-  set('vp-tipo', v.tipo);
-  var clienteEl = document.getElementById('vp-cliente');
-  clienteEl.textContent = v.cliente || 'Sin nombre (cliente generico)';
-  clienteEl.className = 'field-value' + (!v.cliente ? ' flag' : '');
-  set('vp-monto', fmtMoney(v.monto)); set('vp-cajero', v.cajero); set('vp-cobrado', fmtDateTime(v.cobradoISO));
-  var modEl = document.getElementById('vp-modificado');
-  modEl.textContent = fmtDateTime(v.deteccionISO);
-  modEl.className = 'field-value' + (v.integridad === 'bad' ? ' flag' : '');
-  var motivoEl = document.getElementById('vp-motivo');
-  motivoEl.textContent = v.motivo || 'Sin motivo registrado';
-  motivoEl.className = 'field-value' + (!v.motivo ? ' flag' : '');
-  var ib = document.getElementById('vp-integrity-block');
-  ib.className = 'integrity-block ' + v.integridad;
-  document.getElementById('vp-int-title').textContent = v.integridad === 'ok' ? 'Sin cambios detectados' : 'Cambio detectado';
-  document.getElementById('vp-int-sub').textContent = v.integridad === 'ok' ? 'La venta conserva los datos del cobro' : 'La venta cambio despues de haberse cobrado';
-}
-
-function renderAnulaciones() {
-  var filter = document.getElementById('anul-filter').value;
-  var search = document.getElementById('anul-search').value.toLowerCase();
-  var rows = DATA.anulaciones.filter(function(a){
-    if (filter === 'suspicious') return a.alerta;
-    if (filter === 'ok') return !a.alerta;
-    return true;
-  });
-  rows = rows.filter(function(a){
-    var ms = !search || [a.id,a.original,a.factura,a.nr,a.quien,a.motivo,a.nuevoCobro,a.eventoPosterior].join(' ').toLowerCase().indexOf(search) >= 0;
-    return matchRange(a.fechaISO, 'anul') && ms;
-  });
-  document.getElementById('anul-count').textContent = rows.length + ' registro' + (rows.length !== 1 ? 's' : '');
-  var tbody = document.getElementById('anul-tbody');
-  if (!rows.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="5">Sin resultados</td></tr>'; return; }
-  tbody.innerHTML = rows.map(function(a){
-    var problema = a.alerta ? '<span class="chip chip-warn">Evento posterior sin aclarar</span>' : '<span class="chip chip-muted">Normal</span>';
-    return '<tr onclick="openAnul(\''+a.id+'\')" id="row-anul-'+a.id+'"><td class="td-mono">'+a.id+'</td><td class="td-mono">'+fmtShortDateTime(a.fechaISO)+'</td><td class="td-muted">'+a.quien+repeatBadge(a.quien)+'</td><td class="td-mono">'+a.original+'</td><td>'+problema+reqBadge(a.id)+'</td></tr>';
-  }).join('');
-}
-
-function openAnul(id) {
-  var a = DATA.anulaciones.find(function(x){ return x.id === id; });
-  if (!a) return;
-  currentEvent = { type: 'anulacion', id: id };
-  document.querySelectorAll('#anul-tbody tr').forEach(function(r){ r.classList.remove('selected'); });
-  var row = document.getElementById('row-anul-' + id);
-  if (row) row.classList.add('selected');
-  document.getElementById('anul-panel-empty').style.display = 'none';
-  var cont = document.getElementById('anul-panel-content');
-  cont.style.cssText = 'display:flex;flex-direction:column;flex:1;overflow:hidden';
-  set('ap-id', a.id);
-  set('ap-sub', a.alerta ? 'Evento posterior relacionado' : 'Sin evento posterior');
-  set('ap-original', a.original); set('ap-ref', a.factura + ' / ' + a.nr); set('ap-quien', a.quien); set('ap-motivo', a.motivo || 'Sin justificacion registrada');
-  var nuevoEl = document.getElementById('ap-nuevo');
-  nuevoEl.textContent = a.nuevoCobro;
-  nuevoEl.className = 'field-value' + (a.nuevoCobro !== '-' ? ' flag' : '');
-  var difEl = document.getElementById('ap-dif');
-  difEl.textContent = 'No disponible en endpoint actual';
-  difEl.className = 'field-value warn-v';
-  renderTimeline('ap-timeline', a.timeline);
-}
-
-function currentEventInfo() {
-  if (currentEvent.type === 'cobros') {
-    var c = DATA.cobros.find(function(x){ return x.id === currentEvent.id; });
-    return c ? {destinatario:c.cajero, evento:c.id} : null;
-  }
-  if (currentEvent.type === 'liberacion') {
-    var l = DATA.liberaciones.find(function(x){ return x.id === currentEvent.id; });
-    return l ? {destinatario:l.gestor, evento:l.id} : null;
-  }
-  if (currentEvent.type === 'nr') {
-    var n = DATA.nrs.find(function(x){ return x.id === currentEvent.id; });
-    return n ? {destinatario:n.quien, evento:n.id} : null;
-  }
-  if (currentEvent.type === 'venta') {
-    var v = DATA.ventas.find(function(x){ return x.id === currentEvent.id; });
-    return v ? {destinatario:v.cajero, evento:v.id} : null;
-  }
-  if (currentEvent.type === 'anulacion') {
-    var a = DATA.anulaciones.find(function(x){ return x.id === currentEvent.id; });
-    return a ? {destinatario:a.quien, evento:a.id} : null;
-  }
-  return null;
-}
-
-function renderReqs() {
-  var tbody = document.getElementById('req-tbody');
-  if (!reqs.length) { tbody.innerHTML = '<tr class="empty-row"><td colspan="7">No hay requerimientos. Abre un evento sospechoso y usa Generar requerimiento.</td></tr>'; return; }
-  tbody.innerHTML = reqs.map(function(r){
-    return '<tr><td class="td-mono">'+r.id+'</td><td class="td-mono">'+fmtShortDateTime(r.fechaISO)+'</td><td class="td-muted">'+r.auditor+'</td><td class="td-muted">'+r.destinatario+'</td><td class="td-mono">'+r.evento+'</td><td><span class="chip chip-warn">'+r.estado+'</span></td><td><button class="btn btn-ghost" onclick="exportarPDF(\''+r.id+'\')">PDF</button><button class="btn btn-ghost" onclick="imprimirReq(\''+r.id+'\')">Imprimir</button></td></tr>';
-  }).join('');
-}
-
-function generarReq(tipo) {
-  if (!currentEvent.id) return;
-  var modal = document.getElementById('req-modal');
-  var sub = document.getElementById('req-modal-sub');
-  sub.textContent = 'Evento: ' + currentEvent.id + ' - Tipo: ' + tipo;
-  document.getElementById('req-motivo-input').value = '';
-  modal.dataset.tipo = tipo;
-  modal.classList.add('open');
-  setTimeout(function(){ document.getElementById('req-motivo-input').focus(); }, 80);
-}
-
-function cerrarModalReq(e) {
-  if (e && e.target !== document.getElementById('req-modal')) return;
-  document.getElementById('req-modal').classList.remove('open');
-}
-
-function confirmarReq() {
-  var motivo = document.getElementById('req-motivo-input').value.trim();
-  if (!motivo) { document.getElementById('req-motivo-input').focus(); return; }
-  var tipo = document.getElementById('req-modal').dataset.tipo;
-  var info = currentEventInfo() || {destinatario:'Responsable no identificado', evento:currentEvent.id};
-  var id = 'REQ-' + String(reqCounter++).padStart(3, '0');
-  var now = new Date();
-  reqs.unshift({ id: id, evento: info.evento, tipo: tipo, destinatario: info.destinatario, auditor: AUDITOR.nombre, auditorId: AUDITOR.id, motivo: motivo, fechaISO: now.toISOString(), estado: 'Pendiente' });
-  var badge = document.getElementById('badge-req');
-  badge.textContent = reqs.length;
-  badge.style.display = '';
-  badge.className = 'nav-badge warn';
-  var stReqs = document.getElementById('st-reqs');
-  if (stReqs) stReqs.textContent = reqs.length;
-  document.getElementById('req-modal').classList.remove('open');
-  toast('Requerimiento ' + id + ' guardado para PDF o impresion', 'success');
-  setTimeout(function(){ setView('requerimientos', document.querySelector('[data-view=requerimientos]')); }, 1600);
-}
-
-function updateReqState(id, estado) {
-  if (!id) {
-    reqs.forEach(function(r){ r.estado = estado; });
-  } else {
-    var req = reqs.find(function(r){ return r.id === id; });
-    if (req) req.estado = estado;
-  }
-  renderReqs();
-}
-
-function exportarPDF(id) {
-  updateReqState(id, 'PDF generado');
-  toast('PDF generado - ' + (id||'todos'), 'success');
-}
-
-function imprimirReq(id) {
-  updateReqState(id, 'Impreso');
-  toast('Requerimiento marcado como impreso - ' + id, 'success');
-}
-
-function set(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
-
-function chipAuditoria(estado) {
-  if (estado === 'nojust') return '<span class="chip chip-danger">Sin justificacion</span>';
-  if (estado === 'pend') return '<span class="chip chip-warn">Pendiente</span>';
-  if (estado === 'just') return '<span class="chip chip-ok">Justificado</span>';
-  return '<span class="chip chip-muted">' + (estado||'-') + '</span>';
-}
-
-function renderTimeline(containerId, items) {
-  var el = document.getElementById(containerId);
-  if (!el || !items) return;
-  el.innerHTML = items.map(function(item){
-    return '<div class="tl-item"><div class="tl-left"><div class="tl-dot '+item.dot+'"></div><div class="tl-line"></div></div><div class="tl-right"><div class="tl-label">'+item.label+'</div><div class="tl-meta">'+item.meta+'</div></div></div>';
-  }).join('');
-}
-
-var toastTimer;
-function toast(msg, type) {
-  var el = document.getElementById('toast');
-  el.textContent = msg; el.className = type || ''; el.style.display = 'block';
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(function(){ el.style.display = 'none'; }, 2800);
-}
-
-(function(){
-  var now = new Date();
-  document.getElementById('sidebar-date').textContent = now.toLocaleDateString('es-BO', {weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'});
-  initRangeFilters();
-  renderDashboard();
-  renderCobros();
-})();
-
+function openChange(id){selected=id;selectedType='change';let c=changes.find(x=>x.id===id);let changedRows=c.rows.filter(r=>r[3]==='Modificado');document.getElementById('sideTitle').textContent=c.doc;document.getElementById('sideSub').textContent='Cambio detectado por comparación automática';document.getElementById('sideBody').innerHTML=`<div class="grid"><div class="field"><label>Cliente / seguro</label><div>${c.client}</div></div><div class="field"><label>Fecha detección</label><div>${c.date}</div></div></div><div class="table-panel"><div class="table-wrap"><table><thead><tr><th>Dato crítico</th><th>Dato anterior</th><th>Dato actual</th><th>Resultado</th></tr></thead><tbody>${changedRows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td><span class="chip ${chipClass(r[3])}">${r[3]}</span></td></tr>`).join('')}</tbody></table></div></div><div><label style="display:block;color:var(--muted);font-size:12px;font-weight:900;margin-bottom:8px">Justificación de auditoría</label><textarea class="textarea" id="reviewMsg"></textarea></div>`;document.getElementById('sidePanel').classList.add('open')}
+function closePanel(){document.getElementById('sidePanel').classList.remove('open')}
+function setReview(v){if(selectedType==='case'){let c=cases.find(x=>x.id===selected);if(c)c.review=v}else{let c=changes.find(x=>x.id===selected);if(c)c.review=v}closePanel();renderAll()}
+function openDoctors(){renderDoctors();document.getElementById('doctorPanel').classList.add('open')}function closeDoctors(){document.getElementById('doctorPanel').classList.remove('open')}
+function renderDoctors(){document.getElementById('doctorList').innerHTML=doctors.map((d,i)=>`<div class="doctor-item"><div><b>${d.name}</b><br><small style="color:var(--muted)">Ítems autorizados: ${d.items}</small></div><button class="btn" onclick="removeDoctor(${i})">Quitar</button></div>`).join('')}
+function addDoctor(){let n=document.getElementById('doctorName').value.trim(),it=document.getElementById('doctorItems').value.trim();if(!n)return alert('Ingrese el nombre del médico.');doctors.push({name:n.toUpperCase(),items:it||'Sin detalle'});document.getElementById('doctorName').value='';document.getElementById('doctorItems').value='';renderAll();renderDoctors()}
+function removeDoctor(i){doctors.splice(i,1);renderAll();renderDoctors()}
+function runHash(){let doc=document.getElementById('hashDoc').value.trim().toUpperCase();let c=changes.find(x=>x.doc===doc);let rows=c?c.rows.filter(r=>r[3]==='Modificado'):[];document.getElementById('hashResult').classList.add('active');document.getElementById('hashCompare').innerHTML=rows.length?rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td><span class="chip ${chipClass(r[3])}">${r[3]}</span></td></tr>`).join(''):`<tr><td colspan="4">No se detectaron diferencias en los datos críticos para el documento ingresado.</td></tr>`}
+function clearHash(){document.getElementById('hashDoc').value='';document.getElementById('hashReason').value='';document.getElementById('hashResult').classList.remove('active')}
+function clearCaja(){document.getElementById('cajaAlerta').value='';document.getElementById('cajaRevision').value='';document.getElementById('cajaSearch').value='';renderCaja()}
+function clearCob(){document.getElementById('cobAlerta').value='';document.getElementById('cobRevision').value='';document.getElementById('cobSearch').value='';renderCob()}
+function clearChanges(){document.getElementById('chgEstado').value='';document.getElementById('chgSearch').value='';renderChanges()}
+function renderAll(){document.getElementById('sumCaja').textContent=cases.filter(c=>c.group==='caja').length;document.getElementById('sumCob').textContent=cases.filter(c=>c.group==='cob').length;document.getElementById('sumCambios').textContent=changes.length;document.getElementById('sumPend').textContent=cases.filter(c=>c.review==='Pendiente').length+changes.filter(c=>c.review==='Pendiente').length;renderDashboard();renderCaja();renderCob();renderChanges()}
+renderAll();
 </script>
 </body>
 </html>
