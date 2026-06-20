@@ -3,19 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fénix - Prototipo Auditoría Caja - Revisados</title>
+  <title>Fénix - Auditoría Caja v2</title>
   <style>
     :root{
       --bg:#1e4a75; --panel:#012544; --sidebar:#001f3a; --sidebar2:#07345b;
       --text:#f7fbff; --muted:#c7d7eb; --line:rgba(255,255,255,.14);
       --accent:#58a6ff; --green:#0b7a78; --red:#ff4d63; --orange:#f59e0b;
       --chip:#09365f; --shadow:0 16px 38px rgba(0,0,0,.25);
+
+      /* Alert type tokens */
+      --alerta-facturacion:#0ea5e9;
+      --alerta-facturacion-bg:rgba(14,165,233,.13);
+      --alerta-facturacion-glow:rgba(14,165,233,.25);
+
+      --alerta-liberacion:#f43f5e;
+      --alerta-liberacion-bg:rgba(244,63,94,.13);
+      --alerta-liberacion-glow:rgba(244,63,94,.25);
+
+      --alerta-descuento:#f59e0b;
+      --alerta-descuento-bg:rgba(245,158,11,.13);
+      --alerta-descuento-glow:rgba(245,158,11,.25);
+
+      --alerta-nco:#a855f7;
+      --alerta-nco-bg:rgba(168,85,247,.13);
+      --alerta-nco-glow:rgba(168,85,247,.25);
+
+      --alerta-cobertura:#10b981;
+      --alerta-cobertura-bg:rgba(16,185,129,.13);
+      --alerta-cobertura-glow:rgba(16,185,129,.25);
+
+      --alerta-cambio:#f59e0b;
+      --alerta-cambio-bg:rgba(245,158,11,.13);
+      --alerta-cambio-glow:rgba(245,158,11,.25);
     }
     [data-theme="light"]{
       --bg:#eef5fb; --panel:#ffffff; --sidebar:#0b2c4b; --sidebar2:#123b61;
       --text:#12263f; --muted:#58708b; --line:rgba(18,38,63,.14);
       --accent:#0ea5e9; --green:#0f766e; --red:#be123c; --orange:#a16207;
       --chip:#eaf3ff; --shadow:0 12px 30px rgba(15,23,42,.08);
+
+      --alerta-facturacion:#0284c7;
+      --alerta-facturacion-bg:rgba(2,132,199,.08);
+      --alerta-facturacion-glow:rgba(2,132,199,.15);
+
+      --alerta-liberacion:#be123c;
+      --alerta-liberacion-bg:rgba(190,18,60,.08);
+      --alerta-liberacion-glow:rgba(190,18,60,.15);
+
+      --alerta-descuento:#a16207;
+      --alerta-descuento-bg:rgba(161,98,7,.08);
+      --alerta-descuento-glow:rgba(161,98,7,.15);
+
+      --alerta-nco:#7c3aed;
+      --alerta-nco-bg:rgba(124,58,237,.08);
+      --alerta-nco-glow:rgba(124,58,237,.15);
+
+      --alerta-cobertura:#0f766e;
+      --alerta-cobertura-bg:rgba(15,118,110,.08);
+      --alerta-cobertura-glow:rgba(15,118,110,.15);
+
+      --alerta-cambio:#a16207;
+      --alerta-cambio-bg:rgba(161,98,7,.08);
+      --alerta-cambio-glow:rgba(161,98,7,.15);
     }
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden}
@@ -28,7 +77,8 @@
     .nav-btn{width:100%;border:0;background:transparent;color:var(--text);padding:10px 14px;text-align:left;cursor:pointer;font-size:14px}
     .nav-btn.active,.nav-btn:hover{background:var(--sidebar2);border-left:3px solid var(--accent);padding-left:11px}
     .spacer{flex:1}.logout{margin:14px;border:1px solid var(--line);border-radius:10px;background:transparent;color:var(--text);padding:10px;text-align:left}
-    main{min-width:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}.topbar{padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex:0 0 auto}
+    main{min-width:0;height:100vh;display:flex;flex-direction:column;overflow:hidden}
+    .topbar{padding:16px 24px;display:flex;justify-content:space-between;align-items:center;flex:0 0 auto}
     .topbar h2{margin:0;font-size:17px}.top-actions{display:flex;gap:12px;align-items:center}
     .theme{width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.08);color:var(--text);cursor:pointer}
     .user{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:800}
@@ -38,8 +88,10 @@
     .filter-panel{position:relative;padding:18px 14px 14px;margin-bottom:16px}
     .filter-title{position:absolute;top:-13px;left:45px;background:var(--panel);border:1px solid var(--accent);border-radius:12px;padding:6px 14px;font-weight:900;font-size:13px}
     .filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-    button,.btn{font:inherit}.pill,.btn,.select,.search,.input,.textarea{border:1px solid #88b4d9;border-radius:8px;background:transparent;color:var(--text);padding:8px 12px;font-weight:800}
-    .pill.active,.btn.primary{background:var(--green);border-color:var(--green);color:white}.select option{color:#111}.search{min-width:240px}.select{min-width:180px}
+    button,.btn{font:inherit}
+    .pill,.btn,.select,.search,.input,.textarea{border:1px solid #88b4d9;border-radius:8px;background:transparent;color:var(--text);padding:8px 12px;font-weight:800}
+    .pill.active,.btn.primary{background:var(--green);border-color:var(--green);color:white}
+    .select option{color:#111}.search{min-width:240px}.select{min-width:180px}
     .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
     .card{padding:15px}.card strong{display:block;font-size:28px}.card span{font-weight:900;font-size:13px}.card p{margin:4px 0 0;color:var(--muted);font-size:12px}
     .section-title{font-size:12px;font-weight:950;text-transform:uppercase;margin:18px 0 10px;color:#ffd1d8;letter-spacing:.06em;display:flex;align-items:center;gap:9px}
@@ -50,36 +102,152 @@
     .show-more{justify-self:center;border:1px solid rgba(136,180,217,.65);background:rgba(255,255,255,.06);color:var(--text);border-radius:999px;padding:9px 16px;font-size:12px;font-weight:950;cursor:pointer;box-shadow:0 8px 18px rgba(0,0,0,.12);transition:transform .18s ease,background .18s ease,border-color .18s ease}
     .show-more:hover{transform:translateY(-1px);background:rgba(255,255,255,.11);border-color:var(--accent)}
     [data-theme="light"] .show-more{background:#f8fbff;color:#123b61;box-shadow:0 8px 18px rgba(15,23,42,.06)}
-    .alert-card{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025)),var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px 14px 14px 16px;display:grid;grid-template-columns:42px 1fr auto 24px;gap:13px;align-items:center;cursor:pointer;box-shadow:0 12px 26px rgba(0,0,0,.16);transition:transform .18s ease,border-color .18s ease,background .18s ease}
-    .alert-card:before{content:'';position:absolute;left:0;top:12px;bottom:12px;width:4px;border-radius:0 999px 999px 0;background:var(--accent)}
-    .alert-card:hover{transform:translateY(-1px);border-color:rgba(88,166,255,.45);background:linear-gradient(180deg,rgba(255,255,255,.085),rgba(255,255,255,.035)),var(--panel)}
-    .alert-card.urgent:before{background:#ff4d63}.alert-card.change:before{background:#f59e0b}
+
+    /* ── Alert cards with per-type left border + tone ── */
+    .alert-card{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.055),rgba(255,255,255,.025)),var(--panel);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:14px 14px 14px 18px;display:grid;grid-template-columns:46px 1fr auto 24px;gap:13px;align-items:center;cursor:pointer;box-shadow:0 12px 26px rgba(0,0,0,.16);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+    .alert-card:before{content:'';position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:0}
+    .alert-card:hover{transform:translateY(-1px)}
     [data-theme="light"] .alert-card{background:#fff;border-color:rgba(15,23,42,.10);box-shadow:0 12px 28px rgba(15,23,42,.08)}
-    .alert-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;font-size:20px;font-weight:950;color:#fff;border:1px solid rgba(255,255,255,.18)}
-    .alert-icon.red{background:rgba(255,77,99,.22);color:#ff8ca0}.alert-icon.orange{background:rgba(245,158,11,.20);color:#ffd28a}.alert-icon.blue{background:rgba(2,132,199,.22);color:#7dd3fc}.alert-icon.green{background:rgba(15,118,110,.24);color:#7ee0d5}
-    [data-theme="light"] .alert-icon.red{background:#ffe4e8;color:#be123c}[data-theme="light"] .alert-icon.orange{background:#fff3d6;color:#a16207}[data-theme="light"] .alert-icon.blue{background:#e0f2fe;color:#0369a1}[data-theme="light"] .alert-icon.green{background:#d9fbf3;color:#0f766e}
-    .alert-main{min-width:0}.alert-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px}.alert-code{font-size:13px;font-weight:950;letter-spacing:.02em}.alert-badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.04em;color:#fff}.alert-badge.red{background:#ff4d63}.alert-badge.orange{background:#f59e0b}.alert-badge.blue{background:#0284c7}.alert-badge.green{background:#0f766e}
-    .alert-main strong{display:block;font-size:14px;font-weight:950;line-height:1.25}.alert-main small{display:block;color:var(--muted);font-size:12px;font-weight:750;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .alert-time{text-align:right;color:var(--muted);font-size:11px;font-weight:900;line-height:1.25;min-width:72px}.alert-time b{display:block;color:var(--text);font-size:12px}.go{width:24px;height:24px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.08);color:var(--text);font-size:22px;font-weight:900;line-height:1}
-    .tag{display:inline-flex;border-radius:8px;padding:6px 9px;color:white;font-size:11px;font-weight:900}.tag.red{background:#ff4d63}.tag.orange{background:#f59e0b}.tag.blue{background:#0284c7}.tag.green{background:#0f766e}
-    .alert-text strong{display:block;font-size:14px;margin-bottom:4px}.alert-text small{display:block;color:var(--muted);font-size:12px}
-    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}.toolbar h3{margin:0;font-size:17px}
-    .tool-actions{display:flex;gap:8px;flex-wrap:wrap}.btn{cursor:pointer}.btn.soft{background:rgba(255,255,255,.06)}
-    table{width:100%;border-collapse:collapse;min-width:850px}th,td{padding:14px 16px;border-top:1px solid var(--line);font-size:14px;text-align:left;vertical-align:middle}
-    th{font-size:13px;background:rgba(0,0,0,.08);font-weight:900}[data-theme="light"] th{background:#f3f7fb}
-    .table-wrap{overflow:auto}.chip{display:inline-flex;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:900;text-transform:uppercase}
+
+    /* type-specific card styles */
+    .alert-card.t-facturacion:before{background:var(--alerta-facturacion)}
+    .alert-card.t-facturacion{border-color:var(--alerta-facturacion-glow)}
+    .alert-card.t-facturacion:hover{box-shadow:0 12px 26px rgba(0,0,0,.16),0 0 0 1px var(--alerta-facturacion-glow)}
+    .alert-card.t-liberacion:before{background:var(--alerta-liberacion)}
+    .alert-card.t-liberacion{border-color:var(--alerta-liberacion-glow)}
+    .alert-card.t-liberacion:hover{box-shadow:0 12px 26px rgba(0,0,0,.16),0 0 0 1px var(--alerta-liberacion-glow)}
+    .alert-card.t-descuento:before{background:var(--alerta-descuento)}
+    .alert-card.t-descuento{border-color:var(--alerta-descuento-glow)}
+    .alert-card.t-descuento:hover{box-shadow:0 12px 26px rgba(0,0,0,.16),0 0 0 1px var(--alerta-descuento-glow)}
+    .alert-card.t-nco:before{background:var(--alerta-nco)}
+    .alert-card.t-nco{border-color:var(--alerta-nco-glow)}
+    .alert-card.t-nco:hover{box-shadow:0 12px 26px rgba(0,0,0,.16),0 0 0 1px var(--alerta-nco-glow)}
+    .alert-card.t-cobertura:before{background:var(--alerta-cobertura)}
+    .alert-card.t-cobertura{border-color:var(--alerta-cobertura-glow)}
+    .alert-card.t-cobertura:hover{box-shadow:0 12px 26px rgba(0,0,0,.16),0 0 0 1px var(--alerta-cobertura-glow)}
+    .alert-card.t-cambio:before{background:var(--alerta-cambio)}
+    .alert-card.t-cambio{border-color:var(--alerta-cambio-glow)}
+    .alert-card.t-cambio:hover{box-shadow:0 12px 26px rgba(0,0,0,.16),0 0 0 1px var(--alerta-cambio-glow)}
+
+    .alert-icon{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-size:19px;font-weight:950;border:1px solid rgba(255,255,255,.15)}
+    .alert-icon.t-facturacion{background:var(--alerta-facturacion-bg);color:var(--alerta-facturacion)}
+    .alert-icon.t-liberacion{background:var(--alerta-liberacion-bg);color:var(--alerta-liberacion)}
+    .alert-icon.t-descuento{background:var(--alerta-descuento-bg);color:var(--alerta-descuento)}
+    .alert-icon.t-nco{background:var(--alerta-nco-bg);color:var(--alerta-nco)}
+    .alert-icon.t-cobertura{background:var(--alerta-cobertura-bg);color:var(--alerta-cobertura)}
+    .alert-icon.t-cambio{background:var(--alerta-cambio-bg);color:var(--alerta-cambio)}
+
+    .alert-main{min-width:0}
+    .alert-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px}
+    .alert-code{font-size:13px;font-weight:950;letter-spacing:.02em}
+    .alert-badge{display:inline-flex;align-items:center;border-radius:6px;padding:3px 8px;font-size:10px;font-weight:950;text-transform:uppercase;letter-spacing:.04em}
+    .alert-badge.t-facturacion{background:var(--alerta-facturacion-bg);color:var(--alerta-facturacion);border:1px solid var(--alerta-facturacion-glow)}
+    .alert-badge.t-liberacion{background:var(--alerta-liberacion-bg);color:var(--alerta-liberacion);border:1px solid var(--alerta-liberacion-glow)}
+    .alert-badge.t-descuento{background:var(--alerta-descuento-bg);color:var(--alerta-descuento);border:1px solid var(--alerta-descuento-glow)}
+    .alert-badge.t-nco{background:var(--alerta-nco-bg);color:var(--alerta-nco);border:1px solid var(--alerta-nco-glow)}
+    .alert-badge.t-cobertura{background:var(--alerta-cobertura-bg);color:var(--alerta-cobertura);border:1px solid var(--alerta-cobertura-glow)}
+    .alert-badge.t-cambio{background:var(--alerta-cambio-bg);color:var(--alerta-cambio);border:1px solid var(--alerta-cambio-glow)}
+
+    .alert-main strong{display:block;font-size:14px;font-weight:950;line-height:1.25}
+    .alert-main small{display:block;color:var(--muted);font-size:12px;font-weight:750;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .alert-time{text-align:right;color:var(--muted);font-size:11px;font-weight:900;line-height:1.25;min-width:72px}
+    .alert-time b{display:block;color:var(--text);font-size:12px}
+    .go{width:24px;height:24px;border-radius:999px;display:grid;place-items:center;background:rgba(255,255,255,.08);color:var(--text);font-size:22px;font-weight:900;line-height:1}
+
+    .tag{display:inline-flex;border-radius:8px;padding:6px 9px;color:white;font-size:11px;font-weight:900}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+    .toolbar h3{margin:0;font-size:17px}
+    .tool-actions{display:flex;gap:8px;flex-wrap:wrap}
+    .btn{cursor:pointer}.btn.soft{background:rgba(255,255,255,.06)}
+    table{width:100%;border-collapse:collapse;min-width:850px}
+    th,td{padding:14px 16px;border-top:1px solid var(--line);font-size:14px;text-align:left;vertical-align:middle}
+    th{font-size:13px;background:rgba(0,0,0,.08);font-weight:900}
+    [data-theme="light"] th{background:#f3f7fb}
+    .table-wrap{overflow:auto}
+    .chip{display:inline-flex;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:900;text-transform:uppercase}
     .chip.pendiente{background:#fef3c7;color:#92400e}.chip.justificado{background:#ccfbf1;color:#0f766e}.chip.observado{background:#ffe4e6;color:#be123c}.chip.modificado{background:#ffe4e6;color:#be123c}.chip.integro{background:#ccfbf1;color:#0f766e}
     .action{border:0;background:var(--green);color:white;border-radius:999px;padding:8px 14px;font-weight:900;cursor:pointer}
     .warning{border:1px solid #c76b00;background:rgba(199,107,0,.14);color:#ffd166;border-radius:10px;padding:12px 14px;font-weight:800;margin-bottom:14px}
     .form-panel{padding:14px}.form-panel h3{margin:0 0 14px;font-size:16px}.stack{display:grid;gap:12px}.textarea{min-height:92px;resize:vertical;width:100%}
     .result{display:none}.result.active{display:block}.result h3{padding:14px 16px;margin:0;font-size:16px}
-    .side-panel{position:fixed;top:0;right:-620px;width:min(620px,100%);height:100vh;background:var(--panel);border-left:1px solid var(--line);box-shadow:-18px 0 50px rgba(0,0,0,.32);z-index:30;transition:.25s ease;display:flex;flex-direction:column}
-    .side-panel.open{right:0}
-    .side-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
-    .side-head h3{margin:0 0 3px;font-size:17px}.side-head p{margin:0;color:var(--muted);font-size:13px}
-    .side-body{padding:18px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:18px;flex:1;min-height:0}
-    .side-actions{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;flex:0 0 auto}.side-actions.hidden{display:none}
     .empty-state{padding:22px 16px;text-align:center;color:var(--muted);font-weight:800}
+
+    /* ── Side Panel ── */
+    .side-panel{position:fixed;top:0;right:-680px;width:min(680px,100%);height:100vh;background:var(--panel);border-left:1px solid var(--line);box-shadow:-18px 0 50px rgba(0,0,0,.32);z-index:30;transition:.25s ease;display:flex;flex-direction:column}
+    .side-panel.open{right:0}
+    .side-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex:0 0 auto}
+    .side-head-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .btn.pdf{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,rgba(245,158,11,.22),rgba(255,255,255,.06));border-color:rgba(245,158,11,.55);color:var(--text);box-shadow:0 10px 22px rgba(0,0,0,.14)}
+    .btn.pdf:hover{border-color:#fbbf24;transform:translateY(-1px)}
+    .side-head-left{display:flex;align-items:center;gap:12px}
+    .side-head-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:18px;flex:0 0 40px}
+    .side-head h3{margin:0 0 3px;font-size:17px}.side-head p{margin:0;color:var(--muted);font-size:13px}
+    .side-body{padding:18px 20px;overflow-y:auto;display:flex;flex-direction:column;gap:16px;flex:1;min-height:0}
+    .side-actions{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;flex:0 0 auto}
+    .side-actions.hidden{display:none}
+
+    /* ── Critical alert block (top of side panel) ── */
+    .sp-alert-block{border-radius:14px;padding:16px;margin-bottom:2px;overflow:hidden}
+    .sp-alert-block.t-facturacion{background:var(--alerta-facturacion-bg);border:1px solid var(--alerta-facturacion-glow)}
+    .sp-alert-block.t-liberacion{background:var(--alerta-liberacion-bg);border:1px solid var(--alerta-liberacion-glow)}
+    .sp-alert-block.t-descuento{background:var(--alerta-descuento-bg);border:1px solid var(--alerta-descuento-glow)}
+    .sp-alert-block.t-nco{background:var(--alerta-nco-bg);border:1px solid var(--alerta-nco-glow)}
+    .sp-alert-block.t-cobertura{background:var(--alerta-cobertura-bg);border:1px solid var(--alerta-cobertura-glow)}
+    .sp-alert-block.t-cambio{background:var(--alerta-cambio-bg);border:1px solid var(--alerta-cambio-glow)}
+
+    .sp-alert-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;opacity:.75}
+    .sp-alert-label.t-facturacion{color:var(--alerta-facturacion)}
+    .sp-alert-label.t-liberacion{color:var(--alerta-liberacion)}
+    .sp-alert-label.t-descuento{color:var(--alerta-descuento)}
+    .sp-alert-label.t-nco{color:var(--alerta-nco)}
+    .sp-alert-label.t-cobertura{color:var(--alerta-cobertura)}
+    .sp-alert-label.t-cambio{color:var(--alerta-cambio)}
+
+    .sp-alert-motivo{font-size:14px;font-weight:800;line-height:1.5}
+
+    /* key values inside the alert block */
+    .sp-alert-kv{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
+    .sp-alert-kv-item{background:rgba(0,0,0,.15);border-radius:8px;padding:8px 12px;flex:1 1 120px}
+    [data-theme="light"] .sp-alert-kv-item{background:rgba(0,0,0,.05)}
+    .sp-alert-kv-item label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px;opacity:.65}
+    .sp-alert-kv-item div{font-size:14px;font-weight:800}
+
+    /* changed rows table inside alert block */
+    .sp-changes-table{width:100%;min-width:0!important;table-layout:fixed;border-collapse:collapse;margin-top:12px;border-radius:10px;overflow:hidden}
+    .sp-changes-table th{font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;padding:8px 10px;background:rgba(0,0,0,.2);text-align:left;color:var(--muted)}
+    [data-theme="light"] .sp-changes-table th{background:rgba(0,0,0,.08)}
+    .sp-changes-table td{padding:9px 10px;font-size:13px;font-weight:700;border-top:1px solid rgba(255,255,255,.07);white-space:normal;overflow-wrap:anywhere}
+    .sp-changes-table th{white-space:normal;overflow-wrap:anywhere}
+    .sp-changes-table th:nth-child(1),.sp-changes-table td:nth-child(1){width:44%}
+    .sp-changes-table th:nth-child(2),.sp-changes-table td:nth-child(2){width:26%}
+    .sp-changes-table th:nth-child(3),.sp-changes-table td:nth-child(3){width:30%}
+    [data-theme="light"] .sp-changes-table td{border-top-color:rgba(0,0,0,.07)}
+    .sp-changes-table .old{color:var(--muted);text-decoration:line-through;font-size:12px}
+    .sp-changes-table .new{color:#7ee8a2;font-weight:900}
+    [data-theme="light"] .sp-changes-table .new{color:#0f766e}
+    .sp-changes-table .change-type{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:900;padding:3px 8px;border-radius:6px;background:rgba(245,158,11,.15);color:#f59e0b;border:1px solid rgba(245,158,11,.3)}
+    [data-theme="light"] .sp-changes-table .change-type{background:rgba(161,98,7,.08);color:#a16207;border-color:rgba(161,98,7,.2)}
+
+    /* ── Justification box ── */
+    .justif-wrap{display:flex;flex-direction:column;gap:0}
+    .justif-textarea-block{display:none;flex-direction:column;border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:0}
+    .justif-textarea-block.open{display:flex}
+    .justif-textarea-block textarea{border:0;background:rgba(255,255,255,.04);color:var(--text);font:inherit;font-size:13px;padding:12px 14px;min-height:100px;resize:vertical;outline:none}
+    [data-theme="light"] .justif-textarea-block textarea{background:#f8fbff}
+    .justif-textarea-block textarea::placeholder{color:var(--muted)}
+    .justif-footer{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(0,0,0,.12);border-top:1px solid var(--line)}
+    [data-theme="light"] .justif-footer{background:rgba(0,0,0,.04)}
+    .justif-footer .btn-save{background:var(--green);border:0;color:white;border-radius:8px;padding:8px 18px;font-weight:900;cursor:pointer;font-size:13px}
+    .justif-footer .btn-save:disabled{opacity:.45;cursor:not-allowed}
+    .justif-footer .btn-pdf{display:flex;align-items:center;gap:6px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);border-radius:8px;padding:8px 14px;font-weight:800;font-size:13px;cursor:pointer}
+    .justif-footer .btn-pdf:hover{border-color:var(--accent)}
+    .justif-footer .pdf-hint{margin-left:auto;font-size:11px;color:var(--muted);font-weight:700}
+    .justif-footer .pdf-name{font-size:11px;color:var(--accent);font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+    input[type=file].hidden-file{display:none}
+    .btn-add-justif{cursor:pointer}
+    .btn-add-justif:disabled{opacity:.45;cursor:not-allowed}
+
+    /* ── Standard section fields ── */
     .sp-section{display:flex;flex-direction:column;gap:0}
     .sp-section-title{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:0}
     .sp-row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
@@ -89,10 +257,91 @@
     .sp-field label{display:block;font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:3px}
     .sp-field div{font-size:14px;font-weight:700}
     .sp-total-row{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:rgba(255,255,255,.04);border-radius:8px;margin-top:4px}
+    [data-theme="light"] .sp-total-row{background:rgba(0,0,0,.04)}
     .sp-total-row span{font-size:12px;color:var(--muted);font-weight:700}
     .sp-total-row strong{font-size:16px;font-weight:900}
-    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.field{border:1px solid var(--line);background:rgba(255,255,255,.05);border-radius:10px;padding:11px}.field label{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:900;margin-bottom:5px}.field div{font-weight:800}
+
+    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .field{border:1px solid var(--line);background:rgba(255,255,255,.05);border-radius:10px;padding:11px}
+    .field label{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;font-weight:900;margin-bottom:5px}
+    .field div{font-weight:800}
     .doctor-item{border:1px solid var(--line);border-radius:10px;padding:11px;display:flex;justify-content:space-between;gap:10px;align-items:center;background:rgba(255,255,255,.05)}
+    
+    /* ── Revisados: historial visual ── */
+    .reviewed-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0 0 14px}
+    .review-card{position:relative;border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.065),rgba(255,255,255,.025)),var(--panel);border-radius:16px;padding:14px;box-shadow:var(--shadow);overflow:hidden}
+    .review-card:before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--accent)}
+    [data-theme="light"] .review-card{background:#fff}
+    .review-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:8px}
+    .review-card h4{margin:0;font-size:15px;font-weight:950}
+    .review-card .review-date{font-size:11px;color:var(--muted);font-weight:900;text-align:right;line-height:1.25}
+    .review-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+    .review-meta div{border:1px solid var(--line);border-radius:10px;padding:8px;background:rgba(255,255,255,.04)}
+    [data-theme="light"] .review-meta div{background:rgba(0,0,0,.03)}
+    .review-meta label{display:block;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;font-weight:950;margin-bottom:3px}
+    .review-meta span{font-size:12px;font-weight:900}
+    .review-note{font-size:12px;color:var(--muted);line-height:1.45;min-height:34px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .review-card-actions,.review-table-actions{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:12px}
+    .mini-btn{border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);border-radius:999px;padding:6px 10px;font-size:11px;font-weight:950;cursor:pointer}
+    .mini-btn:hover{border-color:var(--accent)}
+    .mini-btn.pdf-mini{border-color:rgba(245,158,11,.55);background:rgba(245,158,11,.13)}
+    .evidence-pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:10px;font-weight:900;color:var(--muted);max-width:150px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sp-accordion{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 0 10px;background:transparent;border:0;border-bottom:1px solid var(--line);cursor:pointer;color:var(--text);text-align:left}
+    .sp-accordion-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+    .sp-accordion-icon{font-size:14px;line-height:1;color:var(--muted);transition:transform .18s ease}
+    .sp-accordion.open .sp-accordion-icon{transform:rotate(180deg)}
+    .sp-accordion-panel{display:none;padding-top:12px}
+    .sp-accordion.open + .sp-accordion-panel{display:block}
+    .sp-observed-wrap{overflow:auto}
+    .side-panel .pdf-table{width:100%;min-width:0!important;border-collapse:collapse;margin-top:0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.03);font-size:12px}
+    .side-panel .pdf-table th{background:rgba(255,255,255,.06);color:var(--muted);text-transform:uppercase;font-size:10px;letter-spacing:.05em;padding:10px;text-align:left}
+    .side-panel .pdf-table td{border-top:1px solid var(--line);padding:10px;color:var(--text);font-weight:700;word-break:break-word}
+    .side-panel .pdf-table td:nth-child(2){color:var(--muted)}
+    .side-panel .pdf-table td:nth-child(3){color:#7ee8a2;font-weight:900}
+    [data-theme="light"] .side-panel .pdf-table{background:#fff}
+    [data-theme="light"] .side-panel .pdf-table th{background:#f3f7fb;color:#58708b}
+    [data-theme="light"] .side-panel .pdf-table td:nth-child(3){color:#0f766e}
+
+
+    /* ── PDF preview / print ── */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,12,24,.72);display:none;align-items:center;justify-content:center;padding:24px;z-index:60;backdrop-filter:blur(6px)}
+    .modal-backdrop.open{display:flex}
+    .pdf-modal,.evidence-modal{width:min(980px,100%);max-height:92vh;background:#f2f6fb;color:#152238;border-radius:18px;box-shadow:0 30px 90px rgba(0,0,0,.45);display:flex;flex-direction:column;overflow:hidden}
+    .pdf-modal-head{padding:14px 18px;border-bottom:1px solid rgba(15,23,42,.12);display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff}
+    .pdf-modal-head h3{margin:0;font-size:16px;color:#12263f}
+    .pdf-modal-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .pdf-modal-actions .btn{color:#12263f;border-color:rgba(15,23,42,.22)}
+    .pdf-scroll{overflow:auto;padding:22px;background:#dfe8f3}
+    .pdf-sheet{width:794px;min-height:1123px;margin:0 auto;background:#fff;color:#152238;border-radius:4px;box-shadow:0 14px 40px rgba(15,23,42,.18);padding:38px 44px;font-family:Arial,Helvetica,sans-serif}
+    .pdf-report-head{display:flex;justify-content:space-between;gap:18px;border-bottom:3px solid #0f3a5c;padding-bottom:16px;margin-bottom:18px}
+    .pdf-brand h1{font-size:22px;margin:0;color:#0f3a5c}.pdf-brand p{margin:4px 0 0;color:#5d6b7c;font-size:12px;font-weight:700}
+    .pdf-code{text-align:right}.pdf-code strong{display:block;font-size:20px;color:#0f3a5c}.pdf-code span{font-size:12px;color:#5d6b7c;font-weight:700}
+    .pdf-alert{border:1px solid #d8e1ea;border-left:5px solid #f59e0b;background:#fff8ed;border-radius:10px;padding:12px 14px;margin:14px 0 16px}
+    .pdf-alert label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#8a5a00;font-weight:900;margin-bottom:5px}.pdf-alert div{font-size:13px;line-height:1.45;font-weight:700;color:#24364b}
+    .pdf-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}
+    .pdf-field{border:1px solid #d8e1ea;border-radius:8px;padding:9px 10px;background:#fbfdff}
+    .pdf-field label{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.06em;color:#64748b;font-weight:900;margin-bottom:4px}.pdf-field div{font-size:12px;font-weight:800;color:#17253a}
+    .pdf-section-title{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#0f3a5c;font-weight:950;margin:20px 0 8px;border-bottom:1px solid #d8e1ea;padding-bottom:5px}
+    .pdf-table{width:100%;min-width:0!important;border-collapse:collapse;margin-top:8px;border:1px solid #d8e1ea;border-radius:8px;overflow:hidden;font-size:12px}
+    .pdf-table th{background:#edf3f8;color:#24364b;text-transform:uppercase;font-size:10px;letter-spacing:.05em;padding:8px;text-align:left}.pdf-table td{border-top:1px solid #d8e1ea;padding:8px;color:#17253a;font-weight:700;word-break:break-word}
+    .pdf-note{border:1px solid #d8e1ea;border-radius:8px;padding:10px 12px;background:#fbfdff;min-height:54px;font-size:12px;line-height:1.45;color:#17253a}
+    .pdf-sign-area{display:grid;grid-template-columns:1.1fr 1fr;gap:18px;margin-top:28px;align-items:end}
+    .pdf-manual-input{width:100%;border:0;border-bottom:1px solid #334155;padding:8px 4px;font:inherit;font-size:13px;outline:none;color:#17253a;background:transparent}
+    .pdf-signature-line{min-height:78px;border:1px dashed #94a3b8;border-radius:8px;background:#fff;display:flex;align-items:center;justify-content:center;color:#94a3b8;font-size:12px;padding:8px;text-align:center}
+    .pdf-signature-line:empty:before{content:attr(data-placeholder)}
+    .pdf-foot{margin-top:28px;padding-top:10px;border-top:1px solid #d8e1ea;color:#64748b;font-size:10px;display:flex;justify-content:space-between;gap:12px}
+    .evidence-body{padding:18px;background:#fff;color:#152238;overflow:auto}.evidence-frame{width:100%;height:70vh;border:1px solid #d8e1ea;border-radius:10px;background:#f8fafc}.evidence-empty{border:1px dashed #94a3b8;border-radius:12px;padding:28px;text-align:center;color:#64748b;font-weight:800}
+
+    @media(max-width:1000px){.reviewed-grid{grid-template-columns:1fr}.pdf-sheet{width:100%;min-height:auto}.pdf-grid,.pdf-sign-area{grid-template-columns:1fr}.side-head-actions{width:100%}}
+    @media print{
+      @page{size:A4;margin:12mm}
+      body{background:#fff!important;overflow:visible!important}
+      .app,.side-panel,.pdf-modal-head,.evidence-modal,#evidenceModal{display:none!important}
+      #pdfModal{display:block!important;position:static!important;background:#fff!important;padding:0!important;backdrop-filter:none!important}
+      .pdf-modal{display:block!important;box-shadow:none!important;border-radius:0!important;width:100%!important;max-height:none!important;background:#fff!important;color:#152238!important;overflow:visible!important}
+      .pdf-scroll{overflow:visible!important;padding:0!important;background:#fff!important}
+      .pdf-sheet{width:100%!important;min-height:0!important;margin:0!important;box-shadow:none!important;border-radius:0!important;padding:0!important}
+    }
     @media(max-width:1000px){body{overflow:auto}.app{grid-template-columns:1fr;height:auto;min-height:100vh;overflow:visible}.summary{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}aside{height:auto;min-height:auto;position:relative}.page{overflow:visible}main{height:auto;overflow:visible}.search,.select{min-width:100%}}
     @media(max-width:650px){.summary{grid-template-columns:1fr}}
   </style>
@@ -127,8 +376,8 @@
         <button class="pill">Todos</button><button class="pill active">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button><button class="pill">Personalizado</button>
         <select class="select"><option>Todos los tipos</option><option>Descuento no autorizado</option><option>Facturación incompleta</option><option>Liberación sospechosa</option><option>Cobertura aplicada</option><option>NCO anulada</option><option>Cambio detectado</option></select>
       </div></div>
-      <div class="section-title">Atención inmediata - <span id="urgentCount">0</span></div><div class="alert-list" id="urgentList"></div>
-      <div class="section-title">Cambios detectados - <span id="changeCount">0</span></div><div class="alert-list" id="changeList"></div>
+      <div class="section-title">Atención inmediata — <span id="urgentCount">0</span></div><div class="alert-list" id="urgentList"></div>
+      <div class="section-title">Cambios detectados — <span id="changeCount">0</span></div><div class="alert-list" id="changeList"></div>
     </section>
 
     <section class="page" id="page-caja">
@@ -163,13 +412,12 @@
       <div class="table-panel"><div class="table-wrap"><table><thead><tr><th>Documento</th><th>Cliente / Seguro</th><th>Fecha detección</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="changeRows"></tbody></table></div></div>
     </section>
 
-
     <section class="page" id="page-revisados">
       <div class="filter-panel"><div class="filter-title">Filtros</div><div class="filters">
         <input class="search" id="revSearch" placeholder="Buscar por código NR / NCO o tipo de alerta" oninput="renderReviewed()">
       </div></div>
       <div class="toolbar"><h3>Revisados</h3><div class="tool-actions"><button class="btn" onclick="clearReviewed()">Limpiar filtros</button><button class="btn primary">Generar reporte</button></div></div>
-      <div class="table-panel"><div class="table-wrap"><table><thead><tr><th>Código NR / NCO</th><th>Tipo de alerta</th><th>Auditor</th><th>Fecha de revisión</th><th>Acciones</th></tr></thead><tbody id="reviewedRows"></tbody></table></div></div>
+      <div class="reviewed-grid" id="reviewedHighlights"></div>
     </section>
 
     <section class="page" id="page-hasheo">
@@ -190,12 +438,23 @@
   </main>
 </div>
 
+<!-- Main side panel -->
 <div class="side-panel" id="sidePanel">
-  <div class="side-head"><div><h3 id="sideTitle">Detalle</h3><p id="sideSub">Panel de revisión</p></div><button class="btn" onclick="closePanel()">Cerrar</button></div>
+  <div class="side-head">
+    <div class="side-head-left">
+      <div class="side-head-icon" id="sideHeadIcon"></div>
+      <div><h3 id="sideTitle">Detalle</h3><p id="sideSub">Panel de revisión</p></div>
+    </div>
+    <div class="side-head-actions">
+      <button class="btn pdf" id="sidePdfBtn" onclick="openPdfPreview()">PDF</button>
+      <button class="btn" onclick="closePanel()">Cerrar</button>
+    </div>
+  </div>
   <div class="side-body" id="sideBody"></div>
   <div class="side-actions" id="sideActions"></div>
 </div>
 
+<!-- Doctors panel -->
 <div class="side-panel" id="doctorPanel">
   <div class="side-head"><div><h3>Médicos autorizados</h3><p>Lista interna para clasificar descuentos especiales.</p></div><button class="btn" onclick="closeDoctors()">Cerrar</button></div>
   <div class="side-body">
@@ -203,6 +462,33 @@
     <div class="field"><label>Ítems autorizados</label><input class="input" id="doctorItems" placeholder="Detalle si aplica"></div>
     <button class="btn primary" onclick="addDoctor()">Agregar médico autorizado</button>
     <div id="doctorList" class="stack"></div>
+  </div>
+</div>
+
+<!-- PDF preview modal -->
+<div class="modal-backdrop" id="pdfModal">
+  <div class="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdfModalTitle">
+    <div class="pdf-modal-head">
+      <h3 id="pdfModalTitle">Vista previa del PDF de auditoría</h3>
+      <div class="pdf-modal-actions">
+        <button class="btn primary" onclick="printPdfPreview()">Imprimir / guardar PDF</button>
+        <button class="btn" onclick="closePdfPreview()">Cerrar</button>
+      </div>
+    </div>
+    <div class="pdf-scroll">
+      <div class="pdf-sheet" id="pdfPreview"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Evidence viewer modal -->
+<div class="modal-backdrop" id="evidenceModal">
+  <div class="evidence-modal" role="dialog" aria-modal="true" aria-labelledby="evidenceTitle">
+    <div class="pdf-modal-head">
+      <h3 id="evidenceTitle">Evidencia adjunta</h3>
+      <div class="pdf-modal-actions"><button class="btn" onclick="closeEvidence()">Cerrar</button></div>
+    </div>
+    <div class="evidence-body" id="evidenceBody"></div>
   </div>
 </div>
 
@@ -250,320 +536,603 @@ let selected=null, selectedType='case';
 
 function norm(v){return (v||'').trim().toUpperCase()}
 function authorized(name){return doctors.some(d=>norm(d.name)===norm(name))}
-function alertName(c){return c.type==='Descuento aplicado' ? (authorized(c.doctor)?'SIN_ALERTA':'Descuento no autorizado') : c.type}
-function chipClass(v){v=(v||'').toLowerCase(); if(v.includes('observado'))return 'observado'; if(v.includes('justificado'))return 'justificado'; if(v.includes('modificado'))return 'modificado'; if(v.includes('íntegro')||v.includes('integro'))return 'integro'; return 'pendiente'}
-function tagClass(v){v=(v||'').toLowerCase(); if(v.includes('cobertura')||v.includes('liberación'))return 'red'; if(v.includes('nco'))return 'blue'; if(v.includes('autorizado'))return 'green'; return 'orange'}
+function alertName(c){return c.type==='Descuento aplicado'?(authorized(c.doctor)?'SIN_ALERTA':'Descuento no autorizado'):c.type}
+function chipClass(v){v=(v||'').toLowerCase();if(v.includes('observado'))return 'observado';if(v.includes('justificado'))return 'justificado';if(v.includes('modificado'))return 'modificado';if(v.includes('íntegro')||v.includes('integro'))return 'integro';return 'pendiente'}
 function activeCases(){return cases.filter(c=>!c.reviewed)}
 function activeChanges(){return changes.filter(c=>!c.reviewed)}
 function reviewDate(){return new Intl.DateTimeFormat('es-BO',{dateStyle:'medium',timeStyle:'short'}).format(new Date())}
-function goPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-btn[data-page]').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelector(`.nav-btn[data-page="${p}"]`).classList.add('active');document.getElementById('title').textContent={alertas:'Alertas de cajas',caja:'Casos Caja',coberturas:'Coberturas',cambios:'Cambios detectados',revisados:'Revisados',hasheo:'Hasheo Manual'}[p]}
-document.querySelectorAll('.nav-btn[data-page]').forEach(b=>b.onclick=()=>goPage(b.dataset.page));
-document.getElementById('themeBtn').onclick=()=>{let l=document.body.dataset.theme==='light';document.body.dataset.theme=l?'dark':'light';document.getElementById('themeBtn').textContent=l?'☾':'☀'}
-document.querySelectorAll('.filters').forEach(group=>{const pills=[...group.querySelectorAll('.pill')];pills.forEach(pill=>pill.onclick=()=>{pills.forEach(x=>x.classList.remove('active'));pill.classList.add('active')})});
 
+/* ── tone/icon per alert type ── */
+function alertTone(type){
+  type=(type||'').toLowerCase();
+  if(type.includes('facturación'))return 't-facturacion';
+  if(type.includes('liberación'))return 't-liberacion';
+  if(type.includes('descuento'))return 't-descuento';
+  if(type.includes('nco'))return 't-nco';
+  if(type.includes('cobertura'))return 't-cobertura';
+  if(type.includes('cambio'))return 't-cambio';
+  return 't-descuento';
+}
+function alertIcon(type){
+  type=(type||'').toLowerCase();
+  if(type.includes('facturación'))return '🧾';
+  if(type.includes('liberación'))return '🔓';
+  if(type.includes('descuento'))return '%';
+  if(type.includes('nco'))return '⛔';
+  if(type.includes('cobertura'))return '🛡';
+  if(type.includes('cambio'))return '↔';
+  return '⚠';
+}
+function alertLabel(type){
+  if(type==='Facturación incompleta')return 'Facturación incompleta';
+  if(type==='Liberación sospechosa')return 'Liberación sospechosa';
+  if(type==='Descuento no autorizado')return 'Descuento no autorizado';
+  if(type==='NCO anulada')return 'NCO anulada';
+  if(type==='Cobertura aplicada')return 'Cobertura aplicada';
+  return type;
+}
+function compactDate(raw){let parts=(raw||'').split(',');return {date:(parts[0]||'').trim().replace(' 2026',''),time:(parts[1]||'').trim()}}
+function alertShort(c){
+  let a=alertName(c);
+  if(a==='Facturación incompleta')return 'Faltan datos de factura o cobro';
+  if(a==='Liberación sospechosa')return 'Cuenta cerrada por ajuste manual';
+  if(a==='Descuento no autorizado')return 'Descuento sin regla autorizada';
+  if(a==='NCO anulada')return 'Documento anulado para validar';
+  if(a==='Cobertura aplicada')return 'Cobertura aplicada al cobro';
+  return a;
+}
+function changeShort(c){let n=(c.rows||[]).filter(r=>r[3]==='Modificado').length;return n===1?'1 dato crítico cambió':`${n} datos críticos cambiaron`}
+
+let dashboardExpanded={urgent:false,changes:false};
+function toggleAlertSection(section){dashboardExpanded[section]=!dashboardExpanded[section];renderDashboard()}
+
+function urgentAlertCard(c){
+  let a=alertName(c),tone=alertTone(a),d=compactDate(c.date);
+  return `<div class="alert-card ${tone}" onclick="routeAlert('${c.id}')" title="Abrir detalle de ${c.doc}">
+    <div class="alert-icon ${tone}">${alertIcon(a)}</div>
+    <div class="alert-main">
+      <div class="alert-top"><span class="alert-code">${c.doc}</span><span class="alert-badge ${tone}">${alertLabel(a)}</span></div>
+      <strong>${alertShort(c)}</strong>
+      <small>${c.client}</small>
+    </div>
+    <div class="alert-time"><b>${d.date}</b>${d.time}</div>
+    <div class="go">›</div>
+  </div>`
+}
+function changeAlertCard(c){
+  let d=compactDate(c.date);
+  return `<div class="alert-card t-cambio" onclick="routeChange('${c.id}')" title="Abrir cambio detectado de ${c.doc}">
+    <div class="alert-icon t-cambio">↔</div>
+    <div class="alert-main">
+      <div class="alert-top"><span class="alert-code">${c.doc}</span><span class="alert-badge t-cambio">Cambio detectado</span></div>
+      <strong>${changeShort(c)}</strong>
+      <small>${c.client}</small>
+    </div>
+    <div class="alert-time"><b>${d.date}</b>${d.time}</div>
+    <div class="go">›</div>
+  </div>`
+}
+function moreButton(section,total){let opened=dashboardExpanded[section],hidden=total-3;if(total<=3)return '';let label=opened?'Ver menos':`Ver más (${hidden})`;return `<button class="show-more" onclick="toggleAlertSection('${section}')">${label}</button>`}
+
+function renderDashboard(){
+  const urgent=activeCases().filter(c=>(['Facturación incompleta','Liberación sospechosa','NCO anulada'].includes(alertName(c))||alertName(c)==='Descuento no autorizado')&&alertName(c)!=='SIN_ALERTA'&&alertName(c)!=='Anulación');
+  const visibleUrgent=dashboardExpanded.urgent?urgent:urgent.slice(0,3);
+  document.getElementById('urgentCount').textContent=urgent.length;
+  document.getElementById('urgentList').innerHTML=urgent.length?visibleUrgent.map(urgentAlertCard).join('')+moreButton('urgent',urgent.length):`<div class="empty-state">No hay alertas pendientes en esta sección.</div>`;
+  const changeItems=activeChanges();
+  const visibleChanges=dashboardExpanded.changes?changeItems:changeItems.slice(0,3);
+  document.getElementById('changeCount').textContent=changeItems.length;
+  document.getElementById('changeList').innerHTML=changeItems.length?visibleChanges.map(changeAlertCard).join('')+moreButton('changes',changeItems.length):`<div class="empty-state">No hay cambios pendientes en esta sección.</div>`;
+}
+
+function renderCaja(){
+  let a=document.getElementById('cajaAlerta').value,r=document.getElementById('cajaRevision').value,q=document.getElementById('cajaSearch').value.toLowerCase();
+  let rows=activeCases().filter(c=>c.group==='caja').filter(c=>alertName(c)!=='SIN_ALERTA').filter(c=>alertName(c)!=='Anulación').filter(c=>!a||alertName(c)===a).filter(c=>!r||c.review===r).filter(c=>!q||c.doc.toLowerCase().includes(q)||c.client.toLowerCase().includes(q));
+  const tone=a=>alertTone(a);
+  document.getElementById('cajaRows').innerHTML=rows.length?rows.map(c=>{
+    let a=alertName(c),t=tone(a);
+    return `<tr>
+      <td><b>${c.doc}</b></td>
+      <td>${c.date}</td>
+      <td>${c.client}</td>
+      <td><span class="alert-badge ${t}" style="font-size:11px">${a}</span></td>
+      <td><span class="chip ${chipClass(c.review)}">${c.review}</span></td>
+      <td><button class="action" onclick="openCase('${c.id}')">Ver más</button></td>
+    </tr>`}).join(''):`<tr><td colspan="6" class="empty-state">No hay casos pendientes con esos filtros.</td></tr>`;
+}
+function renderCob(){
+  let a=document.getElementById('cobAlerta').value,r=document.getElementById('cobRevision').value,q=document.getElementById('cobSearch').value.toLowerCase();
+  let rows=activeCases().filter(c=>c.group==='cob').filter(c=>!a||alertName(c)===a).filter(c=>!r||c.review===r).filter(c=>!q||c.doc.toLowerCase().includes(q)||c.client.toLowerCase().includes(q));
+  document.getElementById('cobRows').innerHTML=rows.length?rows.map(c=>{
+    let al=alertName(c),t=alertTone(al);
+    return `<tr>
+      <td><b>${c.doc}</b></td>
+      <td>${c.client}</td>
+      <td>${c.date}</td>
+      <td><span class="alert-badge ${t}" style="font-size:11px">${al}</span></td>
+      <td><span class="chip ${chipClass(c.review)}">${c.review}</span></td>
+      <td><button class="action" onclick="openCase('${c.id}')">Ver más</button></td>
+    </tr>`}).join(''):`<tr><td colspan="6" class="empty-state">No hay coberturas pendientes con esos filtros.</td></tr>`;
+}
+function renderChanges(){
+  let r=document.getElementById('chgEstado').value,q=document.getElementById('chgSearch').value.toLowerCase();
+  let rows=activeChanges().filter(c=>!r||c.review===r).filter(c=>!q||c.doc.toLowerCase().includes(q)||c.client.toLowerCase().includes(q));
+  document.getElementById('changeRows').innerHTML=rows.length?rows.map(c=>`<tr>
+    <td><b>${c.doc}</b></td>
+    <td>${c.client}</td>
+    <td>${c.date}</td>
+    <td><span class="chip ${chipClass(c.review)}">${c.review}</span></td>
+    <td><button class="action" onclick="openChange('${c.id}')">Ver más</button></td>
+  </tr>`).join(''):`<tr><td colspan="5" class="empty-state">No hay cambios pendientes con esos filtros.</td></tr>`;
+}
+function reviewedCard(r){
+  const tone=alertTone(r.alertType);
+  const evidence=r.pdf?`<button class="mini-btn" onclick="openEvidence('${r.id}')">Evidencia</button>`:`<span class="evidence-pill">Sin evidencia</span>`;
+  const obs=(r.observation||'').length>110?(r.observation||'').slice(0,110)+'…':(r.observation||'');
+  return `<div class="review-card">
+    <div class="review-card-head"><div><h4>${r.doc}</h4><span class="alert-badge ${tone}" style="font-size:10px;margin-top:6px">${r.alertType}</span></div><div class="review-date">${r.reviewedAt}</div></div>
+    <div class="review-meta"><div><label>Auditor</label><span>${r.auditor}</span></div><div><label>Evidencia</label><span>${r.pdf?r.pdf:'Sin evidencia'}</span></div></div>
+    <div class="review-note">${obs}</div>
+    <div class="review-card-actions">
+      <button class="mini-btn" onclick="openReviewed('${r.id}')">Ver más</button>
+      <button class="mini-btn pdf-mini" onclick="openPdfPreview('reviewed','${r.id}')">PDF</button>
+      ${evidence}
+    </div>
+  </div>`;
+}
+function renderReviewed(){
+  let q=(document.getElementById('revSearch')?.value||'').toLowerCase();
+  let rows=reviewedItems.filter(r=>!q||r.doc.toLowerCase().includes(q)||r.alertType.toLowerCase().includes(q));
+  const highlights=document.getElementById('reviewedHighlights');
+  if(highlights){
+    highlights.innerHTML=rows.length?rows.map(reviewedCard).join(''):`<div class="review-card" style="grid-column:1/-1;text-align:center;color:var(--muted);font-weight:900">Todavía no hay casos revisados.</div>`;
+  }
+}
+
+/* ── helpers for side panel ── */
+function setSideHeadIcon(tone, icon){
+  const el=document.getElementById('sideHeadIcon');
+  el.className=`side-head-icon alert-icon ${tone}`;
+  el.textContent=icon;
+}
+function commentBox(){
+  // justification box is rendered but revealed only on button click
+  return '';
+}
+function justifBox(){
+  return `<div class="justif-wrap" id="justifWrap">
+    <input type="file" accept="application/pdf" class="hidden-file" id="justifPdf" onchange="handlePdfSelect()">
+    <div class="justif-textarea-block" id="justifBlock">
+      <textarea id="reviewMsg" placeholder="Escriba la justificación del caso tras el análisis interno. Este campo es obligatorio antes de guardar." oninput="updateSaveBtn()"></textarea>
+      <div class="justif-footer">
+        <button class="btn-pdf" onclick="document.getElementById('justifPdf').click()" title="Adjuntar evidencia en PDF (opcional)">📎 Evidencia</button>
+        <span class="pdf-name" id="pdfName" style="display:none"></span>
+        <span class="pdf-hint" id="pdfHint">PDF opcional · máx. recomendado 10 MB</span>
+        <button class="btn-save" id="btnSave" disabled onclick="addObservation()">Guardar justificación</button>
+      </div>
+    </div>
+  </div>`;
+}
+function alertBlockHtml(tone, alerta, motivo, kvs=[]){
+  let kvsHtml=kvs.length?`<div class="sp-alert-kv">${kvs.map(([l,v])=>`<div class="sp-alert-kv-item"><label>${l}</label><div>${v}</div></div>`).join('')}</div>`:'';
+  return `<div class="sp-alert-block ${tone}">
+    <div class="sp-alert-label ${tone}">⚠ Por qué se generó esta alerta</div>
+    <div class="sp-alert-motivo">${motivo}</div>
+    ${kvsHtml}
+  </div>`;
+}
+
+function toggleAccordion(trigger){
+  if(!trigger)return;
+  const isOpen=trigger.classList.toggle('open');
+  trigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+}
+
+function getCaseReason(alerta){
+  const motivos={
+    'Facturación incompleta':'No se encontraron datos completos de factura asociados en el ERP recibido por auditoría.',
+    'Descuento no autorizado':'La venta tiene descuento aplicado y requiere validar autorización.',
+    'Liberación sospechosa':'La venta fue cerrada mediante ajuste o liberación y requiere respaldo.',
+    'Cobertura aplicada':'La venta tiene cobertura aplicada y debe verificarse contra respaldo del seguro.',
+    'NCO anulada':'La NCO figura como anulada y requiere validar respaldo administrativo.'
+  };
+  return motivos[alerta]||'Caso enviado para revisión de auditoría.';
+}
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function pdfField(label,value){return `<div class="pdf-field"><label>${esc(label)}</label><div>${esc(value||'Sin dato')}</div></div>`}
+function pdfRow(label,value){return `<tr><td>${esc(label)}</td><td>${esc(value||'Sin dato')}</td></tr>`}
+function findReviewedSource(r){
+  if(!r)return null;
+  if(r.sourceType==='case')return cases.find(x=>x.id===r.sourceId)||cases.find(x=>x.doc===r.doc)||null;
+  if(r.sourceType==='change')return changes.find(x=>x.id===r.sourceId)||changes.find(x=>x.doc===r.doc)||null;
+  return cases.find(x=>x.doc===r.doc)||changes.find(x=>x.doc===r.doc)||null;
+}
+function reportContext(kind=selectedType,id=selected){
+  if(kind==='case')return {kind,source:cases.find(x=>x.id===id),reviewed:null};
+  if(kind==='change')return {kind,source:changes.find(x=>x.id===id),reviewed:null};
+  if(kind==='reviewed'){
+    const reviewed=reviewedItems.find(x=>x.id===id);
+    return {kind:reviewed?.sourceType||'reviewed',source:findReviewedSource(reviewed),reviewed};
+  }
+  return {kind:null,source:null,reviewed:null};
+}
+function caseReportTable(c,alerta){
+  if(!c)return '';
+  if(c.nco){
+    return `<table class="pdf-table"><tbody>${pdfRow('Código NCO',c.nco.code)}${pdfRow('Factura relacionada',c.nco.related)}${pdfRow('Anulado por',c.nco.annulUser)}${pdfRow('Fecha anulación',c.nco.annulDate)}${pdfRow('Monto NCO',c.coverage)}</tbody></table>`;
+  }
+  if(alerta==='Facturación incompleta'){
+    return `<table class="pdf-table"><tbody>${pdfRow('Nro. factura',c.invoice.num)}${pdfRow('Estado factura',c.invoice.status)}${pdfRow('Monto factura',c.invoice.amount)}${pdfRow('Fecha factura',c.invoice.date)}${pdfRow('Estado de venta',c.status)}${pdfRow('Total final',c.total)}${pdfRow('Usuario que cobró',c.collector)}</tbody></table>`;
+  }
+  if(alerta==='Descuento no autorizado'){
+    return `<table class="pdf-table"><tbody>${pdfRow('Subtotal',c.subtotal)}${pdfRow('Descuento aplicado',c.discount)}${pdfRow('Total final',c.total)}${pdfRow('Médico responsable',c.doctor)}${pdfRow('Usuario que cobró',c.collector)}${pdfRow('Nro. factura',c.invoice.num)}${pdfRow('Monto factura',c.invoice.amount)}</tbody></table>`;
+  }
+  if(alerta==='Liberación sospechosa'){
+    return `<table class="pdf-table"><tbody>${pdfRow('Estado de venta',c.status)}${pdfRow('Monto original',c.subtotal)}${pdfRow('Total final',c.total)}${pdfRow('Observación de ajuste',c.obs)}${pdfRow('Usuario que cobró',c.collector)}${pdfRow('Médico',c.doctor)}</tbody></table>`;
+  }
+  if(alerta==='Cobertura aplicada'){
+    return `<table class="pdf-table"><tbody>${pdfRow('Cobertura aplicada',c.coverage)}${pdfRow('Total final',c.total)}${pdfRow('Estado de venta',c.status)}${pdfRow('Nro. factura',c.invoice.num)}${pdfRow('Monto factura',c.invoice.amount)}</tbody></table>`;
+  }
+  return `<table class="pdf-table"><tbody>${pdfRow('Fecha',c.date)}${pdfRow('Estado de venta',c.status)}${pdfRow('Total final',c.total)}</tbody></table>`;
+}
+function changeReportTable(c){
+  const rows=(c?.rows||[]).filter(r=>r[3]==='Modificado').map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('');
+  return `<table class="pdf-table"><thead><tr><th>Dato crítico</th><th>Antes</th><th>Ahora</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+function buildPdfReport(kind,id){
+  const ctx=reportContext(kind,id);
+  const source=ctx.source;
+  const reviewed=ctx.reviewed;
+  if(!source && !reviewed)return `<div class="evidence-empty">No hay datos seleccionados para generar la vista previa.</div>`;
+  const isChange=(ctx.kind==='change')||(!source?.group && source?.rows);
+  const doc=reviewed?.doc||source?.doc||'Sin dato';
+  const alertType=reviewed?.alertType||(isChange?'Cambio detectado':alertName(source));
+  const tone=alertTone(alertType);
+  const reason=isChange?`Se detectaron ${(source?.rows||[]).filter(r=>r[3]==='Modificado').length} campo${(source?.rows||[]).filter(r=>r[3]==='Modificado').length!==1?'s':''} con diferencias respecto al registro original.`:getCaseReason(alertType);
+  const evidenceName=reviewed?.pdf||document.getElementById('justifPdf')?.files?.[0]?.name||'Sin evidencia adjunta';
+  const obs=reviewed?.observation||(document.getElementById('reviewMsg')?.value||'Pendiente de justificación');
+  const fechaPrincipal=reviewed?.reviewedAt||source?.date||'Sin dato';
+  const cliente=source?.client||'Sin dato';
+  const table=isChange?changeReportTable(source):caseReportTable(source,alertType);
+  return `<div class="pdf-report-head">
+    <div class="pdf-brand"><h1>Fénix - Auditoría Caja</h1><p>Informe para revisión interna</p></div>
+    <div class="pdf-code"><strong>${esc(doc)}</strong><span>${esc(alertType)}</span></div>
+  </div>
+  <div class="pdf-alert"><label>Motivo de generación</label><div>${esc(reason)}</div></div>
+  <div class="pdf-grid">
+    ${pdfField('Documento',doc)}
+    ${pdfField('Cliente / Seguro',cliente)}
+    ${pdfField(isChange?'Fecha detección':(reviewed?'Fecha de revisión':'Fecha del registro'),fechaPrincipal)}
+    ${pdfField('Usuario auditor en sistema',CURRENT_AUDITOR)}
+    ${reviewed?pdfField('Auditor que registró revisión',reviewed.auditor):''}
+    ${pdfField('Evidencia adjunta',evidenceName)}
+  </div>
+  <div class="pdf-section-title">Dato observado por auditoría</div>
+  ${table}
+  <div class="pdf-section-title">Observación / justificación</div>
+  <div class="pdf-note">${esc(obs)}</div>
+  <div class="pdf-section-title">Registro manual para impresión</div>
+  <div class="pdf-sign-area">
+    <div><label style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:900">Nombre completo del auditor</label><input class="pdf-manual-input" placeholder="Escribir nombre completo"></div>
+    <div><label style="font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#64748b;font-weight:900">Firma</label><div class="pdf-signature-line" contenteditable="true" data-placeholder="Firmar manualmente después de imprimir"></div></div>
+  </div>
+  <div class="pdf-foot"><span>Documento generado desde la vista de auditoría.</span><span>Usuario: ${esc(CURRENT_AUDITOR)}</span></div>`;
+}
+function openPdfPreview(kind,id){
+  document.getElementById('pdfPreview').innerHTML=buildPdfReport(kind||selectedType,id||selected);
+  document.getElementById('pdfModal').classList.add('open');
+}
+function closePdfPreview(){document.getElementById('pdfModal').classList.remove('open')}
+function printPdfPreview(){window.print()}
+function openEvidence(id){
+  const r=reviewedItems.find(x=>x.id===id);
+  const body=document.getElementById('evidenceBody');
+  if(r?.pdfUrl){
+    body.innerHTML=`<iframe class="evidence-frame" src="${r.pdfUrl}" title="${esc(r.pdf||'Evidencia')}"></iframe>`;
+  }else{
+    body.innerHTML=`<div class="evidence-empty">${r?.pdf?`Evidencia registrada: ${esc(r.pdf)}`:'No hay evidencia PDF adjunta para este registro.'}</div>`;
+  }
+  document.getElementById('evidenceModal').classList.add('open');
+}
+function closeEvidence(){document.getElementById('evidenceModal').classList.remove('open');document.getElementById('evidenceBody').innerHTML=''}
+
+function openCase(id){
+  selected=id; selectedType='case';
+  let c=activeCases().find(x=>x.id===id); if(!c)return;
+  const alerta=alertName(c);
+  const tone=alertTone(alerta);
+  const icon=alertIcon(alerta);
+  document.getElementById('sideTitle').textContent=c.doc;
+  document.getElementById('sideSub').textContent=alerta;
+  setSideHeadIcon(tone, icon);
+  setObservationAction();
+
+  const motivo=getCaseReason(alerta);
+
+  /* NCO anulada */
+  if(c.nco){
+    document.getElementById('sideBody').innerHTML=
+      alertBlockHtml(tone, alerta, motivo, [
+        ['Código NCO', c.nco.code],
+        ['Factura relacionada', c.nco.related],
+        ['Anulado por', c.nco.annulUser],
+        ['Fecha anulación', c.nco.annulDate]
+      ])+`
+      <div class="sp-section">
+        <div class="sp-section-title">Datos de la NCO</div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Fecha de emisión</label><div>${c.date}</div></div>
+          <div class="sp-field"><label>Estado</label><div>${c.status}</div></div>
+        </div>
+        <div class="sp-row" style="border-bottom:none">
+          <div class="sp-field"><label>Monto NCO</label><div>${c.coverage}</div></div>
+          <div class="sp-field"><label>Factura monto</label><div>${c.invoice.amount}</div></div>
+        </div>
+      </div>
+      ${justifBox()}`;
+    document.getElementById('sidePanel').classList.add('open');
+    return;
+  }
+
+  /* Facturación incompleta */
+  if(alerta==='Facturación incompleta'){
+    document.getElementById('sideBody').innerHTML=
+      alertBlockHtml(tone, alerta, motivo, [
+        ['Nro. factura', c.invoice.num],
+        ['Estado factura', c.invoice.status],
+        ['Monto factura', c.invoice.amount]
+      ])+`
+      <div class="sp-section">
+        <div class="sp-section-title">Datos de la venta</div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
+          <div class="sp-field"><label>Usuario que cobró</label><div>${c.collector}</div></div>
+        </div>
+        <div class="sp-row" style="border-bottom:none">
+          <div class="sp-field"><label>Fecha factura</label><div>${c.invoice.date}</div></div>
+          <div class="sp-field"><label>Total final</label><div>${c.total}</div></div>
+        </div>
+      </div>
+      ${justifBox()}`;
+    document.getElementById('sidePanel').classList.add('open');
+    return;
+  }
+
+  /* Descuento no autorizado */
+  if(alerta==='Descuento no autorizado'){
+    document.getElementById('sideBody').innerHTML=
+      alertBlockHtml(tone, alerta, motivo, [
+        ['Descuento aplicado', c.discount],
+        ['Total final', c.total],
+        ['Médico responsable', c.doctor],
+        ['Usuario que cobró', c.collector]
+      ])+`
+      <div class="sp-section">
+        <div class="sp-section-title">Detalle de la venta</div>
+        <div class="sp-row">
+          <div class="sp-field"><label>Subtotal</label><div>${c.subtotal}</div></div>
+          <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
+        </div>
+        <div class="sp-section-title" style="margin-top:12px">Factura mínima</div>
+        <div class="sp-row" style="border-bottom:none">
+          <div class="sp-field"><label>Nro. factura</label><div>${c.invoice.num}</div></div>
+          <div class="sp-field"><label>Monto factura</label><div>${c.invoice.amount}</div></div>
+        </div>
+      </div>
+      ${justifBox()}`;
+    document.getElementById('sidePanel').classList.add('open');
+    return;
+  }
+
+  /* Liberación sospechosa */
+  if(alerta==='Liberación sospechosa'){
+    document.getElementById('sideBody').innerHTML=
+      alertBlockHtml(tone, alerta, motivo, [
+        ['Estado de venta', c.status],
+        ['Monto original', c.subtotal],
+        ['Total final', c.total],
+        ['Observación de ajuste', c.obs]
+      ])+`
+      <div class="sp-section">
+        <div class="sp-section-title">Responsable del cobro</div>
+        <div class="sp-row" style="border-bottom:none">
+          <div class="sp-field"><label>Usuario que cobró</label><div>${c.collector}</div></div>
+          <div class="sp-field"><label>Médico</label><div>${c.doctor}</div></div>
+        </div>
+      </div>
+      ${justifBox()}`;
+    document.getElementById('sidePanel').classList.add('open');
+    return;
+  }
+
+  /* Cobertura aplicada */
+  if(alerta==='Cobertura aplicada'){
+    document.getElementById('sideBody').innerHTML=
+      alertBlockHtml(tone, alerta, motivo, [
+        ['Cobertura aplicada', c.coverage],
+        ['Total final', c.total],
+        ['Estado de venta', c.status]
+      ])+`
+      <div class="sp-section">
+        <div class="sp-section-title">Factura mínima</div>
+        <div class="sp-row" style="border-bottom:none">
+          <div class="sp-field"><label>Nro. factura</label><div>${c.invoice.num}</div></div>
+          <div class="sp-field"><label>Monto factura</label><div>${c.invoice.amount}</div></div>
+        </div>
+      </div>
+      ${justifBox()}`;
+    document.getElementById('sidePanel').classList.add('open');
+    return;
+  }
+
+  /* fallback */
+  document.getElementById('sideBody').innerHTML=
+    alertBlockHtml(tone, alerta, motivo)+`
+    <div class="sp-section">
+      <div class="sp-section-title">Datos mínimos</div>
+      <div class="sp-row">
+        <div class="sp-field"><label>Fecha</label><div>${c.date}</div></div>
+        <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
+      </div>
+      <div class="sp-row" style="border-bottom:none">
+        <div class="sp-field"><label>Total final</label><div>${c.total}</div></div>
+      </div>
+    </div>
+    ${justifBox()}`;
+  document.getElementById('sidePanel').classList.add('open');
+}
+
+function openChange(id){
+  selected=id; selectedType='change';
+  let c=activeChanges().find(x=>x.id===id); if(!c)return;
+  const changedRows=c.rows.filter(r=>r[3]==='Modificado');
+  const tone='t-cambio';
+  document.getElementById('sideTitle').textContent=c.doc;
+  document.getElementById('sideSub').textContent='Cambio detectado por comparación automática';
+  setSideHeadIcon(tone,'↔');
+  setObservationAction();
+
+  const typeLabel=r=>{
+    const v=(r[2]||'').toLowerCase();
+    if(r[1]==='Sin dato'||r[1]==='')return '<span class="change-type">➕ Agregado</span>';
+    if(r[2]==='Sin dato'||r[2]==='')return '<span class="change-type">🗑 Eliminado</span>';
+    return '<span class="change-type">✏ Modificado</span>';
+  };
+
+  const tableRows=changedRows.map(r=>`<tr>
+    <td><strong>${r[0]}</strong> ${typeLabel(r)}</td>
+    <td class="old">${r[1]}</td>
+    <td class="new">→ ${r[2]}</td>
+  </tr>`).join('');
+
+  document.getElementById('sideBody').innerHTML=`
+    <div class="sp-alert-block ${tone}">
+      <div class="sp-alert-label ${tone}">↔ Datos modificados detectados</div>
+      <div class="sp-alert-motivo">Se detectaron ${changedRows.length} campo${changedRows.length!==1?'s':''} con diferencias respecto al registro original.</div>
+      <table class="sp-changes-table">
+        <thead><tr><th>Dato crítico</th><th>Antes</th><th>Ahora</th></tr></thead>
+        <tbody>${tableRows}</tbody>
+      </table>
+    </div>
+    <div class="sp-section">
+      <div class="sp-section-title">Contexto de detección</div>
+      <div class="sp-row" style="border-bottom:none">
+        <div class="sp-field"><label>Fecha detección</label><div>${c.date}</div></div>
+        <div class="sp-field"><label>Revisión</label><div><span class="chip ${chipClass(c.review)}">${c.review}</span></div></div>
+      </div>
+    </div>
+    ${justifBox()}`;
+  document.getElementById('sidePanel').classList.add('open');
+}
+
+function openReviewed(id){
+  let r=reviewedItems.find(x=>x.id===id); if(!r)return;
+  selected=id; selectedType='reviewed';
+  const tone=alertTone(r.alertType);
+  const source=findReviewedSource(r);
+  document.getElementById('sideTitle').textContent=r.doc;
+  document.getElementById('sideSub').textContent='Detalle de revisión registrada';
+  setSideHeadIcon(tone, alertIcon(r.alertType));
+  hideObservationAction();
+  const evidenceBtn=r.pdf?`<button class="btn pdf" onclick="openEvidence('${r.id}')">Ver evidencia</button>`:`<span class="evidence-pill">Sin evidencia adjunta</span>`;
+  const observed=source?.rows?changeReportTable(source):caseReportTable(source,r.alertType);
+  document.getElementById('sideBody').innerHTML=`
+    <div class="sp-alert-block ${tone}">
+      <div class="sp-alert-label ${tone}">Historial de revisión</div>
+      <div class="sp-alert-motivo">${r.observation}</div>
+      <div class="sp-alert-kv">
+        <div class="sp-alert-kv-item"><label>Auditor</label><div>${r.auditor}</div></div>
+        <div class="sp-alert-kv-item"><label>Fecha revisión</label><div>${r.reviewedAt}</div></div>
+        <div class="sp-alert-kv-item"><label>Evidencia</label><div>${r.pdf?r.pdf:'Sin evidencia'}</div></div>
+      </div>
+    </div>
+    <div class="sp-section">
+      <div class="sp-section-title">Datos principales</div>
+      <div class="sp-row">
+        <div class="sp-field"><label>Tipo de alerta</label><div><span class="alert-badge ${tone}">${r.alertType}</span></div></div>
+        <div class="sp-field"><label>Cliente / Seguro</label><div>${source?.client||'Sin dato'}</div></div>
+      </div>
+      <div class="sp-row" style="border-bottom:none">
+        <div class="sp-field"><label>Fecha origen</label><div>${source?.date||'Sin dato'}</div></div>
+        <div class="sp-field"><label>Documento</label><div>${r.doc}</div></div>
+      </div>
+    </div>
+    <div class="sp-section">
+      <button class="sp-accordion" type="button" onclick="toggleAccordion(this)" aria-expanded="false">
+        <span class="sp-accordion-label">Dato observado</span>
+        <span class="sp-accordion-icon">▾</span>
+      </button>
+      <div class="sp-accordion-panel">
+        <div class="sp-observed-wrap">${observed}</div>
+      </div>
+    </div>
+    <div class="sp-section">
+      <div class="sp-section-title">Acceso a evidencia / PDF</div>
+      <div class="review-card-actions" style="margin-top:0">
+        <button class="btn pdf" onclick="openPdfPreview('reviewed','${r.id}')">PDF</button>
+        ${evidenceBtn}
+      </div>
+    </div>`;
+  document.getElementById('sidePanel').classList.add('open');
+}
+
+function addObservation(){
+  const msg=(document.getElementById('reviewMsg')?.value||'').trim();
+  if(!msg){alert('La justificación es obligatoria antes de guardar.');return;}
+  let source=null, alertType='';
+  if(selectedType==='case'){
+    source=activeCases().find(x=>x.id===selected); if(!source)return;
+    alertType=alertName(source); source.reviewed=true;
+  }else if(selectedType==='change'){
+    source=activeChanges().find(x=>x.id===selected); if(!source)return;
+    alertType='Cambio detectado'; source.reviewed=true;
+  }else{return;}
+  const pdfInp=document.getElementById('justifPdf');
+  const pdfFile=pdfInp&&pdfInp.files.length>0?pdfInp.files[0].name:null;
+  const pdfUrl=pdfInp&&pdfInp.files.length>0?URL.createObjectURL(pdfInp.files[0]):null;
+  reviewedItems.unshift({id:'rev-'+Date.now(),sourceId:selected,sourceType:selectedType,doc:source.doc,alertType,auditor:CURRENT_AUDITOR,reviewedAt:reviewDate(),observation:msg,pdf:pdfFile,pdfUrl});
+  closePanel(); renderAll(); goPage('revisados');
+}
 function setObservationAction(){
   const actions=document.getElementById('sideActions');
   actions.classList.remove('hidden');
-  actions.innerHTML=`<button class="btn primary" onclick="addObservation()">Agregar comentario u observación</button>`;
+  actions.innerHTML=`<button class="btn primary btn-add-justif" id="btnAddJustif" onclick="openJustifBox()">+ Agregar justificación</button>`;
+}
+function openJustifBox(){
+  const block=document.getElementById('justifBlock');
+  const btn=document.getElementById('btnAddJustif');
+  if(!block||!btn)return;
+  block.classList.add('open');
+  btn.disabled=true;
+  document.getElementById('reviewMsg').focus();
+}
+function updateSaveBtn(){
+  const msg=(document.getElementById('reviewMsg')?.value||'').trim();
+  const btn=document.getElementById('btnSave');
+  if(btn)btn.disabled=!msg;
+}
+function handlePdfSelect(){
+  const inp=document.getElementById('justifPdf');
+  const nameEl=document.getElementById('pdfName');
+  const hintEl=document.getElementById('pdfHint');
+  if(inp&&inp.files.length>0){
+    nameEl.textContent='📄 '+inp.files[0].name;
+    nameEl.style.display='';
+    hintEl.style.display='none';
+  } else {
+    nameEl.style.display='none';
+    hintEl.style.display='';
+  }
 }
 function hideObservationAction(){
   const actions=document.getElementById('sideActions');
   actions.classList.add('hidden');
   actions.innerHTML='';
 }
-function commentBox(){
-  return `<div class="sp-section">
-      <div class="sp-section-title">Comentario u observación del auditor</div>
-      <textarea class="textarea" id="reviewMsg" placeholder="Escriba aquí el comentario, observación o justificación antes de enviar el caso a Revisados." style="margin-top:10px"></textarea>
-    </div>`;
-}
-
-function routeAlert(id){let c=activeCases().find(x=>x.id===id);if(!c)return;if(c.group==='caja'){goPage('caja');document.getElementById('cajaSearch').value=c.doc;document.getElementById('cajaAlerta').value=alertName(c);renderCaja()}else{goPage('coberturas');document.getElementById('cobSearch').value=c.doc;document.getElementById('cobAlerta').value=alertName(c);renderCob()}}
-function routeChange(id){let c=activeChanges().find(x=>x.id===id);if(!c)return;goPage('cambios');document.getElementById('chgSearch').value=c.doc;renderChanges()}
-function alertTone(type){type=(type||'').toLowerCase();if(type.includes('facturación'))return 'blue';if(type.includes('liberación'))return 'red';if(type.includes('descuento'))return 'orange';if(type.includes('nco'))return 'red';if(type.includes('cobertura'))return 'green';return 'orange'}
-function alertIcon(type){type=(type||'').toLowerCase();if(type.includes('facturación'))return '🧾';if(type.includes('liberación'))return '🔓';if(type.includes('descuento'))return '%';if(type.includes('nco'))return '⛔';if(type.includes('cobertura'))return '🛡';return '⚠'}
-function compactDate(raw){let parts=(raw||'').split(',');let date=(parts[0]||'').trim().replace(' 2026','');let time=(parts[1]||'').trim();return {date,time}}
-function alertShort(c){let a=alertName(c);if(a==='Facturación incompleta')return 'Faltan datos de factura o cobro';if(a==='Liberación sospechosa')return 'Cuenta cerrada por ajuste manual';if(a==='Descuento no autorizado')return 'Descuento sin regla autorizada';if(a==='NCO anulada')return 'Documento anulado para validar';if(a==='Cobertura aplicada')return 'Cobertura aplicada al cobro';return message(c)}
-function changeShort(c){let n=(c.rows||[]).filter(r=>r[3]==='Modificado').length;return n===1?'1 dato crítico cambió':`${n} datos críticos cambiaron`}
-let dashboardExpanded={urgent:false,changes:false};
-function toggleAlertSection(section){dashboardExpanded[section]=!dashboardExpanded[section];renderDashboard()}
-function urgentAlertCard(c){let a=alertName(c),tone=alertTone(a),d=compactDate(c.date);return `<div class="alert-card urgent" onclick="routeAlert('${c.id}')" title="Abrir detalle de ${c.doc}"><div class="alert-icon ${tone}">${alertIcon(a)}</div><div class="alert-main"><div class="alert-top"><span class="alert-code">${c.doc}</span><span class="alert-badge ${tone}">${a}</span></div><strong>${alertShort(c)}</strong><small>${c.client}</small></div><div class="alert-time"><b>${d.date}</b>${d.time}</div><div class="go">›</div></div>`}
-function changeAlertCard(c){let d=compactDate(c.date);return `<div class="alert-card change" onclick="routeChange('${c.id}')" title="Abrir cambio detectado de ${c.doc}"><div class="alert-icon orange">↔</div><div class="alert-main"><div class="alert-top"><span class="alert-code">${c.doc}</span><span class="alert-badge orange">Cambio detectado</span></div><strong>${changeShort(c)}</strong><small>${c.client}</small></div><div class="alert-time"><b>${d.date}</b>${d.time}</div><div class="go">›</div></div>`}
-function moreButton(section,total){let opened=dashboardExpanded[section],hidden=total-3;if(total<=3)return '';let label=opened?'Ver menos':`Ver más (${hidden})`;return `<button class="show-more" onclick="toggleAlertSection('${section}')">${label}</button>`}
-function renderDashboard(){
-  const urgent=activeCases().filter(c=>(['Facturación incompleta','Liberación sospechosa','NCO anulada'].includes(alertName(c))||alertName(c)==='Descuento no autorizado')&&alertName(c)!=='SIN_ALERTA'&&alertName(c)!=='Anulación');
-  const visibleUrgent=dashboardExpanded.urgent?urgent:urgent.slice(0,3);
-  document.getElementById('urgentCount').textContent=urgent.length;
-  document.getElementById('urgentList').innerHTML=urgent.length?visibleUrgent.map(urgentAlertCard).join('')+moreButton('urgent',urgent.length):`<div class="empty-state">No hay alertas pendientes en esta sección.</div>`;
-
-  const changeItems=activeChanges();
-  const visibleChanges=dashboardExpanded.changes?changeItems:changeItems.slice(0,3);
-  document.getElementById('changeCount').textContent=changeItems.length;
-  document.getElementById('changeList').innerHTML=changeItems.length?visibleChanges.map(changeAlertCard).join('')+moreButton('changes',changeItems.length):`<div class="empty-state">No hay cambios pendientes en esta sección.</div>`;
-}
-function message(c){let a=alertName(c);if(a==='Facturación incompleta')return 'Venta con información de facturación o cobro incompleta.';if(a==='Liberación sospechosa')return 'Liberación o ajuste para revisión manual.';if(a==='Descuento no autorizado')return 'Descuento sin coincidencia con médico o regla autorizada.';if(a==='NCO anulada')return 'NCO anulada con factura relacionada.';return a}
-function renderCaja(){let a=document.getElementById('cajaAlerta').value,r=document.getElementById('cajaRevision').value,q=document.getElementById('cajaSearch').value.toLowerCase();let rows=activeCases().filter(c=>c.group==='caja').filter(c=>alertName(c)!=='SIN_ALERTA').filter(c=>alertName(c)!=='Anulación').filter(c=>!a||alertName(c)===a).filter(c=>!r||c.review===r).filter(c=>!q||c.doc.toLowerCase().includes(q)||c.client.toLowerCase().includes(q));document.getElementById('cajaRows').innerHTML=rows.length?rows.map(c=>`<tr><td><b>${c.doc}</b></td><td>${c.date}</td><td>${c.client}</td><td>${alertName(c)}</td><td><span class="chip ${chipClass(c.review)}">${c.review}</span></td><td><button class="action" onclick="openCase('${c.id}')">Ver más</button></td></tr>`).join(''):`<tr><td colspan="6" class="empty-state">No hay casos pendientes con esos filtros.</td></tr>`}
-function renderCob(){let a=document.getElementById('cobAlerta').value,r=document.getElementById('cobRevision').value,q=document.getElementById('cobSearch').value.toLowerCase();let rows=activeCases().filter(c=>c.group==='cob').filter(c=>!a||alertName(c)===a).filter(c=>!r||c.review===r).filter(c=>!q||c.doc.toLowerCase().includes(q)||c.client.toLowerCase().includes(q));document.getElementById('cobRows').innerHTML=rows.length?rows.map(c=>`<tr><td><b>${c.doc}</b></td><td>${c.client}</td><td>${c.date}</td><td>${alertName(c)}</td><td><span class="chip ${chipClass(c.review)}">${c.review}</span></td><td><button class="action" onclick="openCase('${c.id}')">Ver más</button></td></tr>`).join(''):`<tr><td colspan="6" class="empty-state">No hay coberturas pendientes con esos filtros.</td></tr>`}
-function renderChanges(){let r=document.getElementById('chgEstado').value,q=document.getElementById('chgSearch').value.toLowerCase();let rows=activeChanges().filter(c=>!r||c.review===r).filter(c=>!q||c.doc.toLowerCase().includes(q)||c.client.toLowerCase().includes(q));document.getElementById('changeRows').innerHTML=rows.length?rows.map(c=>`<tr><td><b>${c.doc}</b></td><td>${c.client}</td><td>${c.date}</td><td><span class="chip ${chipClass(c.review)}">${c.review}</span></td><td><button class="action" onclick="openChange('${c.id}')">Ver más</button></td></tr>`).join(''):`<tr><td colspan="5" class="empty-state">No hay cambios pendientes con esos filtros.</td></tr>`}
-function renderReviewed(){let q=(document.getElementById('revSearch')?.value||'').toLowerCase();let rows=reviewedItems.filter(r=>!q||r.doc.toLowerCase().includes(q)||r.alertType.toLowerCase().includes(q));document.getElementById('reviewedRows').innerHTML=rows.length?rows.map(r=>`<tr><td><b>${r.doc}</b></td><td>${r.alertType}</td><td>${r.auditor}</td><td>${r.reviewedAt}</td><td><button class="action" onclick="openReviewed('${r.id}')">Ver más</button></td></tr>`).join(''):`<tr><td colspan="5" class="empty-state">Todavía no hay casos revisados.</td></tr>`}
-function openCase(id){
-  selected=id;
-  selectedType='case';
-  let c=activeCases().find(x=>x.id===id);
-  if(!c)return;
-
-  const alerta=alertName(c);
-  document.getElementById('sideTitle').textContent=c.doc;
-  document.getElementById('sideSub').textContent=c.client+' · '+alerta;
-  setObservationAction();
-
-  const motivo={
-    'Facturación incompleta':'No se encontraron datos completos de factura asociados en el ERP recibido por auditoría.',
-    'Descuento no autorizado':'La venta tiene descuento aplicado y requiere validar autorización.',
-    'Liberación sospechosa':'La venta fue cerrada mediante ajuste o liberación y requiere respaldo.',
-    'Cobertura aplicada':'La venta tiene cobertura aplicada y debe verificarse contra respaldo del seguro.',
-    'NCO anulada':'La NCO figura como anulada y requiere validar respaldo administrativo.'
-  }[alerta] || 'Caso enviado para revisión de auditoría.';
-
-  if(c.nco){
-    document.getElementById('sideBody').innerHTML=`
-      <div class="sp-section">
-        <div class="sp-section-title">Por qué se generó</div>
-        <div class="sp-row full">
-          <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
-        </div>
-      </div>
-      <div class="sp-section">
-        <div class="sp-section-title">Datos mínimos de NCO anulada</div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Código de NCO</label><div>${c.nco.code}</div></div>
-          <div class="sp-field"><label>Factura relacionada</label><div>${c.nco.related}</div></div>
-        </div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Fecha de emisión</label><div>${c.date}</div></div>
-          <div class="sp-field"><label>Cliente</label><div>${c.client}</div></div>
-        </div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Estado</label><div>${c.status}</div></div>
-          <div class="sp-field"><label>Usuario que realizó la anulación</label><div>${c.nco.annulUser}</div></div>
-        </div>
-        <div class="sp-row full" style="border-bottom:none">
-          <div class="sp-field"><label>Fecha de anulación</label><div>${c.nco.annulDate}</div></div>
-        </div>
-      </div>
-      ${commentBox()}`;
-    document.getElementById('sidePanel').classList.add('open');
-    return;
-  }
-
-  if(alerta==='Facturación incompleta'){
-    document.getElementById('sideBody').innerHTML=`
-      <div class="sp-section">
-        <div class="sp-section-title">Por qué se generó</div>
-        <div class="sp-row full">
-          <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
-        </div>
-      </div>
-      <div class="sp-section">
-        <div class="sp-section-title">Datos mínimos de la venta</div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Fecha</label><div>${c.date}</div></div>
-          <div class="sp-field"><label>Cliente</label><div>${c.client}</div></div>
-        </div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
-          <div class="sp-field"><label>Usuario que cobró</label><div>${c.collector}</div></div>
-        </div>
-        <div class="sp-total-row"><span>Total final</span><strong>${c.total}</strong></div>
-      </div>
-      <div class="sp-section">
-        <div class="sp-section-title">Datos de factura recibidos</div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Nro. factura</label><div>${c.invoice.num}</div></div>
-          <div class="sp-field"><label>Estado factura</label><div>${c.invoice.status}</div></div>
-        </div>
-        <div class="sp-row" style="border-bottom:none">
-          <div class="sp-field"><label>Monto factura</label><div>${c.invoice.amount}</div></div>
-          <div class="sp-field"><label>Fecha factura</label><div>${c.invoice.date}</div></div>
-        </div>
-      </div>
-      ${commentBox()}`;
-    document.getElementById('sidePanel').classList.add('open');
-    return;
-  }
-
-  if(alerta==='Descuento no autorizado'){
-    document.getElementById('sideBody').innerHTML=`
-      <div class="sp-section">
-        <div class="sp-section-title">Por qué se generó</div>
-        <div class="sp-row full">
-          <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
-        </div>
-      </div>
-      <div class="sp-section">
-        <div class="sp-section-title">Datos para validar descuento</div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Fecha</label><div>${c.date}</div></div>
-          <div class="sp-field"><label>Cliente</label><div>${c.client}</div></div>
-        </div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Médico responsable</label><div>${c.doctor}</div></div>
-          <div class="sp-field"><label>Usuario que cobró</label><div>${c.collector}</div></div>
-        </div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Subtotal</label><div>${c.subtotal}</div></div>
-          <div class="sp-field"><label>Descuento</label><div>${c.discount}</div></div>
-        </div>
-        <div class="sp-total-row"><span>Total final</span><strong>${c.total}</strong></div>
-      </div>
-      <div class="sp-section">
-        <div class="sp-section-title">Factura mínima</div>
-        <div class="sp-row" style="border-bottom:none">
-          <div class="sp-field"><label>Nro. factura</label><div>${c.invoice.num}</div></div>
-          <div class="sp-field"><label>Monto factura</label><div>${c.invoice.amount}</div></div>
-        </div>
-      </div>
-      ${commentBox()}`;
-    document.getElementById('sidePanel').classList.add('open');
-    return;
-  }
-
-  if(alerta==='Liberación sospechosa'){
-    document.getElementById('sideBody').innerHTML=`
-      <div class="sp-section">
-        <div class="sp-section-title">Por qué se generó</div>
-        <div class="sp-row full">
-          <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
-        </div>
-      </div>
-      <div class="sp-section">
-        <div class="sp-section-title">Datos para validar liberación</div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Fecha</label><div>${c.date}</div></div>
-          <div class="sp-field"><label>Cliente</label><div>${c.client}</div></div>
-        </div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
-          <div class="sp-field"><label>Usuario que cobró</label><div>${c.collector}</div></div>
-        </div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Monto original</label><div>${c.subtotal}</div></div>
-          <div class="sp-field"><label>Total final</label><div>${c.total}</div></div>
-        </div>
-        <div class="sp-row full" style="border-bottom:none">
-          <div class="sp-field"><label>Observación de ajuste</label><div style="color:var(--muted);font-style:italic">${c.obs}</div></div>
-        </div>
-      </div>
-      ${commentBox()}`;
-    document.getElementById('sidePanel').classList.add('open');
-    return;
-  }
-
-  if(alerta==='Cobertura aplicada'){
-    document.getElementById('sideBody').innerHTML=`
-      <div class="sp-section">
-        <div class="sp-section-title">Por qué se generó</div>
-        <div class="sp-row full">
-          <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
-        </div>
-      </div>
-      <div class="sp-section">
-        <div class="sp-section-title">Datos para validar cobertura</div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Fecha</label><div>${c.date}</div></div>
-          <div class="sp-field"><label>Cliente / seguro</label><div>${c.client}</div></div>
-        </div>
-        <div class="sp-row">
-          <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
-          <div class="sp-field"><label>Cobertura</label><div>${c.coverage}</div></div>
-        </div>
-        <div class="sp-total-row"><span>Total final</span><strong>${c.total}</strong></div>
-      </div>
-      <div class="sp-section">
-        <div class="sp-section-title">Factura mínima</div>
-        <div class="sp-row" style="border-bottom:none">
-          <div class="sp-field"><label>Nro. factura</label><div>${c.invoice.num}</div></div>
-          <div class="sp-field"><label>Monto factura</label><div>${c.invoice.amount}</div></div>
-        </div>
-      </div>
-      ${commentBox()}`;
-    document.getElementById('sidePanel').classList.add('open');
-    return;
-  }
-
-  document.getElementById('sideBody').innerHTML=`
-    <div class="sp-section">
-      <div class="sp-section-title">Por qué se generó</div>
-      <div class="sp-row full">
-        <div class="sp-field"><label>Motivo</label><div>${motivo}</div></div>
-      </div>
-    </div>
-    <div class="sp-section">
-      <div class="sp-section-title">Datos mínimos</div>
-      <div class="sp-row">
-        <div class="sp-field"><label>Fecha</label><div>${c.date}</div></div>
-        <div class="sp-field"><label>Cliente</label><div>${c.client}</div></div>
-      </div>
-      <div class="sp-row" style="border-bottom:none">
-        <div class="sp-field"><label>Estado de venta</label><div>${c.status}</div></div>
-        <div class="sp-field"><label>Total final</label><div>${c.total}</div></div>
-      </div>
-    </div>
-    ${commentBox()}`;
-  document.getElementById('sidePanel').classList.add('open');
-}
-function openChange(id){selected=id;selectedType='change';let c=activeChanges().find(x=>x.id===id);if(!c)return;let changedRows=c.rows.filter(r=>r[3]==='Modificado');document.getElementById('sideTitle').textContent=c.doc;document.getElementById('sideSub').textContent='Cambio detectado por comparación automática';setObservationAction();document.getElementById('sideBody').innerHTML=`
-  <div class="sp-section">
-    <div class="sp-section-title">Datos generales</div>
-    <div class="sp-row">
-      <div class="sp-field"><label>Cliente / seguro</label><div>${c.client}</div></div>
-      <div class="sp-field"><label>Fecha detección</label><div>${c.date}</div></div>
-    </div>
-  </div>
-  <div class="sp-section">
-    <div class="sp-section-title">Datos modificados</div>
-    <div class="table-panel"><div class="table-wrap"><table><thead><tr><th>Dato crítico</th><th>Dato anterior</th><th>Dato actual</th><th>Resultado</th></tr></thead><tbody>${changedRows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td><span class="chip ${chipClass(r[3])}">${r[3]}</span></td></tr>`).join('')}</tbody></table></div></div>
-  </div>
-  ${commentBox()}`;document.getElementById('sidePanel').classList.add('open')}
-function openReviewed(id){let r=reviewedItems.find(x=>x.id===id);if(!r)return;selected=null;selectedType='reviewed';document.getElementById('sideTitle').textContent=r.doc;document.getElementById('sideSub').textContent='Detalle de revisión registrada';hideObservationAction();document.getElementById('sideBody').innerHTML=`
-  <div class="sp-section">
-    <div class="sp-section-title">Datos de revisión</div>
-    <div class="sp-row">
-      <div class="sp-field"><label>Código NR / NCO</label><div>${r.doc}</div></div>
-      <div class="sp-field"><label>Tipo de alerta</label><div>${r.alertType}</div></div>
-    </div>
-    <div class="sp-row" style="border-bottom:none">
-      <div class="sp-field"><label>Auditor</label><div>${r.auditor}</div></div>
-      <div class="sp-field"><label>Fecha de revisión</label><div>${r.reviewedAt}</div></div>
-    </div>
-  </div>
-  <div class="sp-section">
-    <div class="sp-section-title">Observación registrada</div>
-    <div style="padding:12px 0;font-size:14px;font-weight:700;line-height:1.6">${r.observation}</div>
-  </div>`;document.getElementById('sidePanel').classList.add('open')}
-function addObservation(){
-  const msg=(document.getElementById('reviewMsg')?.value||'').trim();
-  if(!msg)return alert('Ingrese un comentario, observación o justificación antes de enviar el caso a Revisados.');
-  let source=null, alertType='';
-  if(selectedType==='case'){
-    source=activeCases().find(x=>x.id===selected);
-    if(!source)return;
-    alertType=alertName(source);
-    source.reviewed=true;
-  }else if(selectedType==='change'){
-    source=activeChanges().find(x=>x.id===selected);
-    if(!source)return;
-    alertType='Cambio detectado';
-    source.reviewed=true;
-  }else{return;}
-  reviewedItems.unshift({id:'rev-'+Date.now(),doc:source.doc,alertType,auditor:CURRENT_AUDITOR,reviewedAt:reviewDate(),observation:msg});
-  closePanel();
-  renderAll();
-  goPage('revisados');
-}
 function closePanel(){document.getElementById('sidePanel').classList.remove('open')}
 function clearReviewed(){document.getElementById('revSearch').value='';renderReviewed()}
-function openDoctors(){renderDoctors();document.getElementById('doctorPanel').classList.add('open')}function closeDoctors(){document.getElementById('doctorPanel').classList.remove('open')}
+function openDoctors(){renderDoctors();document.getElementById('doctorPanel').classList.add('open')}
+function closeDoctors(){document.getElementById('doctorPanel').classList.remove('open')}
 function renderDoctors(){document.getElementById('doctorList').innerHTML=doctors.map((d,i)=>`<div class="doctor-item"><div><b>${d.name}</b><br><small style="color:var(--muted)">Ítems autorizados: ${d.items}</small></div><button class="btn" onclick="removeDoctor(${i})">Quitar</button></div>`).join('')}
 function addDoctor(){let n=document.getElementById('doctorName').value.trim(),it=document.getElementById('doctorItems').value.trim();if(!n)return alert('Ingrese el nombre del médico.');doctors.push({name:n.toUpperCase(),items:it||'Sin detalle'});document.getElementById('doctorName').value='';document.getElementById('doctorItems').value='';renderAll();renderDoctors()}
 function removeDoctor(i){doctors.splice(i,1);renderAll();renderDoctors()}
@@ -572,6 +1141,12 @@ function clearHash(){document.getElementById('hashDoc').value='';document.getEle
 function clearCaja(){document.getElementById('cajaAlerta').value='';document.getElementById('cajaRevision').value='';document.getElementById('cajaSearch').value='';renderCaja()}
 function clearCob(){document.getElementById('cobAlerta').value='';document.getElementById('cobRevision').value='';document.getElementById('cobSearch').value='';renderCob()}
 function clearChanges(){document.getElementById('chgEstado').value='';document.getElementById('chgSearch').value='';renderChanges()}
+function routeAlert(id){let c=activeCases().find(x=>x.id===id);if(!c)return;if(c.group==='caja'){goPage('caja');document.getElementById('cajaSearch').value=c.doc;document.getElementById('cajaAlerta').value=alertName(c);renderCaja()}else{goPage('coberturas');document.getElementById('cobSearch').value=c.doc;document.getElementById('cobAlerta').value=alertName(c);renderCob()}}
+function routeChange(id){let c=activeChanges().find(x=>x.id===id);if(!c)return;goPage('cambios');document.getElementById('chgSearch').value=c.doc;renderChanges()}
+function goPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-btn[data-page]').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelector(`.nav-btn[data-page="${p}"]`).classList.add('active');document.getElementById('title').textContent={alertas:'Alertas de cajas',caja:'Casos Caja',coberturas:'Coberturas',cambios:'Cambios detectados',revisados:'Revisados',hasheo:'Hasheo Manual'}[p]}
+document.querySelectorAll('.nav-btn[data-page]').forEach(b=>b.onclick=()=>goPage(b.dataset.page));
+document.getElementById('themeBtn').onclick=()=>{let l=document.body.dataset.theme==='light';document.body.dataset.theme=l?'dark':'light';document.getElementById('themeBtn').textContent=l?'☾':'☀'};
+document.querySelectorAll('.filters').forEach(group=>{const pills=[...group.querySelectorAll('.pill')];pills.forEach(pill=>pill.onclick=()=>{pills.forEach(x=>x.classList.remove('active'));pill.classList.add('active')})});
 function renderAll(){renderDashboard();renderCaja();renderCob();renderChanges();renderReviewed()}
 renderAll();
 </script>
