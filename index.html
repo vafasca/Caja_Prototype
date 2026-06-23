@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Fénix - Auditoría Caja v2</title>
+  <title>Fénix - Auditoría Caja v2 - actualizado</title>
   <style>
     :root{
       --bg:#1e4a75; --panel:#012544; --sidebar:#001f3a; --sidebar2:#07345b;
@@ -368,10 +368,10 @@
     </div>
     <div class="menu-section">
       <div class="menu-title">Auditoría Cajas <span>▾</span></div>
-      <button class="nav-btn active" data-page="alertas">Alertas de cajas</button>
-      <button class="nav-btn" data-page="caja">Casos Caja</button>
-      <button class="nav-btn" data-page="coberturas">Coberturas</button>
-      <button class="nav-btn" data-page="cambios">Cambios detectados</button>
+      <button class="nav-btn active" data-page="alertas">Alertas inmediatas</button>
+      <button class="nav-btn" data-page="cambios">Auditoria NR</button>
+      <button class="nav-btn" data-page="caja">Anomalias caja</button>
+      <button class="nav-btn" data-page="coberturas">Auditoria NCO</button>
       <button class="nav-btn" data-page="revisados">Revisados</button>
       <button class="nav-btn" data-page="hasheo">Hasheo Manual</button>
     </div>
@@ -379,7 +379,7 @@
   </aside>
   <main>
     <div class="topbar">
-      <h2 id="title">Alertas de cajas</h2>
+      <h2 id="title">Alertas inmediatas</h2>
       <div class="top-actions"><button class="theme" id="themeBtn">☾</button><div class="user"><span class="avatar">A</span><span>auditor-C<br><small style="color:var(--muted)">auditor</small></span></div></div>
     </div>
 
@@ -388,8 +388,8 @@
         <button class="pill">Todos</button><button class="pill active">Últimas 24h</button><button class="pill">Semana</button><button class="pill">Mes</button><button class="pill">Personalizado</button>
         <select class="select"><option>Todos los tipos</option><option>Descuento no autorizado</option><option>Facturación incompleta</option><option>Liberación sospechosa</option><option>Cobertura aplicada</option><option>NCO anulada</option><option>Cambio detectado</option></select>
       </div></div>
-      <div class="section-title">Atención inmediata — <span id="urgentCount">0</span></div><div class="alert-list" id="urgentList"></div>
-      <div class="section-title">Cambios detectados — <span id="changeCount">0</span></div><div class="alert-list" id="changeList"></div>
+      <div class="section-title">Alertas inmediatas — <span id="urgentCount">0</span></div><div class="alert-list" id="urgentList"></div>
+      <div class="section-title">Auditoria NR — <span id="changeCount">0</span></div><div class="alert-list" id="changeList"></div>
     </section>
 
     <section class="page" id="page-caja">
@@ -399,7 +399,7 @@
         <select class="select" id="cajaRevision" onchange="renderCaja()"><option value="">Toda revisión</option><option selected>Pendiente</option><option>Justificado</option><option>Observado</option></select>
         <input class="search" id="cajaSearch" placeholder="Buscar por venta / NR o cliente" oninput="renderCaja()">
       </div></div>
-      <div class="toolbar"><h3>Casos Caja</h3><div class="tool-actions"><button class="btn soft" onclick="openDoctors()">Médicos autorizados</button><button class="btn" onclick="clearCaja()">Limpiar filtros</button><button class="btn primary">Generar reporte</button></div></div>
+      <div class="toolbar"><h3>Anomalias caja</h3><div class="tool-actions"><button class="btn soft" onclick="openDoctors()">Médicos autorizados</button><button class="btn" onclick="clearCaja()">Limpiar filtros</button><button class="btn primary">Generar reporte</button></div></div>
       <div class="table-panel"><div class="table-wrap"><table><thead><tr><th>Venta / NR</th><th>Fecha</th><th>Cliente</th><th>Alerta</th><th>Revisión</th><th>Acciones</th></tr></thead><tbody id="cajaRows"></tbody></table></div></div>
     </section>
 
@@ -410,7 +410,7 @@
         <select class="select" id="cobRevision" onchange="renderCob()"><option value="">Toda revisión</option><option selected>Pendiente</option><option>Justificado</option><option>Observado</option></select>
         <input class="search" id="cobSearch" placeholder="Buscar por NCO, NR o cliente" oninput="renderCob()">
       </div></div>
-      <div class="toolbar"><h3>Historial de coberturas</h3><div class="tool-actions"><button class="btn" onclick="clearCob()">Limpiar filtros</button><button class="btn primary">Generar reporte</button></div></div>
+      <div class="toolbar"><h3>Auditoria NCO</h3><div class="tool-actions"><button class="btn" onclick="clearCob()">Limpiar filtros</button><button class="btn primary">Generar reporte</button></div></div>
       <div class="table-panel"><div class="table-wrap"><table><thead><tr><th>Documento</th><th>Cliente / Seguro</th><th>Fecha</th><th>Tipo de alerta</th><th>Revisión</th><th>Acciones</th></tr></thead><tbody id="cobRows"></tbody></table></div></div>
     </section>
 
@@ -420,7 +420,7 @@
         <select class="select" id="chgEstado" onchange="renderChanges()"><option value="">Todos los estados</option><option selected>Pendiente</option><option>Justificado</option><option>Observado</option></select>
         <input class="search" id="chgSearch" placeholder="Buscar por NR, NCO o cliente" oninput="renderChanges()">
       </div></div>
-      <div class="toolbar"><h3>Cambios detectados por comparación automática</h3><div class="tool-actions"><button class="btn" onclick="clearChanges()">Limpiar filtros</button><button class="btn primary">Generar reporte</button></div></div>
+      <div class="toolbar"><h3>Auditoria NR</h3><div class="tool-actions"><button class="btn" onclick="clearChanges()">Limpiar filtros</button><button class="btn primary">Generar reporte</button></div></div>
       <div class="table-panel"><div class="table-wrap"><table><thead><tr><th>Documento</th><th>Cliente / Seguro</th><th>Fecha detección</th><th>Estado</th><th>Acciones</th></tr></thead><tbody id="changeRows"></tbody></table></div></div>
     </section>
 
@@ -1211,7 +1211,7 @@ function clearCob(){document.getElementById('cobAlerta').value='';document.getEl
 function clearChanges(){document.getElementById('chgEstado').value='Pendiente';document.getElementById('chgSearch').value='';renderChanges()}
 function routeAlert(id){let c=activeCases().find(x=>x.id===id);if(!c)return;if(c.group==='caja'){goPage('caja');document.getElementById('cajaSearch').value=c.doc;document.getElementById('cajaAlerta').value=alertName(c);document.getElementById('cajaRevision').value='Pendiente';renderCaja()}else{goPage('coberturas');document.getElementById('cobSearch').value=c.doc;document.getElementById('cobAlerta').value=alertName(c);document.getElementById('cobRevision').value='Pendiente';renderCob()}}
 function routeChange(id){let c=activeChanges().find(x=>x.id===id);if(!c)return;goPage('cambios');document.getElementById('chgSearch').value=c.doc;document.getElementById('chgEstado').value='Pendiente';renderChanges()}
-function goPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-btn[data-page]').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelector(`.nav-btn[data-page="${p}"]`).classList.add('active');document.getElementById('title').textContent={alertas:'Alertas de cajas',caja:'Casos Caja',coberturas:'Coberturas',cambios:'Cambios detectados',revisados:'Revisados',hasheo:'Hasheo Manual'}[p]}
+function goPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nav-btn[data-page]').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelector(`.nav-btn[data-page="${p}"]`).classList.add('active');document.getElementById('title').textContent={alertas:'Alertas inmediatas',cambios:'Auditoria NR',caja:'Anomalias caja',coberturas:'Auditoria NCO',revisados:'Revisados',hasheo:'Hasheo Manual'}[p]}
 document.querySelectorAll('.nav-btn[data-page]').forEach(b=>b.onclick=()=>goPage(b.dataset.page));
 document.getElementById('themeBtn').onclick=()=>{let l=document.body.dataset.theme==='light';document.body.dataset.theme=l?'dark':'light';document.getElementById('themeBtn').textContent=l?'☾':'☀'};
 document.querySelectorAll('.filters').forEach(group=>{const pills=[...group.querySelectorAll('.pill')];pills.forEach(pill=>pill.onclick=()=>{pills.forEach(x=>x.classList.remove('active'));pill.classList.add('active')})});
